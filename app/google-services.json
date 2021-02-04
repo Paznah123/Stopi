@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "629116096438",
+    "project_id": "fumi-app",
+    "storage_bucket": "fumi-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629116096438:android:b15bfccb577dd7060ffb17",
+        "android_client_info": {
+          "package_name": "com.example.fumi_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629116096438-fujascg86bntm15n90j97to5ritv7ok7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpWFo13UeJaFmq4AEdbWIk7rNwt2SB8ik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629116096438-fujascg86bntm15n90j97to5ritv7ok7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

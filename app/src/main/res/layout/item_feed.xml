@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.furkanakdemir.surroundcardview.SurroundCardView
+    android:id="@+id/surround_card_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="20dp"
+    app:scv_duration="1000"
+    app:scv_startPoint="bottom_start"
+    app:scv_color="#B388FF"
+    app:scv_surrounded="true"
+    app:scv_width="5dp"
+    android:elevation="5dp"
+    app:cardElevation="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        tools:context=".MainActivity">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/post_IMG_user"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/post_LBL_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_IMG_user"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:text="Israel Israel"
+            android:textColor="#000000"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/post_LBL_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/post_IMG_user"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:text="Clean for 4 Years 137 days!"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold"  />
+
+        <TextView
+            android:id="@+id/user_goal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/post_LBL_content"
+            android:layout_alignStart="@id/post_LBL_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:text="My moto is blah blah blah !"
+            android:textColor="#000000"
+            android:textSize="15dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/post_LBL_author">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/feed_smoker_history"
+                android:backgroundTint="@color/purple_200"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/post_LBL_author"
+                android:layout_alignStart="@+id/user_goal"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:cornerRadius="15dp"
+                android:text="history"
+                android:textSize="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/feed_send_gift"
+                android:backgroundTint="@color/purple_200"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/post_LBL_author"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentEnd="true"
+                app:cornerRadius="15dp"
+                android:text="Send Gift"
+                android:textSize="10dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</com.furkanakdemir.surroundcardview.SurroundCardView>

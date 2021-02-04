@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/inbox_item"
+        android:title="@string/drawer_item_inbox"
+        android:icon="@drawable/ic_inbox"/>
+
+    <item
+        android:id="@+id/progress_item"
+        android:title="@string/drawer_item_progress"
+        android:icon="@drawable/ic_progress"/>
+
+    <item
+        android:id="@+id/feed_item"
+        android:title="@string/drawer_item_feed"
+        android:icon="@drawable/ic_feed"/>
+
+    <item
+        android:id="@+id/compare_item"
+        android:title="@string/drawer_item_compare"
+        android:icon="@drawable/ic_compare"/>
+
+    <item
+        android:id="@+id/rewards_item"
+        android:title="@string/drawer_item_rewards"
+        android:icon="@drawable/ic_rewards"/>
+    <item
+        android:id="@+id/store_item"
+        android:title="@string/drawer_item_store"
+        android:icon="@drawable/ic_store"/>
+
+    <item
+        android:id="@+id/gift_bag_item"
+        android:title="@string/drawer_item_gift_bag"
+        android:icon="@drawable/ic_gift_bag"/>
+
+    <item
+        android:id="@+id/settings_item"
+        android:title="@string/drawer_item_settings"
+        android:icon="@drawable/ic_settings"/>
+
+</menu>
