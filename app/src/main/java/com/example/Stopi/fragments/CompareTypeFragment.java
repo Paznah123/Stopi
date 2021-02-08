@@ -36,7 +36,7 @@ public class CompareTypeFragment extends Fragment {
 
         findViews();
 
-        surroundCardView.setOnClickListener(v ->{ Utils.onCardClick(surroundCardView); });
+        surroundCardView.setOnClickListener(v ->{ Utils.getInstance().onCardClick(surroundCardView); });
 
         return view;
     }
@@ -68,7 +68,7 @@ public class CompareTypeFragment extends Fragment {
     private void calculateData(String measureType, String measureUnit, double constant){
         double allCigsData = user.totalCigsSmoked() * constant;
         textView.setText("All cigarettes \n" + measureType + ": "
-                                + Utils.formatNumber(allCigsData, "##.##")
+                                + Utils.getInstance().formatNumber(allCigsData, "##.##")
                                 +"\n(" + measureUnit +")");
     }
 

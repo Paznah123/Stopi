@@ -74,12 +74,12 @@ public class FirstTimeActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        user_profile_pic.setOnClickListener(v -> Utils.getImage(this));
+        user_profile_pic.setOnClickListener(v -> Utils.getInstance().getImage(this));
 
         continue_btn.setOnClickListener(v -> {
             User user = createUserData();
             DBupdater.getInstance().updateUser(user);
-            Utils.myStartActivity(activity, ActivitySplash.class);
+            Utils.getInstance().myStartActivity(activity, ActivitySplash.class);
         });
     }
 

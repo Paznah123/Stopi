@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.example.Stopi.App;
 import com.example.Stopi.R;
 import com.example.Stopi.callBacks.OnEmailReceived;
-import com.example.Stopi.callBacks.OnSendGift;
 import com.example.Stopi.objects.Email;
 import com.example.Stopi.objects.adapters.InboxAdapter;
 import com.example.Stopi.objects.dataManage.DBupdater;

@@ -5,6 +5,7 @@
     <string name="title_activity_first_time">FirstTimeActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_distract">DistractionActivity</string>
 
     <string name="title_fragment_inbox">InboxFragment</string>
     <string name="title_fragment_progress">ProgressFragment</string>

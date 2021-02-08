@@ -101,19 +101,19 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setListeners() {
-        user_profile_pic.setOnClickListener(v -> Utils.getImage(this));
+        user_profile_pic.setOnClickListener(v -> Utils.getInstance().getImage(this));
 
         update_btn.setOnClickListener(v -> updateUserData() );
 
         logout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            Utils.myStartActivity(getActivity(), Login.class);
+            Utils.getInstance().myStartActivity(getActivity(), Login.class);
         });
 
         delete_account.setOnClickListener(v -> {
             DBupdater.getUsersRef().child(App.getLoggedUser().getUid()).removeValue();
             FirebaseAuth.getInstance().signOut();
-            Utils.myStartActivity(getActivity(), Login.class);
+            Utils.getInstance().myStartActivity(getActivity(), Login.class);
         });
     }
 

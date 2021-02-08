@@ -1,15 +1,11 @@
 package com.example.Stopi.objects.dataManage;
 
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.Stopi.App;
 import com.example.Stopi.callBacks.OnEmailReceived;
-import com.example.Stopi.fragments.InboxFragment.OnEmailsUpdate;
-import com.example.Stopi.objects.Email;
 import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.User;
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +26,6 @@ public class DBreader {
     private static List tips = new ArrayList<>();
     private static List rewards_info = new ArrayList<>();
     private static List store_items = new ArrayList<>();
-
-    private static ArrayList<String> bought_titles = new ArrayList();
 
     //=============================
 
@@ -104,15 +98,6 @@ public class DBreader {
                 .into(imageView);
     }
 
-    public void readBoughtItemsTitles(){
-        HashMap<String,StoreItem> boughtItems = getInstance().getUser().getBoughtItems();
-        bought_titles = new ArrayList<>();
-        for (int i = 0; i < boughtItems.size(); i++) {
-            String key = new ArrayList<>(boughtItems.keySet()).get(i);
-            bought_titles.add(boughtItems.get(key).getTitle());
-        }
-    }
-
     //=========================================
 
     public User getUser(){ return user; }
@@ -123,6 +108,5 @@ public class DBreader {
 
     public List getStoreItems(){ return store_items; }
 
-    public ArrayList<String> getBoughtItemsTitles() { readBoughtItemsTitles(); return bought_titles; }
 
 }

@@ -2,6 +2,7 @@ package com.example.Stopi.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import com.example.Stopi.App;
 import com.example.Stopi.R;
 import com.example.Stopi.callBacks.OnFragmentTransaction;
 import com.example.Stopi.Utils;
+import com.example.Stopi.objects.DialogView;
+import com.example.Stopi.objects.User;
 import com.example.Stopi.objects.dataManage.DBreader;
 import com.example.Stopi.objects.dataManage.KEYS;
 import com.example.Stopi.objects.dataManage.DBupdater;
@@ -43,6 +46,26 @@ public class ProgressFragment extends Fragment {
     private DBreader dbReader;
 
     private List tips;
+
+    private DialogView dialogView;
+    private View.OnClickListener dialogListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            try{
+                long newDate = Calendar.getInstance().getTimeInMillis();
+                User user = DBreader.getInstance().getUser();
+                user.updateTotalCigs(Double.parseDouble(dialogView.getText(0)))
+                    .setDateStoppedSmoking(newDate);
+
+                DBupdater.getInstance().updateUser(user);
+                pastData.updateViewData();
+                dialogView.getDialog().dismiss();
+            } catch (NumberFormatException e){
+                dialogView.setError(0, "Please enter numbers!");
+            }
+
+        }
+    };
 
     //====================================================
 
@@ -89,13 +112,11 @@ public class ProgressFragment extends Fragment {
     private void setListeners() {
         random_lbl_tip.setOnClickListener(v -> loadRandomTip());
 
-        user_main_goal.setOnClickListener(v -> Utils.createGoalDialog(getActivity(),user_main_goal).show());
+        user_main_goal.setOnClickListener(v -> Utils.getInstance().createGoalDialog(getActivity().getLayoutInflater(),user_main_goal).show());
 
         reset_progress.setOnClickListener(v -> {
-            long newDate = Calendar.getInstance().getTimeInMillis();
-            DBupdater.getUsersRef()
-                    .child(App.getLoggedUser().getUid())
-                    .child(KEYS.DATE_REF).setValue(newDate);
+            dialogView = Utils.getInstance().createResetDialog(getLayoutInflater(), dialogListener);
+            dialogView.getDialog().show();
         });
     }
 

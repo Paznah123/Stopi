@@ -59,7 +59,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.StoreViewHol
         if(onCoinsChanged != null) // store fragment
             holder.svc.setOnClickListener(v -> itemBought(storeItem));
         else  // bought_items fragment
-            holder.svc.setOnClickListener(v -> Utils.onCardClick(holder.svc));
+            holder.svc.setOnClickListener(v -> Utils.getInstance().onCardClick(holder.svc));
 
         Glide
                 .with(inflater.getContext())

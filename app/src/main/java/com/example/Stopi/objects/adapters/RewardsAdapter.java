@@ -76,11 +76,9 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
         return rewards.size();
     }
 
-    public interface MyItemClickListener {
-        default void onItemClick(EasyFlipView flipView){ flipView.flipTheView(); }
-    }
-
     public void setClickListener(MyItemClickListener itemClickListener) { this.mClickListener = itemClickListener; }
+
+    public interface MyItemClickListener { default void onItemClick(EasyFlipView flipView){ flipView.flipTheView(); }}
 
     //====================================================
 

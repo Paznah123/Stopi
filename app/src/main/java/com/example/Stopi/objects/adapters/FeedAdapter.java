@@ -21,7 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> {
 
     private View view;
-    private HashMap<String,User> mData;
+    private HashMap<String,User> usersMap;
+    private ArrayList<String> keys;
     private LayoutInflater mInflater;
 
     private OnSendGift onSendGift;
@@ -30,7 +31,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return usersMap.size();
     }
 
     public FeedAdapter(Context context, OnSendGift onSendGift) {
@@ -39,7 +40,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
     }
 
     public void setUsers(HashMap<String,User> usersMap){
-        this.mData = usersMap;
+        this.usersMap = usersMap;
+        this.keys = new ArrayList<>(usersMap.keySet());
     }
 
     //====================================================
@@ -52,8 +54,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        String Uid = new ArrayList<>(mData.keySet()).get(position);
-        User user = mData.get(Uid);
+        String Uid = keys.get(position);
+        User user = usersMap.get(Uid);
         long daysNotSmoked = TimeUnit.MILLISECONDS.toDays(user.getRehabDuration());
         long yearsNotSmoked = daysNotSmoked / 365;
 
@@ -67,8 +69,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
 
     private void setViewHolderListeners(MyViewHolder holder, User user) {
         holder.send_gift.setOnClickListener(v -> onSendGift.onSendGift(mInflater, user));
-        holder.smoker_history.setOnClickListener(v -> Utils.createFeedDialog(mInflater,user).show());
-        holder.svc.setOnClickListener(v -> Utils.onCardClick(holder.svc));
+        holder.smoker_history.setOnClickListener(v -> Utils.getInstance().createFeedDialog(mInflater,user).show());
+        holder.svc.setOnClickListener(v -> Utils.getInstance().onCardClick(holder.svc));
     }
 
     //====================================================

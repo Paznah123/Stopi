@@ -25,6 +25,7 @@ public class App extends Application {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         context = getApplicationContext();
         myToast = Toast.makeText(App.getAppContext(), "", Toast.LENGTH_SHORT);
+        Utils.initUtils();
         DBreader.initDBreader();
         DBupdater.initDBwriter();
     }

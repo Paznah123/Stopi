@@ -51,7 +51,7 @@ public class ActivitySplash extends AppCompatActivity {
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
-                        Utils.myStartActivity(activity, Login.class);
+                        Utils.getInstance().myStartActivity(activity, Login.class);
                     }
 
                     @Override

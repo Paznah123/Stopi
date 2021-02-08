@@ -1,5 +1,6 @@
 package com.example.Stopi.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import com.example.Stopi.App;
 import com.example.Stopi.callBacks.OnCoinsChanged;
@@ -8,9 +9,11 @@ import com.example.Stopi.callBacks.OnFragmentTransaction;
 import com.example.Stopi.callBacks.OnProfileUpdate;
 import com.example.Stopi.callBacks.OnSendGift;
 import com.example.Stopi.Utils;
+import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.dataManage.DBreader;
 import com.example.Stopi.objects.User;
 import com.example.Stopi.objects.dataManage.DBupdater;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -26,12 +29,10 @@ import android.widget.TextView;
 import com.example.Stopi.R;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements OnProfileUpdate, OnCoinsChanged, OnSendGift, OnEmailReceived, OnFragmentTransaction {
-
-    // monthly lowest smoker
-    // cravings prevented button
 
     private DrawerLayout drawerLayout;
     private NavigationView nav_view;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements OnProfileUpdate, 
 
     private TextView email_counter_tv;
 
+    private FloatingActionButton distraction_btn;
+
     //===========================================
 
     @Override
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnProfileUpdate, 
         user = DBreader.getUser();
 
         if(user == null) { // need to fix first login activity loop
-            Utils.myStartActivity(this, FirstTimeActivity.class);
+            Utils.getInstance().myStartActivity(this, FirstTimeActivity.class);
             return;
         }
 
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnProfileUpdate, 
         user_coins = findViewById(R.id.user_coins);
         drawer_lbl_userName = nav_view.getHeaderView(0).findViewById(R.id.drawer_lbl_userName);
         drawer_user_pic = nav_view.getHeaderView(0).findViewById(R.id.drawer_user_pic);
+        distraction_btn = findViewById(R.id.floationg_btn_distract);
     }
 
     //===========================================
@@ -96,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements OnProfileUpdate, 
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         email_counter_tv = (TextView)inflater.inflate(R.layout.emails_counter,null);
         nav_view.getMenu().findItem(R.id.inbox_item).setActionView(email_counter_tv);
+
+        Activity activity = this;
+        distraction_btn.setOnClickListener(v ->
+                Utils.getInstance().myStartActivity(activity,DistractionActivity.class)
+        );
     }
 
     private void initDrawer() {
@@ -146,16 +155,17 @@ public class MainActivity extends AppCompatActivity implements OnProfileUpdate, 
     }
 
     /**
+     * @param user the user who receives the gift
      * called when send gift button is clicked (in feed fragment)
      */
     @Override
     public void onSendGift(LayoutInflater inflater, User user) {
-        ArrayList<String> boughtItemsTitles = DBreader.getInstance().getBoughtItemsTitles();
-        if(boughtItemsTitles.size() > 0) {
-            Utils.createGiftDialog(this, boughtItemsTitles,
-                    (dialogInterface, itemIndex) -> {
-                String itemName = boughtItemsTitles.get(itemIndex);
-                DBupdater.getInstance().sendGift(inflater, user, itemName);
+        HashMap<String, StoreItem> boughtItems = DBreader.getInstance().getUser().getBoughtItems();
+        if(boughtItems.size() > 0) {
+                Utils.getInstance().createGiftDialog(inflater, boughtItems, (parent, view, position, id) -> {
+                String itemId = new ArrayList<>(boughtItems.keySet()).get(position);
+                StoreItem storeItem = boughtItems.get(itemId);
+                DBupdater.getInstance().sendGift(inflater, user, storeItem);
             }).show();
         } else
             App.toast("You have no items to send!");

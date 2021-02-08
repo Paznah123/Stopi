@@ -52,7 +52,7 @@ public class Login extends AppCompatActivity {
         setListeners();
 
         if(App.getLoggedUser() != null)
-            Utils.myStartActivity(this,MainActivity.class);
+            Utils.getInstance().myStartActivity(this,MainActivity.class);
     }
 
     // =============================================================
@@ -115,7 +115,7 @@ public class Login extends AppCompatActivity {
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                Utils.myStartActivity(this,MainActivity.class);
+                Utils.getInstance().myStartActivity(this,MainActivity.class);
                 App.toast("Login Successful");
             } else {
                 if (task.getException() instanceof FirebaseAuthInvalidCredentialsException)

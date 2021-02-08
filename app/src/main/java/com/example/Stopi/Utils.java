@@ -8,30 +8,47 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.fragment.app.Fragment;
+
+import com.example.Stopi.callBacks.OnProfileUpdate;
+import com.example.Stopi.objects.DialogView;
 import com.example.Stopi.objects.Email;
 import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.User;
+import com.example.Stopi.objects.adapters.GiftListAdapter;
 import com.example.Stopi.objects.dataManage.DBreader;
 import com.example.Stopi.objects.dataManage.DBupdater;
 import com.furkanakdemir.surroundcardview.SurroundCardView;
 import com.github.drjacky.imagepicker.ImagePicker;
-import com.google.android.material.button.MaterialButton;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Utils {
 
-    /**
-     *   formats a double by pattern - #.##
-     *   (number of # as the number of digits to show after . )
-     */
-    public static String formatNumber(double number, String pattern){ return new DecimalFormat(pattern).format(number); }
+    private static Utils instance;
 
-    public static void onCardClick(SurroundCardView svc){
+    //=============================
+
+    public static void initUtils(){
+        if(instance == null)
+            instance = new Utils();
+    }
+
+    public static Utils getInstance() { return instance; }
+
+    //=============================
+
+    /**
+     * formats a double by pattern
+     * @param pattern #.## (number of # as the number of digits to show after . )
+     */
+    public String formatNumber(double number, String pattern){ return new DecimalFormat(pattern).format(number); }
+
+    public void onCardClick(SurroundCardView svc){
         if(svc.isCardSurrounded())
             svc.release();
         else
@@ -41,78 +58,65 @@ public class Utils {
     //====================================================
 
     /**
-     *   creates AlertDialog with user gift bag for sending gift
-     *   with click listener for each item
+     * creates AlertDialog for reset button click
      */
-    public static AlertDialog.Builder createGiftDialog(Activity activity, ArrayList<String> list, DialogInterface.OnClickListener listener){
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.AlertDialogCustom));
-        builder.setTitle("Gift Bag");
-        builder.setIcon(R.drawable.ic_gift_bag);
-        builder.setItems(list.toArray(new String[0]), listener);
+    public DialogView createResetDialog(LayoutInflater inflater, View.OnClickListener listener){
+        View view = inflater.inflate(R.layout.dialog_reset, null);
+        DialogView dialogView = new DialogView(view)
+                .findConfirmButtonById(R.id.reset_confirm)
+                .addEditTexts(1, new int[] {R.id.reset_amount})
+                .setConfirmListener(listener);
 
-        return builder;
+        return dialogView;
+    }
+
+    /**
+     * creates AlertDialog with user gift bag for sending gift
+     * with click listener for each item
+     * @param itemsList user gift bag titles
+     */
+    public AlertDialog createGiftDialog(LayoutInflater inflater, HashMap<String, StoreItem> itemsList, AdapterView.OnItemClickListener listener){
+        View view = inflater.inflate(R.layout.dialog_gift, null);
+        GiftListAdapter giftListAdapter = new GiftListAdapter(inflater.getContext(), itemsList);
+        DialogView dialogView = new DialogView(view)
+                .findListViewById(R.id.gift_listView)
+                .setListAdapter(giftListAdapter)
+                .setListItemsClickListener(listener);
+
+        return dialogView.getDialog();
     }
 
     //====================================================
 
     /**
-     *   creates AlertDialog for attaching message to gift
+     * creates AlertDialog for attaching message to gift
+     * @param receiverKey email receiving userId
      */
-    public static AlertDialog createEmailDialog(LayoutInflater inflater, String receiverKey, StoreItem storeItem){
-        AlertDialog.Builder builder = new AlertDialog.Builder(inflater.getContext());
-        View dialogView = inflater.inflate(R.layout.dialog_email, null);
 
-        EditText message = dialogView.findViewById(R.id.email_message);
-        MaterialButton attach = dialogView.findViewById(R.id.email_attach);
-        MaterialButton cancel = dialogView.findViewById(R.id.email_cancel);
+    public AlertDialog createEmailDialog(LayoutInflater inflater, String receiverKey, StoreItem storeItem){
+        View view = inflater.inflate(R.layout.dialog_email, null);
+        DialogView dialogView = new DialogView(view)
+                .addEditTexts(1, new int[] {R.id.email_message})
+                .findConfirmButtonById(R.id.email_attach)
+                .findCancelButtonById(R.id.email_cancel);
 
-        final AlertDialog dialog = builder.create();
-        dialog.setView(dialogView);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        attach.setOnClickListener(v -> {
+        dialogView.setConfirmListener(v -> {
             User sender = DBreader.getInstance().getUser();
-            String title = storeItem != null ?
-                    sender.getName() +" sent you a "+ storeItem.getTitle()
-                    : sender.getName() + " replied";
-            Email email = new Email()
-                    .setKey(sender.getUid())
-                    .setTitle(title)
-                    .setMsg(message.getText().toString())
-                    .setItemPhotoUrl(sender.getProfilePicFilePath());
+            String title = storeItem != null ? sender.getName() +" sent you a "+ storeItem.getTitle()
+                                                : sender.getName() + " replied";
+            Email email = new Email().setKey(sender.getUid())
+                                    .setTitle(title)
+                                    .setMsg(dialogView.getText(0))
+                                    .setItemPhotoUrl(sender.getProfilePicFilePath());
             DBupdater.getInstance().sendEmail(receiverKey,email);
             App.toast("Gift Sent!");
-            dialog.dismiss();
-        });
-        cancel.setOnClickListener(v -> {
-            dialog.dismiss();
+            dialogView.getDialog().dismiss();
+        }).setCancelListener(v -> {
+            dialogView.getDialog().dismiss();
             App.toast("Gift Sent!");
         });
 
-        return dialog;
-    }
-    //====================================================
-
-    /**
-     *   creates AlertDialog with user smoker history
-     */
-    public static AlertDialog createFeedDialog(LayoutInflater mInflater, User user) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mInflater.getContext());
-        View dialogView = mInflater.inflate(R.layout.dialog_feed, null);
-
-        TextView cigsSmoked = dialogView.findViewById(R.id.feed_cigs_smoked);
-        TextView moneyWasted = dialogView.findViewById(R.id.feed_money_wasted);
-        TextView lifeLost = dialogView.findViewById(R.id.feed_life_lost);
-
-        cigsSmoked.setText("Cigarettes smoked: "+ formatNumber(user.totalCigsSmoked(),"##.#"));
-        moneyWasted.setText("Money wasted: "+ formatNumber(user.moneyWasted(),"##.#") +" $");
-        lifeLost.setText("life lost: "+ formatNumber(user.lifeLost(),"##.#") + " days");
-
-        final AlertDialog dialog = builder.create();
-        dialog.setView(dialogView);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        return dialog;
+        return dialogView.getDialog();
     }
 
     //====================================================
@@ -120,27 +124,40 @@ public class Utils {
     /**
      *   creates AlertDialog for editing user goal
      */
-    public static AlertDialog createGoalDialog(Activity activity, TextView tvGoal) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+    public AlertDialog createGoalDialog(LayoutInflater inflater, TextView tvGoal) {
+        View view = inflater.inflate(R.layout.dialog_goal, null);
 
-        View dialogView = activity.getLayoutInflater().inflate(R.layout.dialog_goal, null);
-        EditText edittext = dialogView.findViewById(R.id.goal_text);
-        MaterialButton confirm = dialogView.findViewById(R.id.goal_confirm);
-        MaterialButton cancel = dialogView.findViewById(R.id.goal_cancel);
+        DialogView dialogView = new DialogView(view)
+                .addEditTexts(1, new int[] {R.id.goal_text})
+                .findConfirmButtonById(R.id.goal_confirm)
+                .findCancelButtonById(R.id.goal_cancel);
 
-        final AlertDialog dialog = builder.create();
-        dialog.setView(dialogView);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        confirm.setOnClickListener(v -> {
-            String userGoal = edittext.getText().toString();
+        dialogView.setConfirmListener(v -> {
+            String userGoal = dialogView.getText(0);
             tvGoal.setText(userGoal);
             DBupdater.getInstance().updateUserGoal(userGoal);
-            dialog.dismiss();
-        });
-        cancel.setOnClickListener(v -> dialog.dismiss());
+            dialogView.getDialog().dismiss();
+        }).setCancelListener(v -> dialogView.getDialog().dismiss());
 
-        return dialog;
+        return dialogView.getDialog();
+    }
+
+    //====================================================
+
+    /**
+     *   creates AlertDialog with user smoker history
+     */
+    public AlertDialog createFeedDialog(LayoutInflater mInflater, User user) {
+        View view = mInflater.inflate(R.layout.dialog_feed, null);
+
+        int[] layout_id_arr = {R.id.feed_cigs_smoked, R.id.feed_money_wasted, R.id.feed_life_lost};
+        DialogView dialogView = new DialogView(view).addTextViews(3,layout_id_arr);
+
+        dialogView.setText(0,"Cigarettes smoked: "+ formatNumber(user.totalCigsSmoked(),"##.#"));
+        dialogView.setText(1,"Money wasted: "+ formatNumber(user.moneyWasted(),"##.#") +" $");
+        dialogView.setText(2,"life lost: "+ formatNumber(user.lifeLost(),"##.#") + " days");
+
+        return dialogView.getDialog();
     }
 
     //====================================================
@@ -148,7 +165,7 @@ public class Utils {
     /**
      *   starts activity
      */
-    public static void myStartActivity(Activity activity, Class activityClass){
+    public void myStartActivity(Activity activity, Class activityClass){
         Intent intent = new Intent(activity, activityClass);
         activity.startActivity(intent);
         activity.finish();
@@ -159,7 +176,7 @@ public class Utils {
     /**
      *   gets image from imagePicker in fragment
      */
-    public static void getImage(Fragment fragment) {
+    public void getImage(Fragment fragment) {
         ImagePicker.Companion
                 .with(fragment)
                 .crop()
@@ -173,7 +190,7 @@ public class Utils {
     /**
      *   gets image from imagePicker in activity
      */
-    public static void getImage(Activity activity) {
+    public void getImage(Activity activity) {
         ImagePicker.Companion
                 .with(activity)
                 .crop()

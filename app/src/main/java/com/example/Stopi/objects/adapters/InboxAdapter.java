@@ -13,6 +13,7 @@ import com.example.Stopi.objects.Email;
 import com.example.Stopi.objects.dataManage.DBreader;
 import com.example.Stopi.objects.dataManage.DBupdater;
 import com.google.android.material.button.MaterialButton;
+import com.wajahatkarim3.easyflipview.EasyFlipView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,11 +24,9 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
     private LayoutInflater inflater;
 
     private HashMap<String,Email> emails;
+    private ArrayList<String> keys;
 
     //==================================================
-
-    @Override
-    public int getItemCount() { return emails.size(); }
 
     public InboxAdapter(Context context){
         this.inflater = LayoutInflater.from(context);
@@ -36,6 +35,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
 
     public void setEmails(HashMap<String,Email> emails){
         this.emails = emails;
+        this.keys = new ArrayList<>(emails.keySet());
     }
 
     //==================================================
@@ -49,7 +49,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
 
     @Override
     public void onBindViewHolder(InboxAdapter.InboxViewHolder holder, int position) {
-        String key = new ArrayList<>(emails.keySet()).get(position);
+        String key = keys.get(position);
         Email email = emails.get(key);
         holder.email_title.setText(email.getTitle());
         holder.email_msg.setText(email.getMsg());
@@ -58,11 +58,18 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.InboxViewHol
 
         holder.reply.setOnClickListener(v -> {
             String Uid = (String)email.getItemPhotoUrl().subSequence(0,email.getItemPhotoUrl().length()-4);
-            Utils.createEmailDialog(inflater,Uid,null).show();
+            Utils.getInstance().createEmailDialog(inflater,Uid,null).show();
         });
 
         DBreader.getInstance().readProfilePic(holder.email_user_photo,email.getItemPhotoUrl());
     }
+
+    //==================================================
+
+    @Override
+    public int getItemCount() { return emails.size(); }
+
+    //==================================================
 
     public class InboxViewHolder extends RecyclerView.ViewHolder {
 

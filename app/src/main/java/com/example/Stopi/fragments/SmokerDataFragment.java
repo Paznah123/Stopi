@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SmokerDataFragment extends Fragment {
 
+    private Utils utils;
     private View view;
 
     public enum Section {
@@ -37,6 +38,8 @@ public class SmokerDataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_smoker_data, container, false);
+
+        utils = Utils.getInstance();
 
         findViews();
         progress_title.setText(mSection.name() + " Stopi");
@@ -73,17 +76,17 @@ public class SmokerDataFragment extends Fragment {
         double moneySaved = cigsNotSmoked/user.getCigsPerPack() * user.getPricePerPack();
         double lifeGained = (KEYS.MINUTES_LOST_PER_CIG * cigsNotSmoked) / 60 / 24;
 
-        progress_cigs.setText("Cigarettes not smoked: " + Utils.formatNumber(cigsNotSmoked, "##.#"));
-        progress_money.setText("Money saved: " + Utils.formatNumber(moneySaved, "##.#") + " $");
-        progress_life.setText("Life gained: " + Utils.formatNumber(lifeGained, "##.#") + " days");
+        progress_cigs.setText("Cigarettes not smoked: " + utils.formatNumber(cigsNotSmoked, "##.#"));
+        progress_money.setText("Money saved: " + utils.formatNumber(moneySaved, "##.#") + " $");
+        progress_life.setText("Life gained: " + utils.formatNumber(lifeGained, "##.#") + " days");
     }
 
     private void calculateSmokerData(){
         User user = DBreader.getInstance().getUser();
 
-        progress_cigs.setText("Cigarettes smoked: " + Utils.formatNumber(user.totalCigsSmoked(), "##.#"));
-        progress_money.setText("Money wasted: " + Utils.formatNumber(user.moneyWasted(), "##.#") + " $");
-        progress_life.setText("Life lost: " + Utils.formatNumber(user.lifeLost(), "##.#") + " days");
+        progress_cigs.setText("Cigarettes smoked: " + utils.formatNumber(user.totalCigsSmoked(), "##.#"));
+        progress_money.setText("Money wasted: " + utils.formatNumber(user.moneyWasted(), "##.#") + " $");
+        progress_life.setText("Life lost: " + utils.formatNumber(user.lifeLost(), "##.#") + " days");
     }
 
     //====================================================

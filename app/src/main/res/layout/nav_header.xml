@@ -8,13 +8,13 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/drawer_user_pic"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
         android:src="@drawable/default_profile_pic"
         app:layout_constraintBottom_toTopOf="@+id/drawer_lbl_userName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/drawer_lbl_userName"
@@ -23,6 +23,7 @@
         android:paddingEnd="20dp"
         android:textSize="30dp"
         android:paddingBottom="10dp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

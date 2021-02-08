@@ -32,6 +32,7 @@ public class DBupdater {
 
     /**
      * get database reference by key
+     * @param ref database ref (references found in dataManage.KEYS)
      */
     public static DatabaseReference getDBref(String ref){ return FirebaseDatabase.getInstance().getReference(ref); }
 
@@ -47,7 +48,7 @@ public class DBupdater {
 
     /**
      * updates user in database
-     * not for updating logged user
+     * @param user user for update (not for logged user)
      */
     public void updateUser(User user){ DBupdater.getUsersRef().child(user.getUid()).setValue(user); }
 
@@ -93,6 +94,7 @@ public class DBupdater {
     /**
      * added new email by user id
      * to email reference in database
+     * @param userId database id of email receiving user
      */
     public void sendEmail(String userId, Email email){
         DatabaseReference userEmailsRef = DBupdater.getEmailsRef().child(userId);
@@ -103,6 +105,7 @@ public class DBupdater {
 
     /**
      * deletes from logged user email reference by key
+     * @param key database email id (saved inside email object)
      */
     public void deleteEmail(String key){
         DBupdater.getEmailsRef()
@@ -112,15 +115,13 @@ public class DBupdater {
     //=============================
 
     /**
-     * - creates dialog for attaching message to gift
-     * - updates logged user gift bag
-     * - updates receiver user gift bag
-     * - updates database references
+     * creates dialog for attaching message to gift
+     * updates logged user gift bag
+     * updates receiver user gift bag
+     * @param user gift destination user
      */
-    public void sendGift(LayoutInflater inflater, User user, String itemName){
-        StoreItem storeItem = DBreader.getInstance().getUser().getBoughtItems().get(itemName);
-
-        Utils.createEmailDialog(inflater,user.getUid(),storeItem).show();
+    public void sendGift(LayoutInflater inflater, User user, StoreItem storeItem){
+        Utils.getInstance().createEmailDialog(inflater,user.getUid(),storeItem).show();
 
         user.addStoreItem(storeItem);
         updateUser(user);
@@ -128,7 +129,7 @@ public class DBupdater {
         if(storeItem.getPrice() > 1)
             storeItem.reduceAmount();
         else
-            DBreader.getInstance().getUser().getBoughtItems().remove(itemName);
+            DBreader.getInstance().getUser().getBoughtItems().remove(storeItem.getTitle());
         saveLoggedUser();
     }
 
