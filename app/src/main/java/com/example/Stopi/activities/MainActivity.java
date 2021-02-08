@@ -32,7 +32,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements OnProfileUpdate, OnCoinsChanged, OnSendGift, OnEmailReceived, OnFragmentTransaction {
+public class MainActivity extends AppCompatActivity
+        implements OnProfileUpdate, OnCoinsChanged, OnSendGift, OnEmailReceived, OnFragmentTransaction {
 
     private DrawerLayout drawerLayout;
     private NavigationView nav_view;
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements OnProfileUpdate, 
     @Override
     public void setFragmentToView(Fragment fragment, int layout_id){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(layout_id, fragment).commit();
+        transaction.add(layout_id, fragment).setCustomAnimations(R.anim.slide_in, R.anim.slide_out).commit();
     }
 
     /**
