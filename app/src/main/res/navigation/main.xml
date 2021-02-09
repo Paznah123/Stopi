@@ -48,6 +48,12 @@
         tools:layout="@layout/fragment_gift_bag" />
 
     <fragment
+        android:id="@+id/distract_item"
+        android:name="com.example.Stopi.fragments.DistractionFragment"
+        android:label="Distraction"
+        tools:layout="@layout/fragment_distract" />
+
+    <fragment
         android:id="@+id/settings_item"
         android:name="com.example.Stopi.fragments.SettingsFragment"
         android:label="Settings"

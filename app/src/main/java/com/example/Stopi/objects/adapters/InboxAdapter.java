@@ -13,7 +13,7 @@ import com.example.Stopi.objects.Email;
 import com.example.Stopi.objects.dataManage.DBreader;
 import com.example.Stopi.objects.dataManage.DBupdater;
 import com.google.android.material.button.MaterialButton;
-import com.wajahatkarim3.easyflipview.EasyFlipView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;

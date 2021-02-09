@@ -3,7 +3,6 @@ package com.example.Stopi.objects;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.text.Editable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -11,7 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DialogView {
 
@@ -23,8 +22,8 @@ public class DialogView {
     private MaterialButton confirm;
     private MaterialButton cancel;
 
-    private ArrayList<EditText> editTexts;
-    private ArrayList<TextView> textViews;
+    private HashMap<Integer, EditText> editTextsMap;
+    private HashMap<Integer, TextView> textViewsMap;
 
     private ListView itemsList;
 
@@ -40,61 +39,91 @@ public class DialogView {
 
     //======================================
 
-    /**
-     * set text to textView(i)
-     */
-    public void setText(int textViewPosition, String text) { this.textViews.get(textViewPosition).setText(text); }
+    public void setTextViewText(int textView_layout_id, String text){ this.textViewsMap.get(textView_layout_id).setText(text); }
 
-    public DialogView addTextViews(int amount, int[] layout_id_arr) {
-        if (textViews == null) {
-            this.textViews = new ArrayList<>();
-            for (int i = 0; i < amount; i++)
-                this.textViews.add(view.findViewById(layout_id_arr[i]));
-        }
+    public String getTextViewText(int textView_layout_id){ return this.textViewsMap.get(textView_layout_id).getText().toString(); }
+
+    public TextView getTextView(int textView_layout_id){ return this.textViewsMap.get(textView_layout_id); }
+
+    public DialogView addTextViews(int[] layout_id_arr) {
+        if (textViewsMap == null)
+            this.textViewsMap = new HashMap<>();
+        for (int layout_id : layout_id_arr)
+            this.textViewsMap.put(layout_id, // key
+                    view.findViewById(layout_id)); // textview
+        return this;
+    }
+
+    //======================================
+
+    public EditText getEditText(int editText_layoutId) { return editTextsMap.get(editText_layoutId); }
+
+    public void getEditTextText(int editText_layoutId, String text) { editTextsMap.get(editText_layoutId).setText(text); }
+
+    public String getEditTextText(int editText_layoutId) { return editTextsMap.get(editText_layoutId).getText().toString(); }
+
+    public void setEditTextError(int editText_layoutId, String error){ editTextsMap.get(editText_layoutId).setError(error); }
+
+    public DialogView addEditTexts(int[] layout_id_arr) {
+        if (editTextsMap == null)
+            this.editTextsMap = new HashMap<>();
+        for (int layout_id : layout_id_arr)
+            this.editTextsMap.put(layout_id, // key
+                    view.findViewById(layout_id)); // editText
         return this;
     }
 
     //======================================
 
     /**
-     * get text from editText(i)
+     * @param listener item click listener
+     * @throws NullPointerException if items list not set by id
      */
-    public String getText(int editTextPosition) {
-        return editTexts.get(editTextPosition).getText().toString();
-    }
-
-    public void setError(int editTextPosition, String error){
-        editTexts.get(editTextPosition).setError(error);
-    }
-
-    public DialogView addEditTexts(int amount, int[] layout_id_arr) {
-        if (editTexts == null) {
-            this.editTexts = new ArrayList<>();
-            for (int i = 0; i < amount; i++)
-                this.editTexts.add(view.findViewById(layout_id_arr[i]));
-        }
-        return this;
-    }
-
-    //======================================
-
-    public DialogView setListItemsClickListener(AdapterView.OnItemClickListener listener) {
-        if (itemsList != null)
+    public DialogView setListItemsClickListener(AdapterView.OnItemClickListener listener) throws NullPointerException {
+        if (itemsList != null) {
             itemsList.setOnItemClickListener(listener);
-        return this;
+            return this;
+        }
+        throw new NullPointerException("Items list is null");
     }
 
-    public DialogView setListAdapter(BaseAdapter listAdapter) {
-        if (itemsList != null)
+    /**
+     * @param listAdapter adapter for list items
+     * @throws NullPointerException if items list not set by id
+     */
+    public DialogView setListAdapter(BaseAdapter listAdapter) throws NullPointerException {
+        if (itemsList != null) {
             itemsList.setAdapter(listAdapter);
-        return this;
+            return this;
+        }
+        throw new NullPointerException("Items list is null");
     }
 
     //======================================
 
-    public DialogView setConfirmListener(View.OnClickListener listener) { confirm.setOnClickListener(listener); return this; }
+    /**
+     * @param listener button click listener
+     * @throws NullPointerException if confirm button not set by id
+     */
+    public DialogView setConfirmListener(View.OnClickListener listener) throws NullPointerException {
+        if (confirm != null) {
+            confirm.setOnClickListener(listener);
+            return this;
+        }
+        throw new NullPointerException("Confirm button is null");
+    }
 
-    public DialogView setCancelListener(View.OnClickListener listener) { cancel.setOnClickListener(listener); return this; }
+    /**
+     * @param listener button click listener
+     * @throws NullPointerException if cancel button not set by id
+     */
+    public DialogView setCancelListener(View.OnClickListener listener) throws NullPointerException {
+        if(cancel != null) {
+            cancel.setOnClickListener(listener);
+            return this;
+        }
+        throw new NullPointerException("Cancel button is null");
+    }
 
     //======================================
 
@@ -106,11 +135,11 @@ public class DialogView {
 
     //======================================
 
-    public MaterialButton getConfirm() { return confirm; }
+    public MaterialButton getConfirmButton() { return confirm; }
 
-    public MaterialButton getCancel() { return cancel; }
+    public MaterialButton getCancelButotn() { return cancel; }
 
-    public AlertDialog getDialog() { return dialog; }
+    public AlertDialog getAlertDialog() { return dialog; }
 
 }
 

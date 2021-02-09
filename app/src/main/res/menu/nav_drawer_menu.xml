@@ -36,6 +36,11 @@
         android:icon="@drawable/ic_gift_bag"/>
 
     <item
+        android:id="@+id/distract_item"
+        android:title="@string/drawer_item_distract"
+        android:icon="@drawable/ic_distract"/>
+
+    <item
         android:id="@+id/settings_item"
         android:title="@string/drawer_item_settings"
         android:icon="@drawable/ic_settings"/>

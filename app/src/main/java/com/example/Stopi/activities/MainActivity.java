@@ -51,15 +51,12 @@ public class MainActivity extends AppCompatActivity
 
     private TextView email_counter_tv;
 
-    private FloatingActionButton distraction_btn;
-
     //===========================================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         DBreader = DBreader.getInstance();
         DBreader.readUserData();
@@ -88,7 +85,6 @@ public class MainActivity extends AppCompatActivity
         user_coins = findViewById(R.id.user_coins);
         drawer_lbl_userName = nav_view.getHeaderView(0).findViewById(R.id.drawer_lbl_userName);
         drawer_user_pic = nav_view.getHeaderView(0).findViewById(R.id.drawer_user_pic);
-        distraction_btn = findViewById(R.id.floationg_btn_distract);
     }
 
     //===========================================
@@ -101,11 +97,6 @@ public class MainActivity extends AppCompatActivity
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         email_counter_tv = (TextView)inflater.inflate(R.layout.emails_counter,null);
         nav_view.getMenu().findItem(R.id.inbox_item).setActionView(email_counter_tv);
-
-        Activity activity = this;
-        distraction_btn.setOnClickListener(v ->
-                Utils.getInstance().myStartActivity(activity,DistractionActivity.class)
-        );
     }
 
     private void initDrawer() {
@@ -178,7 +169,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void setFragmentToView(Fragment fragment, int layout_id){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(layout_id, fragment).setCustomAnimations(R.anim.slide_in, R.anim.slide_out).commit();
+        transaction.add(layout_id, fragment).commit();
     }
 
     /**

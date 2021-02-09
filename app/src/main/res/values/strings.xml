@@ -5,7 +5,6 @@
     <string name="title_activity_first_time">FirstTimeActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_splash">SplashActivity</string>
-    <string name="title_activity_distract">DistractionActivity</string>
 
     <string name="title_fragment_inbox">InboxFragment</string>
     <string name="title_fragment_progress">ProgressFragment</string>
@@ -14,6 +13,7 @@
     <string name="title_fragment_rewards">RewardsFragment</string>
     <string name="title_fragment_store">StoreFragment</string>
     <string name="title_fragment_bought_items">BoughtItemsFragment</string>
+    <string name="title_fragment_distract">DistractionFragment</string>
     <string name="title_fragment_settings">SettingsFragment</string>
 
     <string name="drawer_item_inbox">Inbox</string>
@@ -23,6 +23,7 @@
     <string name="drawer_item_rewards">Rewards</string>
     <string name="drawer_item_store">Store</string>
     <string name="drawer_item_gift_bag">Gift Bag</string>
+    <string name="drawer_item_distract">Distraction</string>
     <string name="drawer_item_settings">Settings</string>
 
     <string name="phone_number">Phone Number</string>

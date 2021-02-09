@@ -1,10 +1,6 @@
 package com.example.Stopi.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,12 +11,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.Stopi.App;
 import com.example.Stopi.R;
-import com.example.Stopi.callBacks.OnFragmentTransaction;
 import com.example.Stopi.Utils;
+import com.example.Stopi.callBacks.OnFragmentTransaction;
 import com.example.Stopi.objects.DialogView;
 import com.example.Stopi.objects.User;
 import com.example.Stopi.objects.dataManage.DBreader;
-import com.example.Stopi.objects.dataManage.KEYS;
 import com.example.Stopi.objects.dataManage.DBupdater;
 import com.google.android.material.button.MaterialButton;
 import java.util.Calendar;
@@ -54,14 +49,14 @@ public class ProgressFragment extends Fragment {
             try{
                 long newDate = Calendar.getInstance().getTimeInMillis();
                 User user = DBreader.getInstance().getUser();
-                user.updateTotalCigs(Double.parseDouble(dialogView.getText(0)))
+                user.updateTotalCigs(Double.parseDouble(dialogView.getEditTextText(R.id.reset_amount)))
                     .setDateStoppedSmoking(newDate);
 
                 DBupdater.getInstance().updateUser(user);
                 pastData.updateViewData();
-                dialogView.getDialog().dismiss();
+                dialogView.getAlertDialog().dismiss();
             } catch (NumberFormatException e){
-                dialogView.setError(0, "Please enter numbers!");
+                dialogView.setEditTextError(R.id.reset_amount, "Please enter numbers!");
             }
 
         }
@@ -116,7 +111,7 @@ public class ProgressFragment extends Fragment {
 
         reset_progress.setOnClickListener(v -> {
             dialogView = Utils.getInstance().createResetDialog(getLayoutInflater(), dialogListener);
-            dialogView.getDialog().show();
+            dialogView.getAlertDialog().show();
         });
     }
 
