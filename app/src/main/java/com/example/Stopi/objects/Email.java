@@ -2,10 +2,9 @@ package com.example.Stopi.objects;
 
 public class Email {
 
-    private String key;
+    private String senderKey;
     private String title;
     private String msg;
-    private String itemPhotoUrl;
 
     //=============================
 
@@ -17,9 +16,7 @@ public class Email {
 
     public Email setMsg(String msg) { this.msg = msg; return this; }
 
-    public Email setItemPhotoUrl(String itemPhotoUrl) { this.itemPhotoUrl = itemPhotoUrl; return this; }
-
-    public Email setKey(String key) { this.key = key; return this; }
+    public Email setSenderKey(String senderKey) { this.senderKey = senderKey; return this; }
 
     //=============================
 
@@ -27,8 +24,6 @@ public class Email {
 
     public String getMsg() { return msg; }
 
-    public String getItemPhotoUrl() { return itemPhotoUrl; }
-
-    public String getKey() { return key; }
+    public String getSenderKey() { return senderKey; }
 
 }

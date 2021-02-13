@@ -12,6 +12,7 @@ import com.example.Stopi.callBacks.OnSendGift;
 import com.example.Stopi.objects.User;
 import com.example.Stopi.Utils;
 import com.example.Stopi.objects.dataManage.DBreader;
+import com.example.Stopi.objects.dataManage.KEYS;
 import com.furkanakdemir.surroundcardview.SurroundCardView;
 import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
@@ -20,12 +21,11 @@ import java.util.concurrent.TimeUnit;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> {
 
-    private View view;
-    private HashMap<String,User> usersMap;
-    private ArrayList<String> keys;
-    private LayoutInflater mInflater;
-
-    private OnSendGift onSendGift;
+    private View                    view;
+    private HashMap<String,User>    usersMap;
+    private ArrayList<String>       keys;
+    private LayoutInflater          mInflater;
+    private OnSendGift              onSendGift;
 
     //====================================================
 
@@ -35,13 +35,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
     }
 
     public FeedAdapter(Context context, OnSendGift onSendGift) {
-        this.mInflater = LayoutInflater.from(context);
+        this.mInflater  = LayoutInflater.from(context);
         this.onSendGift = onSendGift;
     }
 
     public void setUsers(HashMap<String,User> usersMap){
-        this.usersMap = usersMap;
-        this.keys = new ArrayList<>(usersMap.keySet());
+        this.usersMap   = usersMap;
+        this.keys       = new ArrayList<>(usersMap.keySet());
     }
 
     //====================================================
@@ -59,31 +59,33 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
         long daysNotSmoked = TimeUnit.MILLISECONDS.toDays(user.getRehabDuration());
         long yearsNotSmoked = daysNotSmoked / 365;
 
-        holder.post_LBL_author.setText(user.getName());
-        holder.post_LBL_content.setText(yearsNotSmoked + " years , " + daysNotSmoked%365 + " days clean!");
-        holder.user_goal.setText("\""+user.getGoal()+"\"");
+        holder.user_LBL_name            .setText(user.getName());
+        holder.user_LBL_clean_period    .setText(yearsNotSmoked + " years , " + daysNotSmoked%365 + " days clean!");
+        holder.user_goal                .setText("\""+ user.getGoal() +"\"");
+        holder.user_score               .setText("High Score: "+ user.getHighScore());
 
-        DBreader.getInstance().readProfilePic(holder.post_IMG_user,user.getProfilePicFilePath());
+        DBreader.getInstance().readPic(KEYS.PROFILE, holder.user_IMG, user.getUid());
         setViewHolderListeners(holder, user);
     }
 
     private void setViewHolderListeners(MyViewHolder holder, User user) {
-        holder.send_gift.setOnClickListener(v -> onSendGift.onSendGift(mInflater, user));
-        holder.smoker_history.setOnClickListener(v -> Utils.getInstance().createFeedDialog(mInflater,user).show());
-        holder.svc.setOnClickListener(v -> Utils.getInstance().onCardClick(holder.svc));
+        holder.send_gift        .setOnClickListener(v -> onSendGift             .onSendGift(user));
+        holder.smoker_history   .setOnClickListener(v -> Utils.getInstance()    .createFeedDialog(mInflater,user).show());
+        holder.svc              .setOnClickListener(v -> Utils.getInstance()    .onCardClick(holder.svc));
     }
 
     //====================================================
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView post_IMG_user;
-        TextView post_LBL_author;
-        TextView post_LBL_content;
-        TextView user_goal;
-        MaterialButton send_gift;
-        MaterialButton smoker_history;
-        SurroundCardView svc;
+        ImageView           user_IMG;
+        TextView            user_LBL_name;
+        TextView            user_LBL_clean_period;
+        TextView            user_goal;
+        TextView            user_score;
+        MaterialButton      send_gift;
+        MaterialButton      smoker_history;
+        SurroundCardView    svc;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -93,13 +95,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
         //====================================================
 
         private void findViews() {
-            post_IMG_user = itemView.findViewById(R.id.post_IMG_user);
-            post_LBL_author = itemView.findViewById(R.id.post_LBL_author);
-            post_LBL_content = itemView.findViewById(R.id.post_LBL_content);
-            user_goal = itemView.findViewById(R.id.user_goal);
-            send_gift = itemView.findViewById(R.id.feed_send_gift);
-            smoker_history = itemView.findViewById(R.id.feed_smoker_history);
-            svc = itemView.findViewById(R.id.surround_card_view);
+            user_IMG                = itemView.findViewById(R.id.user_IMG);
+            user_LBL_name           = itemView.findViewById(R.id.user_LBL_name);
+            user_LBL_clean_period   = itemView.findViewById(R.id.user_clean_period);
+            user_goal               = itemView.findViewById(R.id.user_goal);
+            user_score              = itemView.findViewById(R.id.user_score);
+            send_gift               = itemView.findViewById(R.id.feed_send_gift);
+            smoker_history          = itemView.findViewById(R.id.feed_smoker_history);
+            svc                     = itemView.findViewById(R.id.surround_card_view);
         }
 
     }

@@ -18,7 +18,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.hbb20.CountryCodePicker;
 import java.util.concurrent.TimeUnit;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private enum LOGIN_STATE {
         ENTERING_NUMBER,
@@ -91,7 +91,8 @@ public class Login extends AppCompatActivity {
 
     private void startLoginProcess() {
         phoneNumber = country_code_picker.getSelectedCountryCodeWithPlus() + login_EDT_phone.getEditText().getText().toString();
-        validateLoginInput(login_EDT_phone.getEditText(), phoneNumber);
+        if(validateLoginInput(phoneNumber))
+            return;
 
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(firebaseAuth)
@@ -105,6 +106,8 @@ public class Login extends AppCompatActivity {
 
     private void codeEntered() {
         String verificationCode = login_EDT_phone.getEditText().getText().toString();
+        if(validateLoginInput(verificationCode))
+            return;
 
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
         signInWithPhoneAuthCredential(credential);
@@ -126,18 +129,20 @@ public class Login extends AppCompatActivity {
 
     // =============================================================
 
-    private void validateLoginInput(EditText editText, String phoneNumber){
-        if(phoneNumber.isEmpty()) {
-            editText.setError("Phone Number is Required");
-            editText.requestFocus();
-            return;
+    private boolean validateLoginInput(String input){
+        if(input.isEmpty()) {
+            login_EDT_phone.setError("Phone Number is Required");
+            login_EDT_phone.requestFocus();
+            return false;
         }
 
-        if(phoneNumber.length() < 10){
-            editText.setError("Enter a Valid Number");
-            editText.requestFocus();
-            return;
+        if(input.length() < 10 || input.length() < 6){
+            login_EDT_phone.setError("Enter a Valid Number");
+            login_EDT_phone.requestFocus();
+            return false;
         }
+
+        return true;
     }
 
     // =============================================================

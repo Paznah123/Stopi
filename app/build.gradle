@@ -27,6 +27,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    configurations {
+        cleanedAnnotations
+        compile.exclude group: 'org.jetbrains' , module:'annotations'
+    }
 }
 
 dependencies {
@@ -43,6 +48,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation 'com.google.firebase:firebase-storage:19.2.1'
+    implementation 'androidx.wear:wear:1.1.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -70,6 +76,9 @@ dependencies {
 
     // image picker
     implementation 'com.github.Drjacky:ImagePicker:1.7.10'
+
+    // currency picker
+    implementation  'com.github.scrounger:countrycurrencypicker:1.1.1'
 
     // flip view
     implementation 'com.wajahatkarim3.EasyFlipView:EasyFlipView:3.0.0'

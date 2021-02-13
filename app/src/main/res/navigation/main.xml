@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/distract_item"
-        android:name="com.example.Stopi.fragments.DistractionFragment"
+        android:name="com.example.Stopi.miniGame.GameFragment"
         android:label="Distraction"
         tools:layout="@layout/fragment_distract" />
 

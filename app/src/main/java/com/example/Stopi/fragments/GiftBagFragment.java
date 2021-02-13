@@ -13,7 +13,7 @@ import com.example.Stopi.R;
 import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.adapters.ItemsAdapter;
 import com.example.Stopi.objects.dataManage.KEYS;
-import com.example.Stopi.objects.dataManage.DBupdater;
+import com.example.Stopi.objects.dataManage.Refs;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -21,11 +21,10 @@ import java.util.ArrayList;
 
 public class GiftBagFragment extends Fragment {
 
-    private View view;
-    private Context context;
-
-    private RecyclerView bought_list;
-    private ItemsAdapter boughtAdapter;
+    private View                view;
+    private Context             context;
+    private RecyclerView        bought_list;
+    private ItemsAdapter        boughtAdapter;
 
     public interface OnItemBought { void refreshItemList(ArrayList<StoreItem> boughtItems); }
 
@@ -34,12 +33,10 @@ public class GiftBagFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_gift_bag, container, false);
-
-        context = getContext();
-
-        bought_list = view.findViewById(R.id.bought_list);
-        bought_list.setLayoutManager(new GridLayoutManager(context,2));
+        view            = inflater.inflate(R.layout.fragment_gift_bag, container, false);
+        context         = getContext();
+        bought_list     = view.findViewById(R.id.bought_list);
+        bought_list     .setLayoutManager(new GridLayoutManager(context,2));
 
         updateBoughtItems(onItemBought);
 
@@ -52,25 +49,24 @@ public class GiftBagFragment extends Fragment {
 
         @Override
         public void refreshItemList(ArrayList<StoreItem> boughtItems) {
-            boughtAdapter = new ItemsAdapter(context, boughtItems);
-            bought_list.setAdapter(boughtAdapter);
+            boughtAdapter   = new ItemsAdapter(context, boughtItems);
+            bought_list     .setAdapter(boughtAdapter);
         }
     };
 
     private void updateBoughtItems(@NonNull OnItemBought onItemBought) {
-        DBupdater.getLoggedUserRef()
-                .child(KEYS.GIFT_BAG_REF)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<StoreItem> itemsList = new ArrayList<>();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                            itemsList.add(snapshot.getValue(StoreItem.class));
-                        onItemBought.refreshItemList(itemsList);
-                    }
+        Refs.getLoggedUserRef() .child(KEYS.GIFT_BAG_REF)
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        ArrayList<StoreItem> itemsList = new ArrayList<>();
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                                            itemsList.add(snapshot.getValue(StoreItem.class));
+                                        onItemBought.refreshItemList(itemsList);
+                                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) { }
-                });
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) { }
+                                });
     }
 }

@@ -16,6 +16,7 @@ import com.example.Stopi.callBacks.OnEmailReceived;
 import com.example.Stopi.objects.Email;
 import com.example.Stopi.objects.adapters.InboxAdapter;
 import com.example.Stopi.objects.dataManage.DBupdater;
+import com.example.Stopi.objects.dataManage.Refs;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -72,7 +73,7 @@ public class InboxFragment extends Fragment {
     };
 
     private void refreshEmailFeed(@NonNull OnEmailsUpdate onEmailsUpdate, TextView no_emails) {
-        DBupdater.getEmailsRef()
+        Refs.getEmailsRef()
                 .child(App.getLoggedUser().getUid())
                 .addValueEventListener(new ValueEventListener() {
             @Override
@@ -80,7 +81,7 @@ public class InboxFragment extends Fragment {
                 HashMap<String,Email> emailsList = new HashMap<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Email email = snapshot.getValue(Email.class);
-                    emailsList.put(email.getKey(),email);
+                    emailsList.put(snapshot.getKey(),email);
                 }
                 onEmailsUpdate.updateEmails(emailsList);
                 onEmailReceived.updateEmailCounter(emailsList.size());

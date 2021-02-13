@@ -15,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 public class SmokerDataFragment extends Fragment {
 
+    private static final String Section_TAG = "Section";
+
     private Utils utils;
     private View view;
 
@@ -32,7 +34,15 @@ public class SmokerDataFragment extends Fragment {
 
     //====================================================
 
-    public SmokerDataFragment(Section section){ mSection = section; }
+    public static SmokerDataFragment newInstance(Section section) {
+        SmokerDataFragment myFragment = new SmokerDataFragment();
+
+        Bundle args = new Bundle();
+        args.putString(Section_TAG, section.name());
+        myFragment.setArguments(args);
+
+        return myFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +52,8 @@ public class SmokerDataFragment extends Fragment {
         utils = Utils.getInstance();
 
         findViews();
-        progress_title.setText(mSection.name() + " Stopi");
+        mSection = Section.valueOf(getArguments().getString(Section_TAG));
+        progress_title.setText(mSection + " Stopi");
 
         updateViewData();
 
@@ -61,10 +72,10 @@ public class SmokerDataFragment extends Fragment {
     //====================================================
 
     public void updateViewData(){
-        if(mSection.equals(Section.Before))
-            calculateSmokerData();
-        else if(mSection.equals(Section.After))
+        if(mSection.equals(Section.After))
             calculateStoppedSmokingData();
+        else
+            calculateSmokerData();
     }
 
     //====================================================
@@ -77,7 +88,7 @@ public class SmokerDataFragment extends Fragment {
         double lifeGained = (KEYS.MINUTES_LOST_PER_CIG * cigsNotSmoked) / 60 / 24;
 
         progress_cigs.setText("Cigarettes not smoked: " + utils.formatNumber(cigsNotSmoked, "##.#"));
-        progress_money.setText("Money saved: " + utils.formatNumber(moneySaved, "##.#") + " $");
+        progress_money.setText("Money saved: " + utils.formatNumber(moneySaved, "##.#") + " "+ user.getCurrencySymbol());
         progress_life.setText("Life gained: " + utils.formatNumber(lifeGained, "##.#") + " days");
     }
 
@@ -85,7 +96,7 @@ public class SmokerDataFragment extends Fragment {
         User user = DBreader.getInstance().getUser();
 
         progress_cigs.setText("Cigarettes smoked: " + utils.formatNumber(user.totalCigsSmoked(), "##.#"));
-        progress_money.setText("Money wasted: " + utils.formatNumber(user.moneyWasted(), "##.#") + " $");
+        progress_money.setText("Money wasted: " + utils.formatNumber(user.moneyWasted(), "##.#") + " "+ user.getCurrencySymbol());
         progress_life.setText("Life lost: " + utils.formatNumber(user.lifeLost(), "##.#") + " days");
     }
 

@@ -95,23 +95,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/settings_price_pack"
-            style="@style/TextInputLayout"
-            android:textColorHint="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="@color/white"
-                android:hint="Price Per Pack"
-                android:inputType="numberDecimal" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/settings_cigs_per_pack"
             style="@style/TextInputLayout"
             android:layout_width="wrap_content"
@@ -130,7 +113,39 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/settings_price_pack"
+            style="@style/TextInputLayout"
+            android:orientation="horizontal"
+            android:textColorHint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/price_editText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    android:hint="Price Per Pack"
+                    android:inputType="numberDecimal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/settings_btn_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_200"
+        android:text="Currency"
+        android:textSize="20dp"
+        app:cornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textsLinear" />
 
     <LinearLayout
         android:id="@+id/buttons_linear"

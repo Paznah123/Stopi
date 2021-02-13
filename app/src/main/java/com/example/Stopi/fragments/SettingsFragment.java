@@ -14,22 +14,29 @@ import android.widget.ImageView;
 import com.example.Stopi.App;
 import com.example.Stopi.R;
 import com.example.Stopi.Utils;
-import com.example.Stopi.activities.Login;
+import com.example.Stopi.activities.LoginActivity;
 import com.example.Stopi.callBacks.OnProfileUpdate;
 import com.example.Stopi.objects.dataManage.DBreader;
 import com.example.Stopi.objects.User;
 import com.example.Stopi.objects.dataManage.DBupdater;
+import com.example.Stopi.objects.dataManage.KEYS;
+import com.example.Stopi.objects.dataManage.Refs;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.scrounger.countrycurrencypicker.library.Country;
+import com.scrounger.countrycurrencypicker.library.Currency;
+import com.scrounger.countrycurrencypicker.library.Listener.CountryCurrencyPickerListener;
 
 public class SettingsFragment extends Fragment {
 
-    private View view;
+    private View            view;
 
-    private ImageView user_profile_pic;
-    private Uri filePathUri;
+    private ImageView       user_profile_pic;
+    private Uri             filePathUri;
+
+    private String          currencySymbol;
 
     private TextInputLayout user_name;
     private TextInputLayout years_smoked;
@@ -37,13 +44,14 @@ public class SettingsFragment extends Fragment {
     private TextInputLayout price_per_pack;
     private TextInputLayout cigs_per_pack;
 
-    private MaterialButton update_btn;
-    private MaterialButton logout;
-    private MaterialButton delete_account;
+    private MaterialButton  update_btn;
+    private MaterialButton  logout;
+    private MaterialButton  delete_account;
+    private MaterialButton  currency;
 
     private OnProfileUpdate onProfileUpdate;
 
-    private DBreader dbReader;
+    private User            user;
 
     //============================================
 
@@ -66,8 +74,6 @@ public class SettingsFragment extends Fragment {
             });
         } else if (resultCode == ImagePicker.RESULT_ERROR)
             App.toast(new ImagePicker().Companion.getError(data));
-        else
-            App.toast("Task Cancelled");
     }
 
     //============================================
@@ -77,7 +83,7 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        dbReader = DBreader.getInstance();
+        user = DBreader.getInstance().getUser();
 
         findViews();
         setCurrentValues();
@@ -89,15 +95,17 @@ public class SettingsFragment extends Fragment {
     //============================================
 
     private void findViews() {
-        user_profile_pic = view.findViewById(R.id.user_profile_pic);
-        user_name = view.findViewById(R.id.settings_user_name);
-        years_smoked = view.findViewById(R.id.settings_years_smoked);
-        cigs_per_day = view.findViewById(R.id.settings_cigs_day);
-        price_per_pack = view.findViewById(R.id.settings_price_pack);
-        cigs_per_pack = view.findViewById(R.id.settings_cigs_per_pack);
-        update_btn = view.findViewById(R.id.settings_update);
-        logout = view.findViewById(R.id.settings_logout);
-        delete_account = view.findViewById(R.id.settings_delete);
+        user_profile_pic    = view.findViewById(R.id.user_profile_pic);
+        user_name           = view.findViewById(R.id.settings_user_name);
+        years_smoked        = view.findViewById(R.id.settings_years_smoked);
+        cigs_per_day        = view.findViewById(R.id.settings_cigs_day);
+        price_per_pack      = view.findViewById(R.id.settings_price_pack);
+        cigs_per_pack       = view.findViewById(R.id.settings_cigs_per_pack);
+        update_btn          = view.findViewById(R.id.settings_update);
+        logout              = view.findViewById(R.id.settings_logout);
+        delete_account      = view.findViewById(R.id.settings_delete);
+        currency            = view.findViewById(R.id.settings_btn_currency);
+
     }
 
     private void setListeners() {
@@ -107,50 +115,64 @@ public class SettingsFragment extends Fragment {
 
         logout.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            Utils.getInstance().myStartActivity(getActivity(), Login.class);
+            Utils.getInstance().myStartActivity(getActivity(), LoginActivity.class);
         });
 
         delete_account.setOnClickListener(v -> {
-            DBupdater.getUsersRef().child(App.getLoggedUser().getUid()).removeValue();
+            String Uid = App.getLoggedUser().getUid();
+            DBupdater.getInstance().deleteUserData(Uid);
             FirebaseAuth.getInstance().signOut();
-            Utils.getInstance().myStartActivity(getActivity(), Login.class);
+            Utils.getInstance().myStartActivity(getActivity(), LoginActivity.class);
         });
+
+        currency.setOnClickListener(v -> Utils.getInstance()
+                .createCurrencyDialog(getParentFragmentManager(), new CountryCurrencyPickerListener() {
+                    @Override
+                    public void onSelectCountry(Country country) {
+                        currencySymbol = country.getCurrency().getCode() +" "+ country.getCurrency().getSymbol();
+                        currency.setText(currencySymbol);
+                    }
+
+                    @Override
+                    public void onSelectCurrency(Currency currency) { }
+                }));
     }
 
     //============================================
 
     private void setCurrentValues(){
-        User user = dbReader.getUser();
-        DBreader.getInstance().readProfilePic(user_profile_pic, user.getProfilePicFilePath());
+        DBreader.getInstance()        .readPic(KEYS.PROFILE, user_profile_pic, user.getUid());
 
-        user_name.getEditText().setText(""+ user.getName());
-        years_smoked.getEditText().setText(""+ user.getYearsSmoked());
-        cigs_per_day.getEditText().setText(""+ user.getCigsPerDay());
-        price_per_pack.getEditText().setText(""+ user.getPricePerPack());
-        cigs_per_pack.getEditText().setText(""+ user.getCigsPerPack());
+        user_name       .getEditText().setText(""+ user.getName());
+        years_smoked    .getEditText().setText(""+ user.getYearsSmoked());
+        cigs_per_day    .getEditText().setText(""+ user.getCigsPerDay());
+        price_per_pack  .getEditText().setText(""+ user.getPricePerPack());
+        cigs_per_pack   .getEditText().setText(""+ user.getCigsPerPack());
+        currency                      .setText(user.getCurrencySymbol());
     }
 
     //============================================
 
     private void updateUserData() {
-        User user = dbReader.getUser();
         try {
-            String name = user_name.getEditText().getText().toString();
-            double yearsSmoked = Double.parseDouble(years_smoked.getEditText().getText().toString());
-            int cigsPerDay = Integer.parseInt(cigs_per_day.getEditText().getText().toString());
-            double pricePerPack = Double.parseDouble(price_per_pack.getEditText().getText().toString());
-            int cigsPerPack = Integer.parseInt(cigs_per_pack.getEditText().getText().toString());
-            long dateStoppedSmoking = user.getDateStoppedSmoking();
+            String  name                = user_name.getEditText().getText().toString();
+            long    dateStoppedSmoking  = user.getDateStoppedSmoking();
+            double  yearsSmoked         = Double.parseDouble(years_smoked.getEditText().getText().toString());
+            double  pricePerPack        = Double.parseDouble(price_per_pack.getEditText().getText().toString());
+            int     cigsPerDay          = Integer.parseInt(cigs_per_day.getEditText().getText().toString());
+            int     cigsPerPack         = Integer.parseInt(cigs_per_pack.getEditText().getText().toString());
 
-            DBupdater.getInstance().updateUser(user.setUid(App.getLoggedUser().getUid())
-                                    .setName(name)
-                                    .setYearsSmoked(yearsSmoked)
-                                    .setCigsPerDay(cigsPerDay)
-                                    .setPricePerPack(pricePerPack)
-                                    .setCigsPerPack(cigsPerPack)
-                                    .setDateStoppedSmoking(dateStoppedSmoking));
+            user                        .setUid(App.getLoggedUser().getUid())
+                                        .setName(name)
+                                        .setYearsSmoked(yearsSmoked)
+                                        .setCigsPerDay(cigsPerDay)
+                                        .setPricePerPack(pricePerPack)
+                                        .setCurrencySymbol(currencySymbol)
+                                        .setCigsPerPack(cigsPerPack)
+                                        .setDateStoppedSmoking(dateStoppedSmoking);
+            DBupdater.getInstance()     .updateUser(user);
+            onProfileUpdate             .onProfileUpdate(user);
 
-            onProfileUpdate.onProfileUpdate(user);
             App.toast("Data Updated!");
         } catch(NumberFormatException e) {
             App.toast("Error In Input!");

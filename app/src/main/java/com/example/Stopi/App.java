@@ -9,7 +9,7 @@ import com.example.Stopi.objects.dataManage.DBreader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import static com.example.Stopi.objects.dataManage.KEYS.LOG_TAG;
+import com.example.Stopi.objects.dataManage.KEYS;
 
 public class App extends Application {
 
@@ -23,24 +23,26 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        context = getApplicationContext();
-        myToast = Toast.makeText(App.getAppContext(), "", Toast.LENGTH_SHORT);
-        Utils.initUtils();
-        DBreader.initDBreader();
-        DBupdater.initDBwriter();
+
+        context         = getApplicationContext();
+        myToast         = Toast.makeText(App.getAppContext(), "", Toast.LENGTH_SHORT);
+        Utils           .initUtils();
+        DBupdater       .initDBwriter();
+        DBreader        .initDBreader();
     }
 
     //====================================================
 
+    public static Toast toast(String msg){
+        myToast     .setText(msg);
+        myToast     .show();
+        return      myToast;
+    }
+
     public static Context getAppContext(){ return context; }
 
-    public static void log(String msg){ Log.d(LOG_TAG, msg); }
+    public static void log(String msg){ Log.d(KEYS.LOG_TAG, msg); }
 
     public static FirebaseUser getLoggedUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
-
-    public static void toast(String msg){
-        myToast.setText(msg);
-        myToast.show();
-    }
 
 }

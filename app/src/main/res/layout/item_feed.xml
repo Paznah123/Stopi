@@ -17,23 +17,24 @@
     app:cardElevation="5dp">
 
     <RelativeLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="12dp"
         tools:context=".MainActivity">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/post_IMG_user"
+            android:id="@+id/user_IMG"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="10dp"/>
 
         <TextView
-            android:id="@+id/post_LBL_author"
+            android:id="@+id/user_LBL_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/post_IMG_user"
-            android:layout_marginTop="10dp"
+            android:layout_below="@+id/user_IMG"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
             android:text="Israel Israel"
             android:textColor="#000000"
@@ -41,10 +42,22 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/post_LBL_content"
+            android:id="@+id/user_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/post_IMG_user"
+            android:layout_below="@+id/user_LBL_name"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:text="High score: 141"
+            android:textColor="#000000"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/user_clean_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/user_IMG"
             android:layout_marginStart="10dp"
             android:ellipsize="end"
             android:text="Clean for 4 Years 137 days!"
@@ -56,8 +69,8 @@
             android:id="@+id/user_goal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/post_LBL_content"
-            android:layout_alignStart="@id/post_LBL_content"
+            android:layout_below="@id/user_clean_period"
+            android:layout_alignStart="@id/user_clean_period"
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:maxLines="4"
@@ -70,17 +83,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/post_LBL_author">
+            android:layout_alignBottom="@+id/user_score">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/feed_smoker_history"
                 android:backgroundTint="@color/purple_200"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/post_LBL_author"
                 android:layout_alignStart="@+id/user_goal"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
                 app:cornerRadius="15dp"
                 android:text="history"
                 android:textSize="10dp"/>
@@ -90,8 +102,7 @@
                 android:backgroundTint="@color/purple_200"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/post_LBL_author"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_alignParentEnd="true"
                 app:cornerRadius="15dp"
                 android:text="Send Gift"

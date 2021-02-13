@@ -1,34 +1,44 @@
 package com.example.Stopi.objects;
 
-import com.example.Stopi.App;
 import com.example.Stopi.objects.dataManage.KEYS;
-
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class User {
+public class User implements Comparable {
 
-    private String uid = "";
-    private String name = "";
-    private String goal = "";
-    private String profilePicFilePath = "";
+    private String  uid = "";
+    private String  name = "";
+    private String  goal = "";
+    private String  currencySymbol = "";
 
-    private double cigsSinceQuit = 0;
-    private double yearsSmoked = 0;
-    private double pricePerPack = 0;
+    private double  cigsSinceQuit = 0;
+    private double  yearsSmoked = 0;
+    private double  pricePerPack = 0;
 
-    private int cigsPerDay = 0;
-    private int cigsPerPack = 1;
-    private int coins = 0;
+    private int     cigsPerDay = 0;
+    private int     cigsPerPack = 1;
+    private int     coins = 0;
+    private int     highScore = 0;
 
-    private long dateStoppedSmoking;
-    private long loggedToday = -1;
+    private long    dateStoppedSmoking;
+    private long    loggedToday = -1;
 
     private HashMap<String,StoreItem> boughtItems = new HashMap<>();
 
     //=========================================
 
     public User(){ }
+
+    @Override
+    public int compareTo(Object o) {
+        User u = (User) o;
+        if(u.getName().equals(this.getName())
+                && u.getUid().equals(this.getUid()))
+            return 0;
+        return 1;
+    }
+
+    //=========================================
 
     /**
      *  added storeItem to user gift bag ,
@@ -37,7 +47,6 @@ public class User {
     public void addStoreItem(StoreItem storeItem) {
         StoreItem boughtItem = new StoreItem()
                 .setTitle(storeItem.getTitle())
-                .setPhotoUrl(storeItem.getPhotoUrl())
                 .setPrice(0);
         if(!boughtItems.containsKey(boughtItem.getTitle())) {
             boughtItem.setPrice(1);
@@ -55,6 +64,8 @@ public class User {
 
     public double lifeLost(){ return KEYS.MINUTES_LOST_PER_CIG * totalCigsSmoked() / 60 / 24; }
 
+    public double cigCost(){ return pricePerPack/cigsPerPack; }
+
     //=========================================
 
     public void incrementCoins(int amount) { this.coins += amount; }
@@ -63,13 +74,17 @@ public class User {
 
     //=========================================
 
-    public User setCigsSmokedSinceQuit(double cigsSmokedSinceQuit) { this.cigsSinceQuit = cigsSmokedSinceQuit; return this; }
-
-    public double getCigsSmokedSinceQuit() { return cigsSinceQuit; }
-
-    //=========================================
-
-    public User updateTotalCigs(double cigsSmoked) { cigsSinceQuit += cigsSmoked; return this; }
+    /**
+     * updates only if bigger than 0
+     */
+    public boolean updateTotalCigs(double cigsSmoked) {
+        if(cigsSmoked > 0){
+            cigsSinceQuit += cigsSmoked;
+            this.setDateStoppedSmoking(Calendar.getInstance().getTimeInMillis());
+            return true;
+        }
+        return false;
+    }
 
     public User setUid(String Uid) { uid = Uid; return this; }
 
@@ -91,9 +106,11 @@ public class User {
 
     public User setLoggedToday(long loggedToday) { this.loggedToday = loggedToday; return this;}
 
-    public User setProfilePicFilePath(String profilePicFilePath) { this.profilePicFilePath = profilePicFilePath; return this; }
-
     public User setBoughtItems(HashMap<String,StoreItem> boughtItems) { this.boughtItems = boughtItems; return this; }
+
+    public User setCurrencySymbol(String currencySymbol) { this.currencySymbol = currencySymbol; return this; }
+
+    public boolean setHighScore(int score) { if(score > highScore){ highScore = score; return true; } return false; }
 
     //=========================================
 
@@ -113,13 +130,15 @@ public class User {
 
     public int getCoins() { return coins; }
 
+    public int getHighScore() { return highScore; }
+
     public long getDateStoppedSmoking() { return dateStoppedSmoking; }
 
     public long getLoggedToday() { return loggedToday; }
 
     public long getRehabDuration(){ return Calendar.getInstance().getTimeInMillis() - dateStoppedSmoking; }
 
-    public String getProfilePicFilePath() { return profilePicFilePath == null ? " " : profilePicFilePath; }
+    public String getCurrencySymbol() { return currencySymbol; }
 
     public HashMap<String,StoreItem> getBoughtItems() { return boughtItems; }
 

@@ -2,36 +2,30 @@ package com.example.Stopi.objects.dataManage;
 
 public interface KEYS {
 
-    String LOG_TAG = "-Stopi-";
+    String  LOG_TAG              = "-Stopi-";
 
-    String USERS_REF = "Users";
+    String  USERS_REF            = "https://fumi-app-default-rtdb.firebaseio.com/Users";
+    String  TIPS_REF             = "https://fumi-app-default-rtdb.firebaseio.com/Tips";
+    String  REWARDS_INFO_REF     = "https://fumi-app-default-rtdb.firebaseio.com/Rewards_Info";
+    String  STORE_REF            = "https://fumi-app-default-rtdb.firebaseio.com/Store_items";
+    String  EMAILS_REF           = "https://fumi-app-default-rtdb.firebaseio.com/emails";
 
-    String TIPS_REF = "Tips";
+    String  STORE_PICS_REF       = "gs://fumi-app.appspot.com/store_pics/";
+    String  FULL_PROFILE_PIC_URL = "gs://fumi-app.appspot.com/profile_pics/";
 
-    String REWARDS_INFO_REF = "Rewards_Info";
+    String  GIFT_BAG_REF         = "boughtItems";
+    String  COMPARE_REF          = "Compare";
 
-    String STORE_REF = "Store_items";
+    int     STORE                = 1;
+    int     PROFILE              = 2;
+    int     REWARDS_AMOUNT       = 13;
+    int     DAYS_IN_YEAR         = 365;
+    int     MINUTES_LOST_PER_CIG = 11;
+    int     BALL_RADIUS          = 40;
 
-    String COMPARE_REF = "Compare";
+    double  CIGARETTE_AVG_WEIGHT = 0.0008;
+    double  CIGARETTE_AVG_LENGTH = 0.1;
 
-    String GIFT_BAG_REF = "boughtItems";
+    float   REBOUND              = 0.6f;
 
-    String EMAILS_REF = "emails";
-
-    String DATE_REF = "dateStoppedSmoking";
-    
-    String PROFILE_PICS_REF = "profile_pics/";
-
-    int REWARDS_AMOUNT = 13;
-
-    int DAYS_IN_YEAR = 365;
-
-    int MINUTES_LOST_PER_CIG = 11;
-
-    double CIGARETTE_AVG_WEIGHT = 0.0008;
-
-    double CIGARETTE_AVG_LENGTH = 0.1;
-
-    double CIGARETTE_COST = DBreader.getInstance().getUser().getPricePerPack()
-                                / DBreader.getInstance().getUser().getCigsPerPack();
 }

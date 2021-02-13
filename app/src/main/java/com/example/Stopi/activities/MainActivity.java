@@ -1,6 +1,5 @@
 package com.example.Stopi.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import com.example.Stopi.App;
 import com.example.Stopi.callBacks.OnCoinsChanged;
@@ -13,7 +12,7 @@ import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.dataManage.DBreader;
 import com.example.Stopi.objects.User;
 import com.example.Stopi.objects.dataManage.DBupdater;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.Stopi.objects.dataManage.KEYS;
 import com.google.android.material.navigation.NavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -23,6 +22,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,21 +36,21 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity
         implements OnProfileUpdate, OnCoinsChanged, OnSendGift, OnEmailReceived, OnFragmentTransaction {
 
-    private DrawerLayout drawerLayout;
-    private NavigationView nav_view;
-    private NavController navController;
+    private DrawerLayout    drawerLayout;
+    private NavigationView  nav_view;
+    private NavController   navController;
 
-    private ImageView main_drawer_btn;
-    private ImageView drawer_user_pic;
+    private ImageView       main_drawer_btn;
+    private ImageView       drawer_user_pic;
 
-    private TextView main_lbl_title;
-    private TextView drawer_lbl_userName;
-    private TextView user_coins;
+    private TextView        main_lbl_title;
+    private TextView        drawer_lbl_userName;
+    private TextView        user_coins;
 
-    private User user;
-    private DBreader DBreader;
+    private User            user;
+    private DBreader        dbReader;
 
-    private TextView email_counter_tv;
+    private TextView        email_counter_tv;
 
     //===========================================
 
@@ -58,12 +59,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DBreader = DBreader.getInstance();
-        DBreader.readUserData();
-        DBreader.readEmailsAmount(this);
-        user = DBreader.getUser();
+        Utils.getInstance().addContext(this);
+        dbReader = dbReader.getInstance();
+        user = dbReader.getUser();
 
-        if(user == null) { // need to fix first login activity loop
+        if(user == null) {
             Utils.getInstance().myStartActivity(this, FirstTimeActivity.class);
             return;
         }
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         findViews();
         initDrawer();
         initViews();
+        dbReader.readEmailsAmount(this);
 
         checkFirstLogin();
     }
@@ -78,25 +79,25 @@ public class MainActivity extends AppCompatActivity
     //===========================================
 
     private void findViews() {
-        drawerLayout = findViewById(R.id.drawerLayout);
-        nav_view = findViewById(R.id.nav_view);
-        main_drawer_btn = findViewById(R.id.main_drawer_btn);
-        main_lbl_title = findViewById(R.id.main_lbl_title);
-        user_coins = findViewById(R.id.user_coins);
+        drawerLayout        = findViewById(R.id.drawerLayout);
+        nav_view            = findViewById(R.id.nav_view);
+        main_drawer_btn     = findViewById(R.id.main_drawer_btn);
+        main_lbl_title      = findViewById(R.id.main_lbl_title);
+        user_coins          = findViewById(R.id.user_coins);
         drawer_lbl_userName = nav_view.getHeaderView(0).findViewById(R.id.drawer_lbl_userName);
-        drawer_user_pic = nav_view.getHeaderView(0).findViewById(R.id.drawer_user_pic);
+        drawer_user_pic     = nav_view.getHeaderView(0).findViewById(R.id.drawer_user_pic);
     }
 
     //===========================================
 
     private void initViews() {
-        drawer_lbl_userName.setText(user.getName());
-        user_coins.setText("Coins - "+ user.getCoins());
-        DBreader.getInstance().readProfilePic(drawer_user_pic, user.getProfilePicFilePath());
-
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-        email_counter_tv = (TextView)inflater.inflate(R.layout.emails_counter,null);
-        nav_view.getMenu().findItem(R.id.inbox_item).setActionView(email_counter_tv);
+        email_counter_tv        = (TextView)inflater.inflate(R.layout.emails_counter,null);
+        nav_view.getMenu()      .findItem(R.id.inbox_item).setActionView(email_counter_tv);
+
+        drawer_lbl_userName     .setText(user.getName());
+        user_coins              .setText("Coins - "+ user.getCoins());
+        dbReader.getInstance()  .readPic(KEYS.PROFILE, drawer_user_pic, user.getUid());
     }
 
     private void initDrawer() {
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         user.setLoggedToday(Calendar.getInstance().getTimeInMillis());
         user.incrementCoins(1500);
         onCoinsChanged();
-        App.toast("+1500 Coins!");
+        Utils.getInstance().createRewardDialog().show();
         DBupdater.getInstance().updateUser(user);
     }
 
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onCoinsChanged() { // called when item is bought in store or when daily login performed
-        user_coins.setText("Coins - " + DBreader.getUser().getCoins());
+        user_coins.setText("Coins - " + dbReader.getUser().getCoins());
     }
 
     /**
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onProfileUpdate(User user) {
-        DBreader.getInstance().readProfilePic(drawer_user_pic,user.getProfilePicFilePath());
+        dbReader.getInstance().readPic(KEYS.PROFILE, drawer_user_pic,user.getUid());
         drawer_lbl_userName.setText(user.getName());
     }
 
@@ -151,13 +152,13 @@ public class MainActivity extends AppCompatActivity
      * called when send gift button is clicked (in feed fragment)
      */
     @Override
-    public void onSendGift(LayoutInflater inflater, User user) {
-        HashMap<String, StoreItem> boughtItems = DBreader.getInstance().getUser().getBoughtItems();
+    public void onSendGift(User user) {
+        HashMap<String, StoreItem> boughtItems = dbReader.getInstance().getUser().getBoughtItems();
         if(boughtItems.size() > 0) {
-                Utils.getInstance().createGiftDialog(inflater, boughtItems, (parent, view, position, id) -> {
+                Utils.getInstance().createGiftDialog(boughtItems, (parent, view, position, id) -> {
                 String itemId = new ArrayList<>(boughtItems.keySet()).get(position);
                 StoreItem storeItem = boughtItems.get(itemId);
-                DBupdater.getInstance().sendGift(inflater, user, storeItem);
+                DBupdater.getInstance().sendGift(user, storeItem);
             }).show();
         } else
             App.toast("You have no items to send!");

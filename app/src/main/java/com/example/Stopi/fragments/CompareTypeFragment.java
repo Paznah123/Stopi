@@ -52,7 +52,7 @@ public class CompareTypeFragment extends Fragment {
     public void setData(CompareFragment.compareType compareType) {
         switch(compareType){
             case COST:
-                calculateData(compareType.name().toLowerCase(), "Dollars",KEYS.CIGARETTE_COST);
+                calculateData(compareType.name().toLowerCase(), "Dollars",user.cigCost());
                 break;
             case LENGTH:
                 calculateData(compareType.name().toLowerCase(), "Meters",KEYS.CIGARETTE_AVG_LENGTH);

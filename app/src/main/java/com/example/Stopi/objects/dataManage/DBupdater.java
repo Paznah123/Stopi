@@ -1,7 +1,6 @@
 package com.example.Stopi.objects.dataManage;
 
 import android.net.Uri;
-import android.view.LayoutInflater;
 import com.example.Stopi.App;
 import com.example.Stopi.Utils;
 import com.example.Stopi.callBacks.OnProfileUpdate;
@@ -9,11 +8,7 @@ import com.example.Stopi.objects.Email;
 import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.User;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import static com.example.Stopi.objects.dataManage.KEYS.EMAILS_REF;
-import static com.example.Stopi.objects.dataManage.KEYS.PROFILE_PICS_REF;
 
 public class DBupdater {
 
@@ -31,33 +26,27 @@ public class DBupdater {
     //=============================
 
     /**
-     * get database reference by key
-     * @param ref database ref (references found in dataManage.KEYS)
+     * deletes all data , emails and profile pic
+     * @param Uid user firebase id
      */
-    public static DatabaseReference getDBref(String ref){ return FirebaseDatabase.getInstance().getReference(ref); }
-
-    public static DatabaseReference getUsersRef(){ return getDBref(KEYS.USERS_REF); }
-
-    public static DatabaseReference getEmailsRef(){ return getDBref(EMAILS_REF); }
-
-    public static DatabaseReference getLoggedUserRef(){ return getUsersRef().child(App.getLoggedUser().getUid()); }
-
-    public static StorageReference getStorageRef(){ return FirebaseStorage.getInstance().getReference(); }
-
-    //=============================
+    public void deleteUserData(String Uid){
+        Refs.getUsersRef().child(Uid).removeValue();
+        Refs.getEmailsRef().child(Uid).removeValue();
+        DBupdater.getInstance().deleteProfilePic(Uid);
+    }
 
     /**
      * updates user in database
      * @param user user for update (not for logged user)
      */
-    public void updateUser(User user){ DBupdater.getUsersRef().child(user.getUid()).setValue(user); }
+    public void updateUser(User user){ Refs.getUsersRef().child(user.getUid()).setValue(user); }
 
     /**
      * saves current logged user in database
      */
     public void saveLoggedUser(){
         User loggedUser = DBreader.getInstance().getUser();
-        DBupdater.getUsersRef().child(loggedUser.getUid()).setValue(loggedUser);
+        Refs.getUsersRef().child(loggedUser.getUid()).setValue(loggedUser);
     }
 
     /**
@@ -77,8 +66,7 @@ public class DBupdater {
         App.log("Enter upload");
         if (filePathUri != null) {
             App.log("Start upload");
-            StorageReference ref = DBupdater.getStorageRef().child(PROFILE_PICS_REF)
-                    .child(App.getLoggedUser().getUid()+".jpg");
+            StorageReference ref = Refs.getStorageRef(KEYS.FULL_PROFILE_PIC_URL + App.getLoggedUser().getUid()+".jpg");
             App.toast("Uploading Photo! ");
             ref.putFile(filePathUri)
                     .addOnSuccessListener(taskSnapshot -> {
@@ -89,6 +77,8 @@ public class DBupdater {
         }
     }
 
+    public void deleteProfilePic(String Uid){ Refs.getStorageRef(KEYS.FULL_PROFILE_PIC_URL + Uid +".jpg").delete(); }
+
     //=============================
 
     /**
@@ -97,10 +87,10 @@ public class DBupdater {
      * @param userId database id of email receiving user
      */
     public void sendEmail(String userId, Email email){
-        DatabaseReference userEmailsRef = DBupdater.getEmailsRef().child(userId);
-        String key = userEmailsRef.push().getKey();
-        email.setKey(key);
-        userEmailsRef.child(key).setValue(email);
+        DatabaseReference userEmailsRef = Refs.getEmailsRef().child(userId);
+        email.setSenderKey(Refs.getLoggedUserRef().getKey());
+        String emailKey = userEmailsRef.push().getKey();
+        userEmailsRef.child(emailKey).setValue(email);
     }
 
     /**
@@ -108,8 +98,8 @@ public class DBupdater {
      * @param key database email id (saved inside email object)
      */
     public void deleteEmail(String key){
-        DBupdater.getEmailsRef()
-                .child(App.getLoggedUser().getUid()).child(key).removeValue();
+        Refs.getEmailsRef().child(App.getLoggedUser().getUid())
+                        .child(key).removeValue();
     }
 
     //=============================
@@ -120,8 +110,8 @@ public class DBupdater {
      * updates receiver user gift bag
      * @param user gift destination user
      */
-    public void sendGift(LayoutInflater inflater, User user, StoreItem storeItem){
-        Utils.getInstance().createEmailDialog(inflater,user.getUid(),storeItem).show();
+    public void sendGift(User user, StoreItem storeItem){
+        Utils.getInstance().createEmailDialog(user.getUid(),storeItem).show();
 
         user.addStoreItem(storeItem);
         updateUser(user);

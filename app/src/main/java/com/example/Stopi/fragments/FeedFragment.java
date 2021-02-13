@@ -15,6 +15,7 @@ import com.example.Stopi.objects.dataManage.DBreader;
 import com.example.Stopi.objects.adapters.FeedAdapter;
 import com.example.Stopi.objects.User;
 import com.example.Stopi.objects.dataManage.DBupdater;
+import com.example.Stopi.objects.dataManage.Refs;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -69,7 +70,7 @@ public class FeedFragment extends Fragment {
     };
 
     private void refreshUsersFeed(@NonNull OnFeedRefresh onFeedRefresh){
-        DBupdater.getUsersRef()
+        Refs.getUsersRef()
                 .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

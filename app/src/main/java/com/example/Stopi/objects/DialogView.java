@@ -58,9 +58,9 @@ public class DialogView {
 
     public EditText getEditText(int editText_layoutId) { return editTextsMap.get(editText_layoutId); }
 
-    public void getEditTextText(int editText_layoutId, String text) { editTextsMap.get(editText_layoutId).setText(text); }
+    public void setEditTextHint(int editText_layoutId, String hint) { editTextsMap.get(editText_layoutId).setHint(hint); }
 
-    public String getEditTextText(int editText_layoutId) { return editTextsMap.get(editText_layoutId).getText().toString(); }
+    public String getTextEditText(int editText_layoutId) { return editTextsMap.get(editText_layoutId).getText().toString(); }
 
     public void setEditTextError(int editText_layoutId, String error){ editTextsMap.get(editText_layoutId).setError(error); }
 

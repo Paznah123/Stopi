@@ -5,5 +5,5 @@ import com.example.Stopi.objects.User;
 
 public interface OnSendGift {
 
-    void onSendGift(LayoutInflater inflater, User user);
+    void onSendGift(User user);
 }

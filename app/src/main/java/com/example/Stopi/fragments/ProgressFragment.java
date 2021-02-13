@@ -46,19 +46,16 @@ public class ProgressFragment extends Fragment {
     private View.OnClickListener dialogListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            try{
-                long newDate = Calendar.getInstance().getTimeInMillis();
+            try {
                 User user = DBreader.getInstance().getUser();
-                user.updateTotalCigs(Double.parseDouble(dialogView.getEditTextText(R.id.reset_amount)))
-                    .setDateStoppedSmoking(newDate);
-
-                DBupdater.getInstance().updateUser(user);
+                int cigsSmoked = Integer.parseInt(dialogView.getTextEditText(R.id.reset_amount));
+                if (user.updateTotalCigs(cigsSmoked))
+                    DBupdater.getInstance().updateUser(user);
                 pastData.updateViewData();
                 dialogView.getAlertDialog().dismiss();
             } catch (NumberFormatException e){
-                dialogView.setEditTextError(R.id.reset_amount, "Please enter numbers!");
+                dialogView.setEditTextError(R.id.reset_amount, "Please Enter A Number");
             }
-
         }
     };
 
@@ -75,8 +72,8 @@ public class ProgressFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_progress, container, false);
 
-        pastData = new SmokerDataFragment(SmokerDataFragment.Section.Before);
-        futureData = new SmokerDataFragment(SmokerDataFragment.Section.After);
+        pastData = SmokerDataFragment.newInstance(SmokerDataFragment.Section.Before);
+        futureData = SmokerDataFragment.newInstance(SmokerDataFragment.Section.After);
 
         findViews();
         setListeners();
@@ -107,10 +104,12 @@ public class ProgressFragment extends Fragment {
     private void setListeners() {
         random_lbl_tip.setOnClickListener(v -> loadRandomTip());
 
-        user_main_goal.setOnClickListener(v -> Utils.getInstance().createGoalDialog(getActivity().getLayoutInflater(),user_main_goal).show());
+        user_main_goal.setOnClickListener(v ->
+                Utils.getInstance().createGoalDialog(user_main_goal).show()
+        );
 
         reset_progress.setOnClickListener(v -> {
-            dialogView = Utils.getInstance().createResetDialog(getLayoutInflater(), dialogListener);
+            dialogView = Utils.getInstance().createResetDialog(dialogListener);
             dialogView.getAlertDialog().show();
         });
     }
