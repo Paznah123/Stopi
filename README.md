@@ -10,7 +10,8 @@ Features:
 - Users feed
 - Compare page
 - Rewards for progress
-- Demo Store for random items
+- "Store" for random items
 - Gift Bag for sending gifts to other users
 - Simple "emails" between users
+- Distraction game (basic 2d game)
 - Settings page for profile changes + data delete from database
