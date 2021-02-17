@@ -1,27 +1,33 @@
 package com.example.Stopi.objects;
 
-import com.example.Stopi.objects.dataManage.KEYS;
+import com.example.Stopi.activities.MainActivity;
+import com.example.Stopi.dataBase.KEYS;
+import com.example.Stopi.activities.MainActivity.Status;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
-public class User implements Comparable {
+public class User implements Comparable, Serializable {
 
     private String  uid = "";
     private String  name = "";
     private String  goal = "";
     private String  currencySymbol = "";
 
-    private double  cigsSinceQuit = 0;
-    private double  yearsSmoked = 0;
-    private double  pricePerPack = 0;
-
     private int     cigsPerDay = 0;
     private int     cigsPerPack = 1;
     private int     coins = 0;
     private int     highScore = 0;
 
+    private double  cigsSinceQuit = 0;
+    private double  yearsSmoked = 0;
+    private double  pricePerPack = 0;
+
     private long    dateStoppedSmoking;
     private long    loggedToday = -1;
+
+    private Status status = Status.Offline;
 
     private HashMap<String,StoreItem> boughtItems = new HashMap<>();
 
@@ -64,9 +70,17 @@ public class User implements Comparable {
 
     public double lifeLost(){ return KEYS.MINUTES_LOST_PER_CIG * totalCigsSmoked() / 60 / 24; }
 
-    public double cigCost(){ return pricePerPack/cigsPerPack; }
+    //=========================================
+
+    public double moneySaved(){ return cigsNotSmoked()/cigsPerPack * pricePerPack;}
+
+    public double cigsNotSmoked(){ return (TimeUnit.MILLISECONDS.toHours(getRehabDuration())/24) * cigsPerDay; }
+
+    public double lifeGained(){ return (KEYS.MINUTES_LOST_PER_CIG * cigsNotSmoked()) / 60 / 24; }
 
     //=========================================
+
+    public double cigCost(){ return pricePerPack/cigsPerPack; }
 
     public void incrementCoins(int amount) { this.coins += amount; }
 
@@ -110,6 +124,8 @@ public class User implements Comparable {
 
     public User setCurrencySymbol(String currencySymbol) { this.currencySymbol = currencySymbol; return this; }
 
+    public User setStatus(Status status) { this.status = status; return this; }
+
     public boolean setHighScore(int score) { if(score > highScore){ highScore = score; return true; } return false; }
 
     //=========================================
@@ -131,6 +147,8 @@ public class User implements Comparable {
     public int getCoins() { return coins; }
 
     public int getHighScore() { return highScore; }
+
+    public Status getStatus() { return status; }
 
     public long getDateStoppedSmoking() { return dateStoppedSmoking; }
 

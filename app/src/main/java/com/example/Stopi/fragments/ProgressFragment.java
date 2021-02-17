@@ -15,10 +15,10 @@ import com.example.Stopi.Utils;
 import com.example.Stopi.callBacks.OnFragmentTransaction;
 import com.example.Stopi.objects.DialogView;
 import com.example.Stopi.objects.User;
-import com.example.Stopi.objects.dataManage.DBreader;
-import com.example.Stopi.objects.dataManage.DBupdater;
+import com.example.Stopi.dataBase.DBreader;
+import com.example.Stopi.dataBase.DBupdater;
 import com.google.android.material.button.MaterialButton;
-import java.util.Calendar;
+
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -84,7 +84,7 @@ public class ProgressFragment extends Fragment {
 
         user_main_goal.setText(dbReader.getUser().getGoal());
 
-        handler.postDelayed(runnable, 100);
+        handler.postDelayed(runnable, 200);
 
         return view;
     }

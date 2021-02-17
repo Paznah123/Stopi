@@ -2,6 +2,9 @@ package com.example.Stopi.callBacks;
 
 public interface OnCoinsChanged {
 
-    void onCoinsChanged();
+    /**
+     * called when item is bought in store
+     */
+    void changeCoins();
 
 }

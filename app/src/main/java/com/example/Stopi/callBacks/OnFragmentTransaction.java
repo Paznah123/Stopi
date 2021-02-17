@@ -6,6 +6,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 public interface OnFragmentTransaction {
 
+     /**
+      * sets fragment in view by layout id
+      */
      void setFragmentToView(Fragment fragment, int layout_id);
 
 }

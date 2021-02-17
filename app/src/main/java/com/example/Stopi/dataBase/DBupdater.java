@@ -1,13 +1,11 @@
-package com.example.Stopi.objects.dataManage;
+package com.example.Stopi.dataBase;
 
 import android.net.Uri;
 import com.example.Stopi.App;
-import com.example.Stopi.Utils;
+import com.example.Stopi.activities.MainActivity;
 import com.example.Stopi.callBacks.OnProfileUpdate;
-import com.example.Stopi.objects.Email;
 import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.User;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 
 public class DBupdater {
@@ -35,6 +33,8 @@ public class DBupdater {
         DBupdater.getInstance().deleteProfilePic(Uid);
     }
 
+    private void deleteProfilePic(String Uid){ Refs.getStorageRef(KEYS.FULL_PROFILE_PIC_URL + Uid +".jpg").delete(); }
+
     /**
      * updates user in database
      * @param user user for update (not for logged user)
@@ -59,6 +59,11 @@ public class DBupdater {
         saveLoggedUser();
     }
 
+    public void updateStatus(MainActivity.Status status){
+        DBreader.getInstance().getUser().setStatus(status);
+        DBupdater.getInstance().saveLoggedUser();
+    }
+
     /**
      * saves photo in database storage by user id
      */
@@ -71,48 +76,19 @@ public class DBupdater {
             ref.putFile(filePathUri)
                     .addOnSuccessListener(taskSnapshot -> {
                         App.toast("Image Uploaded");
-                        onProfileUpdate.onProfileUpdate(DBreader.getInstance().getUser());
+                        onProfileUpdate.updateProfile(DBreader.getInstance().getUser());
                     })
                     .addOnFailureListener(e -> App.log("Upload failed"));
         }
     }
 
-    public void deleteProfilePic(String Uid){ Refs.getStorageRef(KEYS.FULL_PROFILE_PIC_URL + Uid +".jpg").delete(); }
-
-    //=============================
-
     /**
-     * added new email by user id
-     * to email reference in database
-     * @param userId database id of email receiving user
-     */
-    public void sendEmail(String userId, Email email){
-        DatabaseReference userEmailsRef = Refs.getEmailsRef().child(userId);
-        email.setSenderKey(Refs.getLoggedUserRef().getKey());
-        String emailKey = userEmailsRef.push().getKey();
-        userEmailsRef.child(emailKey).setValue(email);
-    }
-
-    /**
-     * deletes from logged user email reference by key
-     * @param key database email id (saved inside email object)
-     */
-    public void deleteEmail(String key){
-        Refs.getEmailsRef().child(App.getLoggedUser().getUid())
-                        .child(key).removeValue();
-    }
-
-    //=============================
-
-    /**
-     * creates dialog for attaching message to gift
-     * updates logged user gift bag
-     * updates receiver user gift bag
+     *  creates dialog for attaching message to gift.
+     *  updates logged user gift bag.
+     *  updates receiver user gift bag.
      * @param user gift destination user
      */
     public void sendGift(User user, StoreItem storeItem){
-        Utils.getInstance().createEmailDialog(user.getUid(),storeItem).show();
-
         user.addStoreItem(storeItem);
         updateUser(user);
 

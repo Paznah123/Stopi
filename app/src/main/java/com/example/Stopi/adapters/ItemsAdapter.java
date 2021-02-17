@@ -1,4 +1,4 @@
-package com.example.Stopi.objects.adapters;
+package com.example.Stopi.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,9 +13,9 @@ import com.example.Stopi.Utils;
 import com.example.Stopi.callBacks.OnCoinsChanged;
 import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.User;
-import com.example.Stopi.objects.dataManage.DBreader;
-import com.example.Stopi.objects.dataManage.DBupdater;
-import com.example.Stopi.objects.dataManage.KEYS;
+import com.example.Stopi.dataBase.DBreader;
+import com.example.Stopi.dataBase.DBupdater;
+import com.example.Stopi.dataBase.KEYS;
 import com.furkanakdemir.surroundcardview.SurroundCardView;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -77,7 +77,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.StoreViewHol
         App.toast(storeItem.getTitle() + " Bought!");
 
         DBupdater.getInstance().saveLoggedUser();
-        onCoinsChanged.onCoinsChanged();
+        onCoinsChanged.changeCoins();
     }
 
     //====================================================

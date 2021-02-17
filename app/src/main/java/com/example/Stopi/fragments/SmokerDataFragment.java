@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.Stopi.R;
 import com.example.Stopi.Utils;
-import com.example.Stopi.objects.dataManage.DBreader;
+import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.objects.User;
-import com.example.Stopi.objects.dataManage.KEYS;
-import java.util.concurrent.TimeUnit;
 
 public class SmokerDataFragment extends Fragment {
 
@@ -82,14 +80,10 @@ public class SmokerDataFragment extends Fragment {
 
     private void calculateStoppedSmokingData() {
         User user = DBreader.getInstance().getUser();
-        double hoursPassed = TimeUnit.MILLISECONDS.toHours(user.getRehabDuration());
-        double cigsNotSmoked = hoursPassed/24 * user.getCigsPerDay();
-        double moneySaved = cigsNotSmoked/user.getCigsPerPack() * user.getPricePerPack();
-        double lifeGained = (KEYS.MINUTES_LOST_PER_CIG * cigsNotSmoked) / 60 / 24;
 
-        progress_cigs.setText("Cigarettes not smoked: " + utils.formatNumber(cigsNotSmoked, "##.#"));
-        progress_money.setText("Money saved: " + utils.formatNumber(moneySaved, "##.#") + " "+ user.getCurrencySymbol());
-        progress_life.setText("Life gained: " + utils.formatNumber(lifeGained, "##.#") + " days");
+        progress_cigs.setText("Cigarettes not smoked: " + utils.formatNumber(user.cigsNotSmoked(), "##.#"));
+        progress_money.setText("Money saved: " + utils.formatNumber(user.moneySaved(), "##.#") + " "+ user.getCurrencySymbol());
+        progress_life.setText("Life gained: " + utils.formatNumber(user.lifeGained(), "##.#") + " days");
     }
 
     private void calculateSmokerData(){

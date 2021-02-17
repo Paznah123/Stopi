@@ -32,6 +32,7 @@ android {
         cleanedAnnotations
         compile.exclude group: 'org.jetbrains' , module:'annotations'
     }
+
 }
 
 dependencies {
@@ -40,7 +41,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.google.firebase:firebase-auth:20.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.2'
     implementation 'androidx.navigation:navigation-ui:2.3.2'
@@ -55,11 +55,14 @@ dependencies {
 
     // fire base
     implementation platform('com.google.firebase:firebase-bom:26.1.1')
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
     implementation 'com.google.firebase:firebase-auth'
     implementation "androidx.browser:browser:1.2.0"
     implementation 'com.firebaseui:firebase-ui-storage:6.2.1'
+    implementation 'com.google.firebase:firebase-core:10.0.1'
+    implementation 'com.firebaseui:firebase-ui-database:4.3.2'
 
     // country code picker
     implementation 'com.hbb20:ccp:2.4.2'
@@ -85,5 +88,8 @@ dependencies {
 
     //surround card view
     implementation "com.furkanakdemir:surroundcardview:1.0.1"
+
+    //chat
+    implementation 'com.github.livechat:chat-window-android:v2.1.2'
 
 }

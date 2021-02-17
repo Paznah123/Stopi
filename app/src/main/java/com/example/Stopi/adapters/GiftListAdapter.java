@@ -1,4 +1,4 @@
-package com.example.Stopi.objects.adapters;
+package com.example.Stopi.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 
 import com.example.Stopi.R;
 import com.example.Stopi.objects.StoreItem;
-import com.example.Stopi.objects.dataManage.DBreader;
-import com.example.Stopi.objects.dataManage.KEYS;
+import com.example.Stopi.dataBase.DBreader;
+import com.example.Stopi.dataBase.KEYS;
 
 import java.util.ArrayList;
 import java.util.HashMap;

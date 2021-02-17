@@ -4,6 +4,9 @@ import com.example.Stopi.objects.User;
 
 public interface OnProfileUpdate {
 
-    void onProfileUpdate(User user);
+    /**
+     * called when data is updated in settings
+     */
+    void updateProfile(User user);
 
 }

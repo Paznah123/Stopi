@@ -1,13 +1,16 @@
 <resources>
     <string name="app_name">Stopi</string>
 
+    <!-- Activities -->
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_first_time">FirstTimeActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="title_activity_message">MessageActivity</string>
 
-    <string name="title_fragment_inbox">InboxFragment</string>
+    <!-- Fragments -->
+    <string name="title_fragment_chats">UsersFragment</string>
     <string name="title_fragment_progress">ProgressFragment</string>
     <string name="title_fragment_feed">FeedFragment</string>
     <string name="title_fragment_compare">CompareFragment</string>
@@ -17,7 +20,8 @@
     <string name="title_fragment_distract">GameFragment</string>
     <string name="title_fragment_settings">SettingsFragment</string>
 
-    <string name="drawer_item_inbox">Inbox</string>
+    <!-- Navigation Drawer items -->
+    <string name="drawer_item_chats">Chat</string>
     <string name="drawer_item_progress">Progress</string>
     <string name="drawer_item_feed">Feed</string>
     <string name="drawer_item_compare">Compare</string>
@@ -27,6 +31,7 @@
     <string name="drawer_item_distract">Distraction</string>
     <string name="drawer_item_settings">Settings</string>
 
+    <!-- Login -->
     <string name="phone_number">Phone Number</string>
     <string name="enter_code">Enter Code</string>
 

@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.Stopi.R;
 import com.example.Stopi.callBacks.OnCoinsChanged;
-import com.example.Stopi.objects.dataManage.DBreader;
-import com.example.Stopi.objects.adapters.ItemsAdapter;
+import com.example.Stopi.dataBase.DBreader;
+import com.example.Stopi.adapters.ItemsAdapter;
 import com.example.Stopi.objects.StoreItem;
 import java.util.List;
 

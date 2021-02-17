@@ -1,18 +1,12 @@
 package com.example.Stopi.activities;
 
 import android.os.Bundle;
-import com.example.Stopi.App;
-import com.example.Stopi.callBacks.OnCoinsChanged;
-import com.example.Stopi.callBacks.OnEmailReceived;
-import com.example.Stopi.callBacks.OnFragmentTransaction;
-import com.example.Stopi.callBacks.OnProfileUpdate;
-import com.example.Stopi.callBacks.OnSendGift;
 import com.example.Stopi.Utils;
-import com.example.Stopi.objects.StoreItem;
-import com.example.Stopi.objects.dataManage.DBreader;
+import com.example.Stopi.callBacks.*;
 import com.example.Stopi.objects.User;
-import com.example.Stopi.objects.dataManage.DBupdater;
-import com.example.Stopi.objects.dataManage.KEYS;
+import com.example.Stopi.dataBase.KEYS;
+import com.example.Stopi.dataBase.DBreader;
+import com.example.Stopi.dataBase.DBupdater;
 import com.google.android.material.navigation.NavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -23,18 +17,18 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.Stopi.R;
-import java.util.ArrayList;
+
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity
-        implements OnProfileUpdate, OnCoinsChanged, OnSendGift, OnEmailReceived, OnFragmentTransaction {
+public class MainActivity extends AppCompatActivity implements
+                                                OnProfileUpdate, OnCoinsChanged,
+                                                            OnFragmentTransaction {
+
+    public enum Status { Online, Offline}
 
     private DrawerLayout    drawerLayout;
     private NavigationView  nav_view;
@@ -44,24 +38,31 @@ public class MainActivity extends AppCompatActivity
     private ImageView       drawer_user_pic;
 
     private TextView        main_lbl_title;
+
     private TextView        drawer_lbl_userName;
     private TextView        user_coins;
 
     private User            user;
     private DBreader        dbReader;
 
-    private TextView        email_counter_tv;
-
     //===========================================
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DBupdater.getInstance().updateStatus(Status.Offline);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         Utils.getInstance().addContext(this);
         dbReader = dbReader.getInstance();
         user = dbReader.getUser();
+
+        DBupdater.getInstance().updateStatus(Status.Online);
 
         if(user == null) {
             Utils.getInstance().myStartActivity(this, FirstTimeActivity.class);
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity
         findViews();
         initDrawer();
         initViews();
-        dbReader.readEmailsAmount(this);
 
         checkFirstLogin();
     }
@@ -91,10 +91,6 @@ public class MainActivity extends AppCompatActivity
     //===========================================
 
     private void initViews() {
-        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-        email_counter_tv        = (TextView)inflater.inflate(R.layout.emails_counter,null);
-        nav_view.getMenu()      .findItem(R.id.inbox_item).setActionView(email_counter_tv);
-
         drawer_lbl_userName     .setText(user.getName());
         user_coins              .setText("Coins - "+ user.getCoins());
         dbReader.getInstance()  .readPic(KEYS.PROFILE, drawer_user_pic, user.getUid());
@@ -123,64 +119,28 @@ public class MainActivity extends AppCompatActivity
     private void rewardDailyLogin(){
         user.setLoggedToday(Calendar.getInstance().getTimeInMillis());
         user.incrementCoins(1500);
-        onCoinsChanged();
+        changeCoins();
         Utils.getInstance().createRewardDialog().show();
         DBupdater.getInstance().updateUser(user);
     }
 
     //=========================================== call backs
 
-    /**
-     * called when item is bought in store
-     */
     @Override
-    public void onCoinsChanged() { // called when item is bought in store or when daily login performed
+    public void changeCoins() { // called when item is bought in store or when daily login performed
         user_coins.setText("Coins - " + dbReader.getUser().getCoins());
     }
 
-    /**
-     * called when data is updated in settings
-     */
     @Override
-    public void onProfileUpdate(User user) {
+    public void updateProfile(User user) {
         dbReader.getInstance().readPic(KEYS.PROFILE, drawer_user_pic,user.getUid());
         drawer_lbl_userName.setText(user.getName());
     }
 
-    /**
-     * @param user the user who receives the gift
-     * called when send gift button is clicked (in feed fragment)
-     */
-    @Override
-    public void onSendGift(User user) {
-        HashMap<String, StoreItem> boughtItems = dbReader.getInstance().getUser().getBoughtItems();
-        if(boughtItems.size() > 0) {
-                Utils.getInstance().createGiftDialog(boughtItems, (parent, view, position, id) -> {
-                String itemId = new ArrayList<>(boughtItems.keySet()).get(position);
-                StoreItem storeItem = boughtItems.get(itemId);
-                DBupdater.getInstance().sendGift(user, storeItem);
-            }).show();
-        } else
-            App.toast("You have no items to send!");
-    }
-
-    /**
-     * sets fragment in view by layout id
-     */
     @Override
     public void setFragmentToView(Fragment fragment, int layout_id){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(layout_id, fragment).commit();
     }
 
-    /**
-     * updates inbox fragment badge
-     */
-    @Override
-    public void updateEmailCounter(int pending_emails) {
-        if(pending_emails > 0)
-            email_counter_tv.setText(""+ pending_emails);
-        else
-            email_counter_tv.setText("");
-    }
 }

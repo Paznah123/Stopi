@@ -20,7 +20,7 @@
         android:layout_height="match_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/email_user_photo"
+            android:id="@+id/chat_user_photo"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:paddingStart="15dp"
@@ -51,13 +51,13 @@
             app:cardCornerRadius="20dp"
             app:cardElevation="5dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-            app:layout_constraintStart_toEndOf="@+id/email_user_photo"
+            app:layout_constraintStart_toEndOf="@+id/chat_user_photo"
             app:layout_constraintTop_toBottomOf="@+id/email_title"
             app:strokeColor="#B388FF"
             app:strokeWidth="2dp">
 
             <TextView
-                android:id="@+id/email_msg"
+                android:id="@+id/chat_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="15dp"
@@ -72,7 +72,7 @@
             android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/email_user_photo"
+            android:layout_below="@+id/chat_user_photo"
             android:layout_alignParentEnd="true"
             android:layout_margin="10dp"
             android:orientation="horizontal"
@@ -80,7 +80,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/email_delete"
+                android:id="@+id/chat_btn_chat"
                 android:layout_width="75dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="5dp"

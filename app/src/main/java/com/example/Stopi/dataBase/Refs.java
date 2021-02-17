@@ -1,4 +1,4 @@
-package com.example.Stopi.objects.dataManage;
+package com.example.Stopi.dataBase;
 
 import com.example.Stopi.App;
 import com.google.firebase.database.DatabaseReference;
@@ -13,9 +13,10 @@ public class Refs {
      * @param url database ref (references found in dataManage.KEYS)
      */
     public static DatabaseReference getDBref(String url)    { return FirebaseDatabase.getInstance().getReferenceFromUrl(url); }
+    public static DatabaseReference getLoggedUserRef()      { return getUsersRef().child(App.getLoggedUser().getUid()); }
     public static DatabaseReference getUsersRef()           { return getDBref(KEYS.USERS_REF); }
     public static DatabaseReference getEmailsRef()          { return getDBref(KEYS.EMAILS_REF); }
-    public static DatabaseReference getLoggedUserRef()      { return getUsersRef().child(App.getLoggedUser().getUid()); }
+    public static DatabaseReference getChatsRef()           { return getDBref(KEYS.CHATS_REF); }
 
     //=============================
 

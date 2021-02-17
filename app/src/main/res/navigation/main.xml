@@ -6,10 +6,10 @@
     app:startDestination="@id/progress_item">
 
     <fragment
-        android:id="@+id/inbox_item"
-        android:name="com.example.Stopi.fragments.InboxFragment"
-        android:label="Settings"
-        tools:layout="@layout/fragment_inbox" />
+        android:id="@+id/chats_item"
+        android:name="com.example.Stopi.fragments.UsersFragment"
+        android:label="Inbox"
+        tools:layout="@layout/fragment_chats" />
 
     <fragment
         android:id="@+id/progress_item"

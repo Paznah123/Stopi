@@ -1,4 +1,4 @@
-package com.example.Stopi.objects.dataManage;
+package com.example.Stopi.dataBase;
 
 public interface KEYS {
 
@@ -9,6 +9,7 @@ public interface KEYS {
     String  REWARDS_INFO_REF     = "https://fumi-app-default-rtdb.firebaseio.com/Rewards_Info";
     String  STORE_REF            = "https://fumi-app-default-rtdb.firebaseio.com/Store_items";
     String  EMAILS_REF           = "https://fumi-app-default-rtdb.firebaseio.com/emails";
+    String  CHATS_REF           = "https://fumi-app-default-rtdb.firebaseio.com/Chats";
 
     String  STORE_PICS_REF       = "gs://fumi-app.appspot.com/store_pics/";
     String  FULL_PROFILE_PIC_URL = "gs://fumi-app.appspot.com/profile_pics/";

@@ -85,31 +85,54 @@
             android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/user_score">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/feed_smoker_history"
-                android:backgroundTint="@color/purple_200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/user_goal"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                app:cornerRadius="15dp"
-                android:text="history"
-                android:textSize="10dp"/>
+            <ImageView
+                android:id="@+id/user_history"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_history"
+                android:paddingEnd="10dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/feed_send_gift"
-                android:backgroundTint="@color/purple_200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentEnd="true"
-                app:cornerRadius="15dp"
-                android:text="Send Gift"
-                android:textSize="10dp"/>
+            <ImageView
+                android:id="@+id/user_gift"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_gift_bag"
+                android:paddingEnd="10dp"/>
+
+            <ImageView
+                android:id="@+id/user_send"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_send_msg"
+                android:paddingEnd="10dp" />
 
         </LinearLayout>
 
     </RelativeLayout>
 
 </com.furkanakdemir.surroundcardview.SurroundCardView>
+
+    <!--
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/feed_smoker_history"
+                    android:backgroundTint="@color/purple_200"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/user_goal"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    app:cornerRadius="15dp"
+                    android:text="history"
+                    android:textSize="10dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/feed_send_gift"
+                    android:backgroundTint="@color/purple_200"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_alignParentEnd="true"
+                    app:cornerRadius="15dp"
+                    android:text="Send Gift"
+                    android:textSize="10dp"/>
+    -->

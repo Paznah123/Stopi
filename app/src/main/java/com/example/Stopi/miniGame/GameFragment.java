@@ -4,15 +4,19 @@ import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.fragment.app.Fragment;
+
 import com.example.Stopi.R;
-import com.example.Stopi.objects.dataManage.DBreader;
-import com.example.Stopi.objects.dataManage.DBupdater;
-import com.example.Stopi.objects.dataManage.KEYS;
+import com.example.Stopi.Utils;
+import com.example.Stopi.dataBase.DBreader;
+import com.example.Stopi.dataBase.DBupdater;
+import com.example.Stopi.dataBase.KEYS;
 import static android.content.Context.SENSOR_SERVICE;
 import static android.hardware.SensorManager.DATA_X;
 import static android.hardware.SensorManager.DATA_Y;
@@ -33,15 +37,17 @@ public class GameFragment extends Fragment implements SurfaceHolder.Callback, Se
     private SensorManager sensorMgr;
     private long lastSensorUpdate = -1;
 
-    private int holesScored = 0;
+    private TextView score;
 
     //=========================================
 
     @Override
     public void onStop() {
         super.onStop();
-        if(DBreader.getInstance().getUser().setHighScore(holesScored))
+        if(DBreader.getInstance().getUser().setHighScore(gameLoop.getHolesScored())) {
+            Utils.getInstance().createHighScoreDialog().show();
             DBupdater.getInstance().saveLoggedUser();
+        }
     }
 
     @Override
@@ -70,15 +76,24 @@ public class GameFragment extends Fragment implements SurfaceHolder.Callback, Se
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        view = inflater.inflate(R.layout.fragment_distract, container, false);
+        view        = inflater.inflate(R.layout.fragment_distract, container, false);
+        view        .setOnTouchListener(
+                            (v, event) -> {
+                                if(event.getAction() == MotionEvent.ACTION_UP)
+                                    gameLoop.jumpBall();
+                                return true;
+                            });
 
-        surface = view.findViewById(R.id.bouncing_ball_surface);
-        holder = surface.getHolder();
-        holder.addCallback(this);
+        surface     = view.findViewById(R.id.bouncing_ball_surface);
+        score       = view.findViewById(R.id.game_holes_scored);
+        holder      = surface.getHolder();
 
-        maze = new Maze(getContext());
+        score       .setText(""+ 0);
+        holder      .addCallback(this);
 
-        return view;
+        maze        = new Maze(getContext());
+
+        return      view;
     }
 
     //========================================= surface view call backs
@@ -90,7 +105,7 @@ public class GameFragment extends Fragment implements SurfaceHolder.Callback, Se
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        gameLoop = new GameThread(holder, ball, maze);
+        gameLoop = new GameThread(holder, ball, maze, score);
         gameLoop.start();
     }
 
@@ -121,4 +136,5 @@ public class GameFragment extends Fragment implements SurfaceHolder.Callback, Se
             }
         }
     }
+
 }

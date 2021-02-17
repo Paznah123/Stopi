@@ -9,16 +9,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.Stopi.App;
 import com.example.Stopi.R;
+import com.example.Stopi.Utils;
 import com.example.Stopi.callBacks.OnSendGift;
-import com.example.Stopi.objects.dataManage.DBreader;
-import com.example.Stopi.objects.adapters.FeedAdapter;
+import com.example.Stopi.objects.StoreItem;
+import com.example.Stopi.dataBase.DBreader;
+import com.example.Stopi.adapters.FeedAdapter;
 import com.example.Stopi.objects.User;
-import com.example.Stopi.objects.dataManage.DBupdater;
-import com.example.Stopi.objects.dataManage.Refs;
+import com.example.Stopi.dataBase.DBupdater;
+import com.example.Stopi.dataBase.Refs;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FeedFragment extends Fragment {
@@ -29,17 +35,11 @@ public class FeedFragment extends Fragment {
     private RecyclerView main_LST_names;
     private FeedAdapter adapter_post;
 
-    private OnSendGift onSendGift;
+    private String giftUserId = "";
 
     public interface OnFeedRefresh { void updateFeed(HashMap<String,User> usersMap); }
 
     //====================================================
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        onSendGift = (OnSendGift) context;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +66,12 @@ public class FeedFragment extends Fragment {
         public void updateFeed(HashMap<String,User> usersMap) {
             adapter_post.setUsers(usersMap);
             adapter_post.notifyDataSetChanged();
+            User user = usersMap.get(giftUserId);
+            ArrayList<User> users = new ArrayList<>(usersMap.values());
+            for (int i = 0; i < users.size(); i++) {
+                if(user != null && users.get(i).getUid().equals(user.getUid()))
+                    adapter_post.notifyItemChanged(i);
+            }
         }
     };
 
@@ -88,4 +94,19 @@ public class FeedFragment extends Fragment {
         });
     }
 
+    //====================================================
+
+    private OnSendGift onSendGift = user -> {
+        giftUserId = user.getUid();
+        HashMap<String, StoreItem> boughtItems = DBreader.getInstance().getUser().getBoughtItems();
+        if(boughtItems.size() > 0) {
+            Utils.getInstance().createGiftDialog(boughtItems, (parent, view, position, id) -> {
+                String itemId = new ArrayList<>(boughtItems.keySet()).get(position);
+                StoreItem storeItem = boughtItems.get(itemId);
+                DBupdater.getInstance().sendGift(user, storeItem);
+                App.toast("Gift Sent!");
+            }).show();
+        } else
+            App.toast("You have no items to send!");
+    };
 }

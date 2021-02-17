@@ -4,12 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-import com.example.Stopi.objects.dataManage.DBupdater;
-import com.example.Stopi.objects.dataManage.DBreader;
+import com.example.Stopi.dataBase.DBupdater;
+import com.example.Stopi.dataBase.DBreader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.example.Stopi.objects.dataManage.KEYS;
+import com.example.Stopi.dataBase.KEYS;
 
 public class App extends Application {
 
@@ -39,10 +39,10 @@ public class App extends Application {
         return      myToast;
     }
 
-    public static Context getAppContext(){ return context; }
+    public static Context getAppContext()       { return context; }
 
-    public static void log(String msg){ Log.d(KEYS.LOG_TAG, msg); }
+    public static void log(String msg)          { Log.d(KEYS.LOG_TAG, msg); }
 
-    public static FirebaseUser getLoggedUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
+    public static FirebaseUser getLoggedUser()  { return FirebaseAuth.getInstance().getCurrentUser(); }
 
 }

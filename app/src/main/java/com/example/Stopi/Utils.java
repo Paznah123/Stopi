@@ -8,23 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import com.example.Stopi.objects.DialogView;
-import com.example.Stopi.objects.Email;
+import com.example.Stopi.objects.Message;
 import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.User;
-import com.example.Stopi.objects.adapters.GiftListAdapter;
-import com.example.Stopi.objects.dataManage.DBreader;
-import com.example.Stopi.objects.dataManage.DBupdater;
+import com.example.Stopi.adapters.GiftListAdapter;
+import com.example.Stopi.dataBase.DBreader;
+import com.example.Stopi.dataBase.DBupdater;
+import com.example.Stopi.dataBase.Refs;
 import com.furkanakdemir.surroundcardview.SurroundCardView;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.scrounger.countrycurrencypicker.library.CountryCurrencyPicker;
 import com.scrounger.countrycurrencypicker.library.Listener.CountryCurrencyPickerListener;
 import com.scrounger.countrycurrencypicker.library.PickerType;
-
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
@@ -65,6 +63,8 @@ public class Utils {
      */
     public String formatNumber(double number, String pattern){ return new DecimalFormat(pattern).format(number); }
 
+    private View createDialogView(int layoutId){ return inflater.inflate(layoutId, null); }
+
     public void onCardClick(SurroundCardView svc){
         if(svc.isCardSurrounded())
             svc.release();
@@ -85,24 +85,28 @@ public class Utils {
      * creates AlertDialog for daily login reward
      */
     public AlertDialog createRewardDialog() {
-        View view = inflater.inflate(R.layout.dialog_login_reward, null);
-        DialogView dialogView = new DialogView(view)
-                .addTextViews(new int[] {R.id.reward_login_text});
+        DialogView  dialogView  = new DialogView(createDialogView(R.layout.dialog_login_reward))
+                                .addTextViews(new int[] {R.id.reward_login_text});
 
-        return dialogView.getAlertDialog();
+        return      dialogView.getAlertDialog();
     }
 
+    public AlertDialog createHighScoreDialog() {
+        DialogView  dialogView  = new DialogView(createDialogView(R.layout.dialog_high_score))
+                                .addTextViews(new int[] {R.id.high_score_text});
+
+        return      dialogView.getAlertDialog();
+    }
     //====================================================
 
     /**
      * creates AlertDialog for reset button click
      */
     public DialogView createResetDialog(View.OnClickListener listener){
-        View view = inflater.inflate(R.layout.dialog_reset, null);
-        DialogView dialogView = new DialogView(view)
-                .findConfirmButtonById(R.id.reset_confirm)
-                .addEditTexts(new int[] {R.id.reset_amount})
-                .setConfirmListener(listener);
+        DialogView  dialogView  = new DialogView(createDialogView(R.layout.dialog_reset))
+                                .findConfirmButtonById(R.id.reset_confirm)
+                                .addEditTexts(new int[] {R.id.reset_amount})
+                                .setConfirmListener(listener);
 
         return dialogView;
     }
@@ -115,12 +119,11 @@ public class Utils {
      * @param itemsList user gift bag titles
      */
     public AlertDialog createGiftDialog(HashMap<String, StoreItem> itemsList, AdapterView.OnItemClickListener listener){
-        View view = inflater.inflate(R.layout.dialog_gift, null);
-        GiftListAdapter giftListAdapter = new GiftListAdapter(inflater.getContext(), itemsList);
-        DialogView dialogView = new DialogView(view)
-                .findListViewById(R.id.gift_listView)
-                .setListAdapter(giftListAdapter)
-                .setListItemsClickListener(listener);
+        GiftListAdapter giftsAdapter    = new GiftListAdapter(inflater.getContext(), itemsList);
+        DialogView      dialogView      = new DialogView(createDialogView(R.layout.dialog_gift))
+                                        .findListViewById(R.id.gift_listView)
+                                        .setListAdapter(giftsAdapter)
+                                        .setListItemsClickListener(listener);
 
         return dialogView.getAlertDialog();
     }
@@ -131,34 +134,29 @@ public class Utils {
      * creates AlertDialog for attaching message to gift
      * @param receiverKey email receiving userId
      */
-    public AlertDialog createEmailDialog(String receiverKey, StoreItem storeItem){
-        View view               = inflater.inflate(R.layout.dialog_email, null);
-
-        DialogView dialogView   = new DialogView(view)
+    public AlertDialog createEmailDialog(String receiverKey){
+        DialogView dialogView   = new DialogView(createDialogView(R.layout.dialog_email))
                                 .addEditTexts(new int[] {R.id.email_message})
                                 .findConfirmButtonById(R.id.email_attach)
                                 .findCancelButtonById(R.id.email_cancel);
 
-        String answer           = storeItem == null ? "Reply" : "Gift";
-
-        dialogView              .setConfirmListener(v -> {
-
-                                User sender = DBreader.getInstance().getUser();
-                                String title = storeItem != null ? sender.getName() +" sent you a "+ storeItem.getTitle()
-                                        : sender.getName() + " replied";
-                                Email email = new Email().setSenderKey(sender.getUid())
-                                        .setTitle(title)
-                                        .setMsg(dialogView.getTextEditText(R.id.email_message));
-                                DBupdater.getInstance().sendEmail(receiverKey,email);
-                                App.toast(answer+" Sent!");
-                                dialogView.getAlertDialog().dismiss();
-                                                        })
-                                .setCancelListener(v -> {
-
-                                dialogView.getAlertDialog().dismiss();
-                                App.toast(answer+" Sent!");
-
-        });
+        dialogView              .setConfirmListener(
+                        v -> {
+                            String msg = dialogView.getTextEditText(R.id.email_message);
+                            if(msg.isEmpty()) {
+                                dialogView.setEditTextError(R.id.email_message,"Enter a Message");
+                                return;
+                            }
+                            User sender = DBreader.getInstance().getUser();
+                            Message email = new Message()
+                                    .setSender(sender.getUid())
+                                    .setReceiver(receiverKey)
+                                    .setMessage(msg);
+                            Refs.getChatsRef().push().setValue(email);
+                            App.toast("Message Sent!");
+                            dialogView.getAlertDialog().dismiss();
+                        })
+                                .setCancelListener(v -> dialogView.getAlertDialog().dismiss());
 
         return dialogView.getAlertDialog();
     }
@@ -169,8 +167,7 @@ public class Utils {
      *   creates AlertDialog for editing user goal
      */
     public AlertDialog createGoalDialog(TextView tvGoal) {
-        View view               = inflater.inflate(R.layout.dialog_goal, null);
-        DialogView dialogView   = new DialogView(view)
+        DialogView dialogView   = new DialogView(createDialogView(R.layout.dialog_goal))
                                 .addEditTexts(new int[] {R.id.goal_text})
                                 .findConfirmButtonById(R.id.goal_confirm)
                                 .findCancelButtonById(R.id.goal_cancel);
@@ -194,31 +191,17 @@ public class Utils {
      *   creates AlertDialog with user smoker history
      */
     public AlertDialog createFeedDialog(LayoutInflater mInflater, User user) {
-        View view               = mInflater.inflate(R.layout.dialog_feed, null);
-
         int[] layout_id_arr     = {R.id.feed_cigs_smoked, R.id.feed_money_wasted, R.id.feed_life_lost};
-        DialogView dialogView   = new DialogView(view).addTextViews(layout_id_arr);
+        DialogView dialogView   = new DialogView(createDialogView(R.layout.dialog_feed)).addTextViews(layout_id_arr);
 
-        dialogView.setTextViewText(R.id.feed_cigs_smoked,"Cigarettes smoked: "+ formatNumber(user.totalCigsSmoked(),"##.#"));
-        dialogView.setTextViewText(R.id.feed_money_wasted,"Money wasted: "+ formatNumber(user.moneyWasted(),"##.#") +" "+ user.getCurrencySymbol());
-        dialogView.setTextViewText(R.id.feed_life_lost,"life lost: "+ formatNumber(user.lifeLost(),"##.#") + " days");
+        dialogView.setTextViewText(R.id.feed_cigs_smoked,"Cigarettes not smoked: "+ formatNumber(user.cigsNotSmoked(),"##.#"));
+        dialogView.setTextViewText(R.id.feed_money_wasted,"Money saved: "+ formatNumber(user.moneySaved(),"##.#") +" "+ user.getCurrencySymbol());
+        dialogView.setTextViewText(R.id.feed_life_lost,"life gained: "+ formatNumber(user.lifeGained(),"##.#") + " days");
 
         return dialogView.getAlertDialog();
     }
 
     //====================================================
-
-    public void hideSystemUI(Activity activity) {
-        View decorView = activity.getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY       // Set the content to appear under the system bars so that the
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE // content doesn't resize when the system bars hide and show.
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // Hide the nav bar and status bar
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-        );
-    }
 
     /**
      *   starts activity

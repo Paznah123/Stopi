@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.Stopi.R;
 import com.example.Stopi.Utils;
-import com.example.Stopi.objects.dataManage.DBreader;
+import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.objects.User;
-import com.example.Stopi.objects.dataManage.KEYS;
+import com.example.Stopi.dataBase.KEYS;
 import com.furkanakdemir.surroundcardview.SurroundCardView;
 
 public class CompareTypeFragment extends Fragment {

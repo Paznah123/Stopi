@@ -1,4 +1,4 @@
-package com.example.Stopi.objects.dataManage;
+package com.example.Stopi.dataBase;
 
 import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.User;

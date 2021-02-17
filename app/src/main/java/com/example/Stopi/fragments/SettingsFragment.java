@@ -16,11 +16,10 @@ import com.example.Stopi.R;
 import com.example.Stopi.Utils;
 import com.example.Stopi.activities.LoginActivity;
 import com.example.Stopi.callBacks.OnProfileUpdate;
-import com.example.Stopi.objects.dataManage.DBreader;
+import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.objects.User;
-import com.example.Stopi.objects.dataManage.DBupdater;
-import com.example.Stopi.objects.dataManage.KEYS;
-import com.example.Stopi.objects.dataManage.Refs;
+import com.example.Stopi.dataBase.DBupdater;
+import com.example.Stopi.dataBase.KEYS;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -65,11 +64,10 @@ public class SettingsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            App.log("on activity result");
             filePathUri = data.getData();
             DBupdater.getInstance().uploadImage(filePathUri, user -> {
                 App.toast("Image Uploaded");
-                onProfileUpdate.onProfileUpdate(user);
+                onProfileUpdate.updateProfile(user);
                 setCurrentValues();
             });
         } else if (resultCode == ImagePicker.RESULT_ERROR)
@@ -114,15 +112,14 @@ public class SettingsFragment extends Fragment {
         update_btn.setOnClickListener(v -> updateUserData() );
 
         logout.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            Utils.getInstance().myStartActivity(getActivity(), LoginActivity.class);
+            FirebaseAuth    .getInstance()  .signOut();
+            Utils           .getInstance()  .myStartActivity(getActivity(), LoginActivity.class);
         });
 
         delete_account.setOnClickListener(v -> {
-            String Uid = App.getLoggedUser().getUid();
-            DBupdater.getInstance().deleteUserData(Uid);
-            FirebaseAuth.getInstance().signOut();
-            Utils.getInstance().myStartActivity(getActivity(), LoginActivity.class);
+            DBupdater       .getInstance()      .deleteUserData(user.getUid());
+            FirebaseAuth    .getInstance()      .signOut();
+            Utils           .getInstance()      .myStartActivity(getActivity(), LoginActivity.class);
         });
 
         currency.setOnClickListener(v -> Utils.getInstance()
@@ -143,12 +140,12 @@ public class SettingsFragment extends Fragment {
     private void setCurrentValues(){
         DBreader.getInstance()        .readPic(KEYS.PROFILE, user_profile_pic, user.getUid());
 
-        user_name       .getEditText().setText(""+ user.getName());
-        years_smoked    .getEditText().setText(""+ user.getYearsSmoked());
-        cigs_per_day    .getEditText().setText(""+ user.getCigsPerDay());
-        price_per_pack  .getEditText().setText(""+ user.getPricePerPack());
-        cigs_per_pack   .getEditText().setText(""+ user.getCigsPerPack());
-        currency                      .setText(user.getCurrencySymbol());
+        user_name       .getEditText()  .setText(""+ user.getName());
+        years_smoked    .getEditText()  .setText(""+ user.getYearsSmoked());
+        cigs_per_day    .getEditText()  .setText(""+ user.getCigsPerDay());
+        price_per_pack  .getEditText()  .setText(""+ user.getPricePerPack());
+        cigs_per_pack   .getEditText()  .setText(""+ user.getCigsPerPack());
+        currency                        .setText(""+ user.getCurrencySymbol());
     }
 
     //============================================
@@ -167,11 +164,12 @@ public class SettingsFragment extends Fragment {
                                         .setYearsSmoked(yearsSmoked)
                                         .setCigsPerDay(cigsPerDay)
                                         .setPricePerPack(pricePerPack)
-                                        .setCurrencySymbol(currencySymbol)
+                                        .setCurrencySymbol(user.getCurrencySymbol())
                                         .setCigsPerPack(cigsPerPack)
                                         .setDateStoppedSmoking(dateStoppedSmoking);
+
             DBupdater.getInstance()     .updateUser(user);
-            onProfileUpdate             .onProfileUpdate(user);
+            onProfileUpdate             .updateProfile(user);
 
             App.toast("Data Updated!");
         } catch(NumberFormatException e) {

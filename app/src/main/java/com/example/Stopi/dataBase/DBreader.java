@@ -1,17 +1,18 @@
-package com.example.Stopi.objects.dataManage;
+package com.example.Stopi.dataBase;
 
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.Stopi.App;
-import com.example.Stopi.callBacks.OnEmailReceived;
+import com.example.Stopi.R;
 import com.example.Stopi.objects.StoreItem;
 import com.example.Stopi.objects.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DBreader {
@@ -21,6 +22,8 @@ public class DBreader {
     private static  List        tips = new ArrayList<>();
     private static  List        rewards_info = new ArrayList<>();
     private static  List        store_items = new ArrayList<>();
+
+    private static  HashMap<String, User> usersMap = new HashMap<>();
 
     //=============================
 
@@ -42,8 +45,6 @@ public class DBreader {
         getInstance().readListData(KEYS.REWARDS_INFO_REF, rewards_info, String.class);
         getInstance().readListData(KEYS.STORE_REF, store_items, StoreItem.class);
     }
-
-    //============================= initial reads from server
 
     private void readListData(String Ref, List list, Class ObjectClass){
         Refs.getDBref(Ref).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -71,23 +72,6 @@ public class DBreader {
                 });
     }
 
-    public void readEmailsAmount(OnEmailReceived onEmailReceived){
-        Refs.getEmailsRef()
-                .child(App.getLoggedUser().getUid())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        int emailsNum = 0;
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                            emailsNum++;
-                        onEmailReceived.updateEmailCounter(emailsNum);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) { }
-                });
-    }
-
     //=========================================
 
     /**
@@ -107,6 +91,7 @@ public class DBreader {
         }
         Glide.with(App.getAppContext())
                 .load(Refs.getStorageRef(ref))
+                .error(R.drawable.default_profile_pic)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .centerInside()
@@ -114,7 +99,7 @@ public class DBreader {
     }
 
     //=========================================
-    
+
     public User getUser(){ return user; }
 
     public List getTips(){ return tips; }
@@ -122,6 +107,5 @@ public class DBreader {
     public List getRewardsInfo(){ return rewards_info; }
 
     public List getStoreItems(){ return store_items; }
-
 
 }

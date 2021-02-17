@@ -48,7 +48,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/user_name"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayout"
+        android:textColorHint="@color/white"
+        app:placeholderTextColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/years_smoked"
@@ -59,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/white"
             android:hint="Full Name"
             android:inputType="text" />
 
@@ -66,7 +69,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/years_smoked"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayout"
+        android:textColorHint="@color/white"
+        app:placeholderTextColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,6 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/white"
             android:hint="Years Smoked"
             android:inputType="numberDecimal" />
 
@@ -85,7 +91,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cigs_per_day"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayout"
+        android:textColorHint="@color/white"
+        app:placeholderTextColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,6 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/white"
             android:hint="Cigarettes Per Day"
             android:inputType="number" />
 
@@ -103,7 +112,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cigs_per_pack"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayout"
+        android:textColorHint="@color/white"
+        app:placeholderTextColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -114,6 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/white"
             android:hint="Cigarettes Per Pack"
             android:inputType="number" />
 
@@ -121,7 +133,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/price_per_pack"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayout"
+        android:textColorHint="@color/white"
+        app:placeholderTextColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,6 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/white"
             android:hint="Price Per Pack"
             android:inputType="numberDecimal" />
 

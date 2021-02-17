@@ -53,9 +53,9 @@ public class CompareFragment extends Fragment  {
     //====================================================
 
     private void initViews() {
-        compare_cost = initCompareFragment(R.id.compare_cost);
-        compare_length = initCompareFragment(R.id.compare_length);
-        compare_weight = initCompareFragment(R.id.compare_weight);
+        compare_cost    = initCompareFragment(R.id.compare_cost);
+        compare_length  = initCompareFragment(R.id.compare_length);
+        compare_weight  = initCompareFragment(R.id.compare_weight);
     }
 
     private CompareTypeFragment initCompareFragment(int layoutId){
@@ -67,9 +67,9 @@ public class CompareFragment extends Fragment  {
     //====================================================
 
     private void setData() {
-        compare_cost.setData(compareType.COST);
-        compare_length.setData(compareType.LENGTH);
-        compare_weight.setData(compareType.WEIGHT);
+        compare_cost    .setData(compareType.COST);
+        compare_length  .setData(compareType.LENGTH);
+        compare_weight  .setData(compareType.WEIGHT);
     }
 
 }

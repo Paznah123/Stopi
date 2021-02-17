@@ -91,9 +91,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startLoginProcess() {
         phoneNumber = country_code_picker.getSelectedCountryCodeWithPlus() + login_EDT_phone.getEditText().getText().toString();
-        if(validateLoginInput(phoneNumber))
+        if(!validateLoginInput(phoneNumber))
             return;
-
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(firebaseAuth)
                         .setPhoneNumber(phoneNumber)
@@ -133,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
         if(input.isEmpty()) {
             login_EDT_phone.setError("Phone Number is Required");
             login_EDT_phone.requestFocus();
-            return false;
+            App.toast("1");
         }
 
         if(input.length() < 10 || input.length() < 6){

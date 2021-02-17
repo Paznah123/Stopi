@@ -1,4 +1,4 @@
-package com.example.Stopi.objects.adapters;
+package com.example.Stopi.adapters;
 
 import android.content.Context;
 import android.os.Build;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.Stopi.R;
-import com.example.Stopi.objects.dataManage.DBreader;
+import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.objects.Reward;
 import com.wajahatkarim3.easyflipview.EasyFlipView;
 import java.time.LocalDate;

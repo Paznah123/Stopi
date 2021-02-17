@@ -4,8 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
-import com.example.Stopi.objects.dataManage.KEYS;
+import com.example.Stopi.dataBase.KEYS;
 
 public class Maze {
 
