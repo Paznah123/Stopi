@@ -1,11 +1,10 @@
 package com.example.Stopi.dataBase;
 
 import android.net.Uri;
-import com.example.Stopi.App;
-import com.example.Stopi.activities.MainActivity;
-import com.example.Stopi.callBacks.OnProfileUpdate;
-import com.example.Stopi.objects.StoreItem;
-import com.example.Stopi.objects.User;
+import com.example.Stopi.tools.App;
+import com.example.Stopi.profile.OnProfileUpdate;
+import com.example.Stopi.profile.User;
+import com.example.Stopi.dataBase.KEYS.Status;
 import com.google.firebase.storage.StorageReference;
 
 public class DBupdater {
@@ -29,7 +28,6 @@ public class DBupdater {
      */
     public void deleteUserData(String Uid){
         Refs.getUsersRef().child(Uid).removeValue();
-        Refs.getEmailsRef().child(Uid).removeValue();
         DBupdater.getInstance().deleteProfilePic(Uid);
     }
 
@@ -59,8 +57,14 @@ public class DBupdater {
         saveLoggedUser();
     }
 
-    public void updateStatus(MainActivity.Status status){
-        DBreader.getInstance().getUser().setStatus(status);
+    /**
+     * updates user status in database
+     * on login and logout
+     */
+    public void updateStatus(Status status){
+        DBreader db = DBreader.getInstance();
+        if(db.getUser() == null) return;
+        db.getUser().setStatus(status);
         DBupdater.getInstance().saveLoggedUser();
     }
 
@@ -68,35 +72,14 @@ public class DBupdater {
      * saves photo in database storage by user id
      */
     public void uploadImage(Uri filePathUri, OnProfileUpdate onProfileUpdate) {
-        App.log("Enter upload");
-        if (filePathUri != null) {
-            App.log("Start upload");
-            StorageReference ref = Refs.getStorageRef(KEYS.FULL_PROFILE_PIC_URL + App.getLoggedUser().getUid()+".jpg");
-            App.toast("Uploading Photo! ");
-            ref.putFile(filePathUri)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        App.toast("Image Uploaded");
-                        onProfileUpdate.updateProfile(DBreader.getInstance().getUser());
-                    })
-                    .addOnFailureListener(e -> App.log("Upload failed"));
-        }
-    }
-
-    /**
-     *  creates dialog for attaching message to gift.
-     *  updates logged user gift bag.
-     *  updates receiver user gift bag.
-     * @param user gift destination user
-     */
-    public void sendGift(User user, StoreItem storeItem){
-        user.addStoreItem(storeItem);
-        updateUser(user);
-
-        if(storeItem.getPrice() > 1)
-            storeItem.reduceAmount();
-        else
-            DBreader.getInstance().getUser().getBoughtItems().remove(storeItem.getTitle());
-        saveLoggedUser();
+        if (filePathUri == null) return;
+        StorageReference ref = Refs.getStorageRef(KEYS.FULL_PROFILE_PIC_URL + App.getLoggedUser().getUid()+".jpg");
+        App.toast("Uploading Photo! ");
+        ref.putFile(filePathUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    App.toast("Image Uploaded");
+                    onProfileUpdate.updateProfile(DBreader.getInstance().getUser());
+                }).addOnFailureListener(e -> App.log("Upload failed"));
     }
 
     //=============================

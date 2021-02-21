@@ -7,43 +7,37 @@
 
     <fragment
         android:id="@+id/chats_item"
-        android:name="com.example.Stopi.fragments.UsersFragment"
+        android:name="com.example.Stopi.social.ChatsFragment"
         android:label="Inbox"
         tools:layout="@layout/fragment_chats" />
 
     <fragment
         android:id="@+id/progress_item"
-        android:name="com.example.Stopi.fragments.ProgressFragment"
+        android:name="com.example.Stopi.progress.ProgressFragment"
         android:label="Progress"
         tools:layout="@layout/fragment_progress" />
 
     <fragment
         android:id="@+id/feed_item"
-        android:name="com.example.Stopi.fragments.FeedFragment"
+        android:name="com.example.Stopi.social.FeedFragment"
         android:label="Feed"
         tools:layout="@layout/fragment_feed" />
 
     <fragment
         android:id="@+id/rewards_item"
-        android:name="com.example.Stopi.fragments.RewardsFragment"
+        android:name="com.example.Stopi.progress.RewardsFragment"
         android:label="Rewards"
         tools:layout="@layout/fragment_rewards" />
 
     <fragment
-        android:id="@+id/compare_item"
-        android:name="com.example.Stopi.fragments.CompareFragment"
-        android:label="Compare"
-        tools:layout="@layout/fragment_compare" />
-
-    <fragment
         android:id="@+id/store_item"
-        android:name="com.example.Stopi.fragments.StoreFragment"
+        android:name="com.example.Stopi.store.StoreFragment"
         android:label="Store"
         tools:layout="@layout/fragment_store" />
 
     <fragment
         android:id="@+id/gift_bag_item"
-        android:name="com.example.Stopi.fragments.GiftBagFragment"
+        android:name="com.example.Stopi.store.GiftBagFragment"
         android:label="Gift Bag"
         tools:layout="@layout/fragment_gift_bag" />
 
@@ -55,7 +49,7 @@
 
     <fragment
         android:id="@+id/settings_item"
-        android:name="com.example.Stopi.fragments.SettingsFragment"
+        android:name="com.example.Stopi.profile.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
 

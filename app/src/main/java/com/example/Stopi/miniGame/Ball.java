@@ -46,14 +46,14 @@ public class Ball {
 
     public float setBouncedX(boolean bouncedX) {
         this.bouncedX = bouncedX;
-        setVelocityX(-getVelocityX() * KEYS.REBOUND);
-        return getVelocityX();
+        setVelocityX(-velocityX * KEYS.REBOUND);
+        return velocityX;
     }
 
     public float setBouncedY(boolean bouncedY) {
         this.bouncedY = bouncedY;
-        setVelocityY(-getVelocityY() * KEYS.REBOUND);
-        return getVelocityY();
+        setVelocityY(-velocityY * KEYS.REBOUND);
+        return velocityY;
     }
 
     //==================================================

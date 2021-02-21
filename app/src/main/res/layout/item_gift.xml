@@ -9,7 +9,7 @@
         android:id="@+id/item_gift_photo"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:src="@drawable/default_profile_pic"
+        android:src="@drawable/img_default_pic"
         android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

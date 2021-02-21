@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".activities.LoginActivity">
+    tools:context=".profile.LoginActivity">
 
     <TextView
         android:id="@+id/title"
@@ -39,7 +39,7 @@
         android:id="@+id/user_profile_pic"
         android:layout_width="150dp"
         android:layout_height="100dp"
-        android:src="@drawable/default_profile_pic"
+        android:src="@drawable/img_default_pic"
         android:fitsSystemWindows="true"
         app:layout_constraintBottom_toTopOf="@+id/user_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,11 +48,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/TextInputLayout"
         android:textColorHint="@color/white"
         app:placeholderTextColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/years_smoked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -69,11 +69,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/years_smoked"
-        style="@style/TextInputLayout"
-        android:textColorHint="@color/white"
-        app:placeholderTextColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/TextInputLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,8 +90,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cigs_per_day"
         style="@style/TextInputLayout"
-        android:textColorHint="@color/white"
-        app:placeholderTextColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,8 +109,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cigs_per_pack"
         style="@style/TextInputLayout"
-        android:textColorHint="@color/white"
-        app:placeholderTextColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,8 +128,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/price_per_pack"
         style="@style/TextInputLayout"
-        android:textColorHint="@color/white"
-        app:placeholderTextColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

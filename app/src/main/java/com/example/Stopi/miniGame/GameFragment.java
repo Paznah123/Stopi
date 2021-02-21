@@ -11,9 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
-
 import com.example.Stopi.R;
-import com.example.Stopi.Utils;
+import com.example.Stopi.tools.Dialogs;
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.dataBase.DBupdater;
 import com.example.Stopi.dataBase.KEYS;
@@ -42,18 +41,8 @@ public class GameFragment extends Fragment implements SurfaceHolder.Callback, Se
     //=========================================
 
     @Override
-    public void onStop() {
-        super.onStop();
-        if(DBreader.getInstance().getUser().setHighScore(gameLoop.getHolesScored())) {
-            Utils.getInstance().createHighScoreDialog().show();
-            DBupdater.getInstance().saveLoggedUser();
-        }
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
-
         sensorMgr.unregisterListener(this, SENSOR_ACCELEROMETER);
         sensorMgr = null;
         ball.setAccel(0, 0);
@@ -114,9 +103,11 @@ public class GameFragment extends Fragment implements SurfaceHolder.Callback, Se
         try {
             ball.setSize(0,0);
             gameLoop.safeStop();
-        } finally {
-            gameLoop = null;
-        }
+            if(DBreader.getInstance().getUser().setHighScore(gameLoop.getHolesScored())) {
+                Dialogs.getInstance().createHighScoreDialog().show();
+                DBupdater.getInstance().saveLoggedUser();
+            }
+        } finally { gameLoop = null; }
     }
 
     //=========================================== sensors call backs

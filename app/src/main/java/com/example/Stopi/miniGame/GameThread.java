@@ -1,13 +1,8 @@
 package com.example.Stopi.miniGame;
 
 import android.graphics.Canvas;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.View;
 import android.widget.TextView;
-
-import com.example.Stopi.App;
-
 import java.util.concurrent.TimeUnit;
 
 public class GameThread extends Thread {
@@ -36,7 +31,7 @@ public class GameThread extends Thread {
         this.ball           = ball;
         this.maze           = maze;
         this.score          = scoreTextView;
-        ballRadius          = ball.getBallRadius();
+        this.ballRadius     = ball.getBallRadius();
         this.holesScored    = 0;
     }
 

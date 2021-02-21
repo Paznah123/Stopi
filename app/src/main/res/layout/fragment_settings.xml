@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".fragments.SettingsFragment">
+    tools:context=".profile.SettingsFragment">
 
     <TextView
         android:id="@+id/profile_pic_lbl"
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/default_profile_pic"
+        android:src="@drawable/img_default_pic"
         android:fitsSystemWindows="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,8 +45,6 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/settings_user_name"
             style="@style/TextInputLayout"
-            android:textColorHint="@color/white"
-            app:placeholderTextColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -63,7 +61,6 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/settings_cigs_day"
             style="@style/TextInputLayout"
-            android:textColorHint="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -80,7 +77,6 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/settings_years_smoked"
             style="@style/TextInputLayout"
-            android:textColorHint="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -116,8 +112,6 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/settings_price_pack"
             style="@style/TextInputLayout"
-            android:orientation="horizontal"
-            android:textColorHint="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 

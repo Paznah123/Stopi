@@ -17,11 +17,6 @@
         android:icon="@drawable/ic_feed"/>
 
     <item
-        android:id="@+id/compare_item"
-        android:title="@string/drawer_item_compare"
-        android:icon="@drawable/ic_compare"/>
-
-    <item
         android:id="@+id/rewards_item"
         android:title="@string/drawer_item_rewards"
         android:icon="@drawable/ic_rewards"/>

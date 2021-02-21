@@ -2,19 +2,11 @@
 <com.furkanakdemir.surroundcardview.SurroundCardView
     android:id="@+id/surround_card_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/svc"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="20dp"
-    app:scv_duration="1000"
-    app:scv_startPoint="bottom_start"
-    app:scv_color="#B388FF"
-    app:scv_surrounded="true"
-    app:scv_width="5dp"
-    android:elevation="5dp"
-    app:cardElevation="5dp">
+    android:layout_margin="8dp" >
 
     <RelativeLayout
         android:id="@+id/container"

@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".activities.ActivitySplash">
+    tools:context=".ActivitySplash">
 
     <ImageView
         android:id="@+id/splash_IMG_logo"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/stopi_icon"
+        android:src="@drawable/img_stopi_icon"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:layout_centerInParent="true"/>

@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/dialog_background">
+        android:background="@drawable/background_dialog">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:paddingTop="5dp"
-                android:text="Smoker History"
+                android:text="After Stopi"
                 android:textSize="25dp"
                 android:textStyle="bold" />
 

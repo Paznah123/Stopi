@@ -86,10 +86,13 @@ dependencies {
     // flip view
     implementation 'com.wajahatkarim3.EasyFlipView:EasyFlipView:3.0.0'
 
-    //surround card view
+    // surround card view
     implementation "com.furkanakdemir:surroundcardview:1.0.1"
 
-    //chat
+    // chat
     implementation 'com.github.livechat:chat-window-android:v2.1.2'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
 }

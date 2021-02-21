@@ -15,6 +15,16 @@
         <item name="boxStrokeWidth">1dp</item>
         <item name="android:textColorHint">@color/white</item>
         <item name="android:textColor">@color/white</item>
+        <item name="placeholderTextColor">@color/white</item>
+    </style>
+
+    <style name="svc">
+        <item name="elevation">5dp</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">5dp</item>
+        <item name="scv_color">@color/purple_200</item>
+        <item name="scv_surrounded">true</item>
+        <item name="scv_width">5dp</item>
     </style>
 
 </resources>

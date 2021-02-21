@@ -1,8 +1,6 @@
 package com.example.Stopi.dataBase;
 
-import com.example.Stopi.objects.StoreItem;
-import com.example.Stopi.objects.User;
-
+import com.example.Stopi.profile.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,11 +32,11 @@ public class  TestDB {
             Refs.getDBref(ref).push().setValue(list.get(i));
     }
 
-    public static void pushStoreItems(String ref){
+/*    public static void pushStoreItems(String ref){
         ArrayList<StoreItem> storeItems = generateStoreItems();
         for (int i = 0; i < storeItems.size(); i++)
             Refs.getDBref(ref).child(storeItems.get(i).getTitle()).setValue(storeItems.get(i));
-    }
+    }*/
 
     //============================================
 
@@ -156,7 +154,7 @@ public class  TestDB {
         return users;
     }
 
-    private static ArrayList<StoreItem> generateStoreItems(){
+   /* private static ArrayList<StoreItem> generateStoreItems(){
         ArrayList<StoreItem> storeItems = new ArrayList<>();
 
         storeItems.add(new StoreItem()
@@ -200,7 +198,7 @@ public class  TestDB {
                 .setPrice(9500));
 
         return storeItems;
-    }
+    }*/
 
     private static ArrayList<String> generateTips(){
         ArrayList<String> tips = new ArrayList<>();

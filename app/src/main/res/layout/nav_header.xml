@@ -10,7 +10,7 @@
         android:id="@+id/drawer_user_pic"
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:src="@drawable/default_profile_pic"
+        android:src="@drawable/img_default_pic"
         app:layout_constraintBottom_toTopOf="@+id/drawer_lbl_userName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

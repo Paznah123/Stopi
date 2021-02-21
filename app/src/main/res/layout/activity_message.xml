@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MessageActivity">
+    tools:context=".social.MessageActivity">
 
     <RelativeLayout
         android:id="@+id/bar_layout"
@@ -24,12 +24,12 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/profile_image"
-            android:layout_marginStart="25dp"
+            android:layout_marginStart="20dp"
             android:text="Paz Nahmias"
             android:textSize="20dp"
             android:textColor="#fff"
             android:textStyle="bold" />
-
+        
         <TextView
             android:id="@+id/user_status"
             android:layout_width="wrap_content"
@@ -44,17 +44,17 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_view"
         android:layout_below="@+id/bar_layout"
         android:layout_above="@+id/bottom"/>
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/stopi_icon"
-        android:alpha="0.25"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/img_stopi_icon"
+        android:alpha="0.15"
         android:layout_centerInParent="true"/>
 
     <RelativeLayout
