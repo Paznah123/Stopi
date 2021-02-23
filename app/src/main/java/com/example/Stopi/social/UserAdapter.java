@@ -10,9 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.Stopi.R;
+import com.example.Stopi.tools.KEYS;
 import com.example.Stopi.profile.User;
 import com.example.Stopi.dataBase.DBreader;
-import com.example.Stopi.dataBase.KEYS;
+import com.example.Stopi.tools.KEYS.Status;
+import com.example.Stopi.tools.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,32 +43,39 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final User user         = mUsers.get(keys.get(position));
+        final User user = mUsers.get(keys.get(position));
 
-        DBreader.getInstance()  .readPic(KEYS.PROFILE,holder.profile_image,user.getUid());
+        String lastSeen = Utils.getInstance().formatToDate(user.getLastSeen());
+        Status status = user.getStatus();
 
+        DBreader.getInstance()  .readPic(KEYS.PROFILE, holder.profile_image, user.getUid());
+        holder.status_dot       .setImageResource(Utils.getInstance().getDotByStatus(user.getStatus()));
         holder.username         .setText(user.getName());
-        holder.status           .setText(user.getStatus().name());
+        holder.last_seen        .setText("Last seen: " + lastSeen);
+        holder.status           .setText(status.name());
         holder.itemView         .setOnClickListener(
                         view -> {
-                                    Intent intent=new Intent(mContext, MessageActivity.class);
-                                    intent.putExtra("userid",user.getUid());
-                                    mContext.startActivity(intent);
-                                });
+                            Intent intent = new Intent(mContext, MessageActivity.class);
+                            intent.putExtra("userid", user.getUid());
+                            mContext.startActivity(intent);
+                        });
+
+        if (status.equals(Status.Online))
+            holder.last_seen.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public int getItemCount() {
-        return mUsers.size();
-    }
+    public int getItemCount() { return mUsers.size(); }
 
     //=============================
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        private ImageView       profile_image;
+        private ImageView       status_dot;
+        private TextView        last_seen;
         private TextView        username;
         private TextView        status;
-        private ImageView       profile_image;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -74,8 +83,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         }
 
         private void findViews(){
-            username        = itemView.findViewById(R.id.username);
             profile_image   = itemView.findViewById(R.id.profile_image);
+            status_dot      = itemView.findViewById(R.id.status_dot);
+            last_seen       = itemView.findViewById(R.id.user_last_seen);
+            username        = itemView.findViewById(R.id.username);
             status          = itemView.findViewById(R.id.user_status);
         }
     }

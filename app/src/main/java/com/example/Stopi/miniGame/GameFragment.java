@@ -12,10 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.example.Stopi.R;
-import com.example.Stopi.tools.Dialogs;
-import com.example.Stopi.dataBase.DBreader;
-import com.example.Stopi.dataBase.DBupdater;
-import com.example.Stopi.dataBase.KEYS;
+import com.example.Stopi.tools.KEYS;
 import static android.content.Context.SENSOR_SERVICE;
 import static android.hardware.SensorManager.DATA_X;
 import static android.hardware.SensorManager.DATA_Y;
@@ -103,10 +100,6 @@ public class GameFragment extends Fragment implements SurfaceHolder.Callback, Se
         try {
             ball.setSize(0,0);
             gameLoop.safeStop();
-            if(DBreader.getInstance().getUser().setHighScore(gameLoop.getHolesScored())) {
-                Dialogs.getInstance().createHighScoreDialog().show();
-                DBupdater.getInstance().saveLoggedUser();
-            }
         } finally { gameLoop = null; }
     }
 

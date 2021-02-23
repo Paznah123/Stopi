@@ -1,6 +1,8 @@
 package com.example.Stopi.dataBase;
 
 import com.example.Stopi.profile.User;
+import com.example.Stopi.tools.KEYS;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,7 +25,7 @@ public class  TestDB {
         ArrayList<String> tips = TestDB.generateTips();
         ArrayList<String> rewards_info = TestDB.generateRewards_info();
 
-        pushValues(tips,KEYS.TIPS_REF);
+        pushValues(tips, KEYS.TIPS_REF);
         pushValues(rewards_info,KEYS.REWARDS_INFO_REF);
     }
 

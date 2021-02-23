@@ -1,6 +1,6 @@
 package com.example.Stopi.miniGame;
 
-import com.example.Stopi.dataBase.KEYS;
+import com.example.Stopi.tools.KEYS;
 
 public class Ball {
 

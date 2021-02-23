@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.Stopi.R;
 import com.example.Stopi.dataBase.DBreader;
-import com.example.Stopi.dataBase.KEYS;
+import com.example.Stopi.tools.KEYS;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -1,6 +1,5 @@
 package com.example.Stopi.social;
 
-import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,17 +15,12 @@ import com.example.Stopi.dataBase.Refs;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.HashMap;
 
 public class FeedFragment extends Fragment {
 
     private View            view;
-
-    private RecyclerView    main_LST_names;
-    private FeedAdapter     adapter_post;
-
-    public interface OnFeedRefresh { void updateFeed(HashMap<String,User> usersMap); }
+    private RecyclerView    feed_LST_posts;
 
     //====================================================
 
@@ -35,11 +29,8 @@ public class FeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         view                = inflater.inflate(R.layout.fragment_feed, container, false);
 
-        main_LST_names      = view.findViewById(R.id.main_LST_names);
-
-        adapter_post        = new FeedAdapter(new HashMap<>());
-        main_LST_names      .setLayoutManager(new LinearLayoutManager(getContext()));
-        main_LST_names      .setAdapter(adapter_post);
+        feed_LST_posts      = view.findViewById(R.id.feed_LST_posts);
+        feed_LST_posts      .setLayoutManager(new LinearLayoutManager(getContext()));
 
         refreshUsersFeed(onFeedRefresh);
 
@@ -48,13 +39,9 @@ public class FeedFragment extends Fragment {
 
     //====================================================
 
-    private OnFeedRefresh onFeedRefresh = new OnFeedRefresh() {
-        @Override
-        public void updateFeed(HashMap<String,User> usersMap) {
-            adapter_post    = new FeedAdapter(usersMap);
-            main_LST_names  .setAdapter(adapter_post);
-        }
-    };
+    public interface OnFeedRefresh { void updateFeed(HashMap<String,User> usersMap); }
+
+    private OnFeedRefresh onFeedRefresh = usersMap -> feed_LST_posts.setAdapter(new FeedAdapter(usersMap));
 
     private void refreshUsersFeed(@NonNull OnFeedRefresh onFeedRefresh){
         Refs.getUsersRef()

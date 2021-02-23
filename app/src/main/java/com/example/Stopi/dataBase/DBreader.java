@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide;
 import com.example.Stopi.R;
 import com.example.Stopi.tools.App;
 import com.example.Stopi.profile.User;
+import com.example.Stopi.tools.KEYS;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -85,7 +86,7 @@ public class DBreader {
         }
         Glide.with(App.getAppContext())
                 .load(Refs.getStorageRef(ref))
-                .error(R.drawable.img_default_pic)
+                .placeholder(R.drawable.img_default_pic)
                 .centerInside()
                 .into(imageView);
     }

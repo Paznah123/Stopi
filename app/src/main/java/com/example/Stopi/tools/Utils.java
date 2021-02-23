@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
-
 import androidx.fragment.app.Fragment;
-
+import com.example.Stopi.R;
 import com.example.Stopi.dataBase.DBreader;
 import com.furkanakdemir.surroundcardview.SurroundCardView;
 import com.github.drjacky.imagepicker.ImagePicker;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Utils {
 
@@ -45,11 +46,21 @@ public class Utils {
         return String.valueOf(chatId);
     }
 
+    //====================================================
+
     /**
      * formats a double by pattern
      * @param pattern #.## (number of # as the number of digits to show after . )
      */
     public String formatNumber(double number, String pattern){ return new DecimalFormat(pattern).format(number); }
+
+    public String formatToDate(long time){
+        SimpleDateFormat formatter= new SimpleDateFormat("MM-dd 'at' HH:mm");
+        Date date = new Date(time);
+        return formatter.format(date);
+    }
+
+    //====================================================
 
     public void onCardClick(SurroundCardView svc){
         if(svc.isCardSurrounded())
@@ -57,6 +68,17 @@ public class Utils {
         else
             svc.surround();
     }
+
+    //====================================================
+
+    public int getDotByStatus(KEYS.Status status){
+        if (status.equals(KEYS.Status.Online)) {
+            return R.drawable.ic_online_dot;
+        } else
+            return R.drawable.ic_offline_dot;
+    }
+
+    //====================================================
 
     /**
      * plays sound
@@ -67,6 +89,8 @@ public class Utils {
         mp = MediaPlayer.create(context,rawSound);
         mp.start();
     }
+
+    //====================================================
 
     /**
      *   starts activity

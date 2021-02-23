@@ -1,6 +1,7 @@
 package com.example.Stopi.dataBase;
 
 import com.example.Stopi.tools.App;
+import com.example.Stopi.tools.KEYS;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -16,6 +17,7 @@ public class Refs {
     public static DatabaseReference getLoggedUserRef()      { return getUsersRef().child(App.getLoggedUser().getUid()); }
     public static DatabaseReference getUsersRef()           { return getDBref(KEYS.USERS_REF); }
     public static DatabaseReference getChatsRef()           { return getDBref(KEYS.CHATS_REF); }
+    public static DatabaseReference getGiftBagsRef()           { return getDBref(KEYS.GIFT_BAGS_REF); }
 
     //=============================
 

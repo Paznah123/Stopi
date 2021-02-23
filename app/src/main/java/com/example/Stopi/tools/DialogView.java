@@ -5,11 +5,11 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import java.util.HashMap;
 
@@ -25,8 +25,9 @@ public class DialogView {
 
     private HashMap<Integer, EditText>      editTextsMap;
     private HashMap<Integer, TextView>      textViewsMap;
+    private HashMap<Integer, ImageView>     imageViewsMap;
 
-    private ListView                        itemsList;
+    private RecyclerView                    itemsList;
 
     //======================================
 
@@ -37,8 +38,6 @@ public class DialogView {
         this.dialog     .setView(view);
         this.dialog     .getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
-
-    public void notifyDataSetChanged(){ itemsList.deferNotifyDataSetChanged(); }
 
     public void show(){ if(!((Activity) view.getContext()).isFinishing()) dialog.show(); }
 
@@ -82,24 +81,26 @@ public class DialogView {
 
     //======================================
 
-    /**
-     * @param listener item click listener
-     * @throws NullPointerException if items list not set by id
-     */
-    public DialogView setListItemsClickListener(AdapterView.OnItemClickListener listener) throws NullPointerException {
-        if (itemsList != null) {
-            itemsList.setOnItemClickListener(listener);
-            return this;
-        }
-        throw new NullPointerException("Items list is null");
+    public ImageView getImageView(int imageView_layout_id){ return this.imageViewsMap.get(imageView_layout_id); }
+
+    public DialogView addImageViews(int[] layout_id_arr) {
+        if (textViewsMap == null)
+            this.textViewsMap = new HashMap<>();
+        for (int layout_id : layout_id_arr)
+            this.textViewsMap.put(layout_id, // key
+                    view.findViewById(layout_id)); // imageView
+        return this;
     }
+
+    //======================================
 
     /**
      * @param listAdapter adapter for list items
      * @throws NullPointerException if items list not set by id
      */
-    public DialogView setListAdapter(BaseAdapter listAdapter) throws NullPointerException {
+    public DialogView setRecyclerViewAdapter(RecyclerView.Adapter listAdapter) throws NullPointerException {
         if (itemsList != null) {
+            itemsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
             itemsList.setAdapter(listAdapter);
             return this;
         }
@@ -134,7 +135,7 @@ public class DialogView {
 
     //======================================
 
-    public DialogView findListViewById(int list_view_layout_id) { itemsList = view.findViewById(list_view_layout_id); return this; }
+    public DialogView findRecyclerViewById(int list_view_layout_id) { itemsList = view.findViewById(list_view_layout_id); return this; }
 
     public DialogView findConfirmButtonById(int btn_layout_id) { confirm = view.findViewById(btn_layout_id); return this; }
 

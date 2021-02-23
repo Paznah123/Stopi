@@ -1,5 +1,6 @@
 package com.example.Stopi.store;
 
+
 public class StoreItem {
 
     private String  title;

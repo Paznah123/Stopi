@@ -17,7 +17,7 @@ import com.example.Stopi.tools.Dialogs;
 import com.example.Stopi.tools.Utils;
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.dataBase.DBupdater;
-import com.example.Stopi.dataBase.KEYS;
+import com.example.Stopi.tools.KEYS;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;

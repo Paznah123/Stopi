@@ -1,8 +1,8 @@
 package com.example.Stopi.profile;
 
 import com.example.Stopi.R;
-import com.example.Stopi.dataBase.KEYS;
-import com.example.Stopi.dataBase.KEYS.Status;
+import com.example.Stopi.tools.KEYS;
+import com.example.Stopi.tools.KEYS.Status;
 import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.Utils;
 import com.example.Stopi.store.StoreItem;
@@ -29,8 +29,10 @@ public class User implements Comparable, Serializable {
 
     private long    dateStoppedSmoking;
     private long    loggedToday = -1;
+    private long    lastSeen;
 
     private Status status = Status.Offline;
+
 
     private HashMap<String, StoreItem> boughtItems = new HashMap<>();
 
@@ -106,6 +108,8 @@ public class User implements Comparable, Serializable {
 
     public User setLoggedToday(long loggedToday) { this.loggedToday = loggedToday; return this;}
 
+    public User setLastSeen(long lastSeen) { this.lastSeen = lastSeen; return this; }
+
     public User setBoughtItems(HashMap<String,StoreItem> boughtItems) { this.boughtItems = boughtItems; return this; }
 
     public User setCurrencySymbol(String currencySymbol) { this.currencySymbol = currencySymbol; return this; }
@@ -134,13 +138,15 @@ public class User implements Comparable, Serializable {
 
     public int getHighScore() { return highScore; }
 
-    public Status getStatus() { return status; }
+    public long getDateStoppedSmoking() { return dateStoppedSmoking; }
 
     public long getLoggedToday() { return loggedToday; }
 
-    public long getDateStoppedSmoking() { return dateStoppedSmoking; }
+    public long getLastSeen() { return lastSeen; }
 
     public long getRehabDuration(){ return Calendar.getInstance().getTimeInMillis() - dateStoppedSmoking; }
+
+    public Status getStatus() { return status; }
 
     public String getCurrencySymbol() { return currencySymbol; }
 

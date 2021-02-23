@@ -51,7 +51,7 @@ public class StoreFragment extends Fragment {
     private void initViews() {
         store_items = Store.getInstance().getItems();
         store_list.setLayoutManager(new GridLayoutManager(getContext(),2));
-        storeAdapter = new ItemsAdapter(getContext(), store_items);
+        storeAdapter = new ItemsAdapter(store_items);
         storeAdapter.setClickListener(onCoinsChanged);
         store_list.setAdapter(storeAdapter);
     }

@@ -4,8 +4,10 @@ import android.net.Uri;
 import com.example.Stopi.tools.App;
 import com.example.Stopi.profile.OnProfileUpdate;
 import com.example.Stopi.profile.User;
-import com.example.Stopi.dataBase.KEYS.Status;
+import com.example.Stopi.tools.KEYS;
+import com.example.Stopi.tools.KEYS.Status;
 import com.google.firebase.storage.StorageReference;
+import java.util.Calendar;
 
 public class DBupdater {
 
@@ -33,8 +35,10 @@ public class DBupdater {
 
     private void deleteProfilePic(String Uid){ Refs.getStorageRef(KEYS.FULL_PROFILE_PIC_URL + Uid +".jpg").delete(); }
 
+    //=============================
+
     /**
-     * updates user in database
+     * saves user in database
      * @param user user for update (not for logged user)
      */
     public void updateUser(User user){ Refs.getUsersRef().child(user.getUid()).setValue(user); }
@@ -47,13 +51,20 @@ public class DBupdater {
         Refs.getUsersRef().child(loggedUser.getUid()).setValue(loggedUser);
     }
 
+    //=============================
+
+    /**
+     * saves giftBag in db ref after changes in bag
+     * @param user
+     */
+    public void updateGiftBag(User user){ Refs.getGiftBagsRef().child(user.getUid()).setValue(user.getBoughtItems()); }
+
     /**
      * updates user goal in database
      * and saves user object
      */
     public void updateUserGoal(String goal){
-        DBreader dbReader = DBreader.getInstance();
-        dbReader.getUser().setGoal(goal);
+        DBreader.getInstance().getUser().setGoal(goal);
         saveLoggedUser();
     }
 
@@ -62,11 +73,15 @@ public class DBupdater {
      * on login and logout
      */
     public void updateStatus(Status status){
-        DBreader db = DBreader.getInstance();
-        if(db.getUser() == null) return;
-        db.getUser().setStatus(status);
+        User user = DBreader.getInstance().getUser();
+        if(user == null) return;
+        user.setStatus(status);
+        if(status.equals(Status.Offline))
+            user.setLastSeen(Calendar.getInstance().getTimeInMillis());
         DBupdater.getInstance().saveLoggedUser();
     }
+
+    //=============================
 
     /**
      * saves photo in database storage by user id

@@ -3,7 +3,6 @@ package com.example.Stopi.tools;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 import com.example.Stopi.R;
@@ -65,10 +64,9 @@ public class Dialogs {
      */
     public DialogView createResetDialog(View.OnClickListener listener){
         DialogView  dialogView  = new DialogView(createDialogView(R.layout.dialog_reset))
-                .findConfirmButtonById(R.id.reset_confirm)
-                .addEditTexts(new int[] {R.id.reset_amount})
-                .setConfirmListener(listener);
-
+                                .findConfirmButtonById(R.id.reset_confirm)
+                                .addEditTexts(new int[] {R.id.reset_amount})
+                                .setConfirmListener(listener);
         return dialogView;
     }
 
@@ -76,16 +74,13 @@ public class Dialogs {
 
     /**
      * creates AlertDialog with user gift bag for sending gift
-     * @param itemsList user gift bag items
-     * @param listener item click listener
+     * @param itemsList logged user gift bag items
      */
-    public DialogView createGiftDialog(HashMap<String, StoreItem> itemsList, AdapterView.OnItemClickListener listener){
-        GiftListAdapter giftsAdapter    = new GiftListAdapter(inflater.getContext(), itemsList);
+    public DialogView createGiftDialog(HashMap<String, StoreItem> itemsList, User userToGift){
+        GiftListAdapter giftsAdapter    = new GiftListAdapter(itemsList, userToGift);
         DialogView      dialogView      = new DialogView(createDialogView(R.layout.dialog_gift))
-                .findListViewById(R.id.gift_listView)
-                .setListAdapter(giftsAdapter)
-                .setListItemsClickListener(listener);
-
+                                        .findRecyclerViewById(R.id.gift_recycler_view)
+                                        .setRecyclerViewAdapter(giftsAdapter);
         return dialogView;
     }
 
@@ -96,9 +91,8 @@ public class Dialogs {
      */
     public DialogView createRewardDialog() {
         DialogView dialogView  = new DialogView(createDialogView(R.layout.dialog_login_reward))
-                .addTextViews(new int[] {R.id.reward_login_text});
-
-        return      dialogView;
+                                .addTextViews(new int[] {R.id.reward_login_text});
+        return dialogView;
     }
 
     //====================================================
@@ -108,9 +102,8 @@ public class Dialogs {
      */
     public DialogView createHighScoreDialog() {
         DialogView  dialogView  = new DialogView(createDialogView(R.layout.dialog_high_score))
-                .addTextViews(new int[] {R.id.high_score_text});
-
-        return      dialogView;
+                                .addTextViews(new int[] {R.id.high_score_text});
+        return dialogView;
     }
 
     //====================================================
@@ -154,17 +147,17 @@ public class Dialogs {
      */
     public DialogView createGoalDialog(TextView tvGoal) {
         DialogView dialogView   = new DialogView(createDialogView(R.layout.dialog_goal))
-                .addEditTexts(new int[] {R.id.goal_text})
-                .findConfirmButtonById(R.id.goal_confirm)
-                .findCancelButtonById(R.id.goal_cancel);
+                                .addEditTexts(new int[] {R.id.goal_text})
+                                .findConfirmButtonById(R.id.goal_confirm)
+                                .findCancelButtonById(R.id.goal_cancel);
 
-        dialogView              .setConfirmListener(
-                v -> {
-                    String userGoal = dialogView.getETtext(R.id.goal_text);
-                    tvGoal.setText(userGoal);
-                    DBupdater.getInstance().updateUserGoal(userGoal);
-                    dialogView.dismiss();
-                }
+        dialogView  .setConfirmListener(
+                        v -> {
+                            String userGoal = dialogView.getETtext(R.id.goal_text);
+                            tvGoal.setText(userGoal);
+                            DBupdater.getInstance().updateUserGoal(userGoal);
+                            dialogView.dismiss();
+                        }
         ).setCancelListener(v -> dialogView.dismiss());
 
         return dialogView;

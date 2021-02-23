@@ -10,7 +10,6 @@ import com.example.Stopi.store.Store;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.example.Stopi.dataBase.KEYS;
 
 public class App extends Application {
 

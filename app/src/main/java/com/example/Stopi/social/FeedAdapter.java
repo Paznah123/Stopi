@@ -12,7 +12,7 @@ import com.example.Stopi.tools.Dialogs;
 import com.example.Stopi.store.Store;
 import com.example.Stopi.tools.Utils;
 import com.example.Stopi.dataBase.DBreader;
-import com.example.Stopi.dataBase.KEYS;
+import com.example.Stopi.tools.KEYS;
 import com.furkanakdemir.surroundcardview.SurroundCardView;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +67,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
     private void setViewHolderListeners(MyViewHolder holder, User user) {
         holder.user_send_msg .setOnClickListener(v -> Dialogs.getInstance()     .createEmailDialog(user.getUid()).show());
         holder.user_history  .setOnClickListener(v -> Dialogs.getInstance()     .createFeedDialog(user).show());
-        holder.user_gift     .setOnClickListener(v -> Store.getInstance()       .giftCallBack().chooseGift(user));
+        holder.user_gift     .setOnClickListener(v -> Store.getInstance()       .chooseGift(user));
         holder.svc           .setOnClickListener(v -> Utils.getInstance()       .onCardClick(holder.svc));
     }
     
@@ -86,7 +86,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
         ImageView           user_IMG;
 
         SurroundCardView    svc;
-
 
         MyViewHolder(View itemView) {
             super(itemView);
