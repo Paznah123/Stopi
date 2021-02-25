@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements
         if(!App.isNetworkAvailable()){
             Dialogs.get().noInternetDialog().show();
             return false;
-        } else if (dbReader.getUser() == null) { // if data hasnt arrived from db yet
+        } else if (dbReader.getUser() == null) { // if data hasn't arrived from db yet
             dbReader.readUserData();
             Utils.get().myStartActivity(this, ActivitySplash.class);
             return false;
