@@ -15,12 +15,15 @@ public class DBupdater {
 
     //=============================
 
-    public static void initDBwriter(){
+    public static void initUpdater(){
         if(instance == null)
             instance = new DBupdater();
     }
 
-    public static DBupdater getInstance() { return instance; }
+    /**
+     * gets the singleton
+     */
+    public static DBupdater get() { return instance; }
 
     //=============================
 
@@ -30,7 +33,8 @@ public class DBupdater {
      */
     public void deleteUserData(String Uid){
         Refs.getUsersRef().child(Uid).removeValue();
-        DBupdater.getInstance().deleteProfilePic(Uid);
+        Refs.getGiftBagsRef().child(Uid).removeValue();
+        DBupdater.get().deleteProfilePic(Uid);
     }
 
     private void deleteProfilePic(String Uid){ Refs.getStorageRef(KEYS.FULL_PROFILE_PIC_URL + Uid +".jpg").delete(); }
@@ -47,7 +51,7 @@ public class DBupdater {
      * saves current logged user in database
      */
     public void saveLoggedUser(){
-        User loggedUser = DBreader.getInstance().getUser();
+        User loggedUser = DBreader.get().getUser();
         Refs.getUsersRef().child(loggedUser.getUid()).setValue(loggedUser);
     }
 
@@ -64,7 +68,7 @@ public class DBupdater {
      * and saves user object
      */
     public void updateUserGoal(String goal){
-        DBreader.getInstance().getUser().setGoal(goal);
+        DBreader.get().getUser().setGoal(goal);
         saveLoggedUser();
     }
 
@@ -73,12 +77,12 @@ public class DBupdater {
      * on login and logout
      */
     public void updateStatus(Status status){
-        User user = DBreader.getInstance().getUser();
+        User user = DBreader.get().getUser();
         if(user == null) return;
         user.setStatus(status);
         if(status.equals(Status.Offline))
             user.setLastSeen(Calendar.getInstance().getTimeInMillis());
-        DBupdater.getInstance().saveLoggedUser();
+        DBupdater.get().saveLoggedUser();
     }
 
     //=============================
@@ -89,12 +93,12 @@ public class DBupdater {
     public void uploadImage(Uri filePathUri, OnProfileUpdate onProfileUpdate) {
         if (filePathUri == null) return;
         StorageReference ref = Refs.getStorageRef(KEYS.FULL_PROFILE_PIC_URL + App.getLoggedUser().getUid()+".jpg");
-        App.toast("Uploading Photo! ");
+        App.toast("Uploading Photo!");
         ref.putFile(filePathUri)
                 .addOnSuccessListener(taskSnapshot -> {
                     App.toast("Image Uploaded");
-                    onProfileUpdate.updateProfile(DBreader.getInstance().getUser());
-                }).addOnFailureListener(e -> App.log("Upload failed"));
+                    onProfileUpdate.updateProfile(DBreader.get().getUser());
+                }).addOnFailureListener(e -> App.toast("Upload failed"));
     }
 
     //=============================

@@ -53,18 +53,16 @@
         app:layout_constraintStart_toEndOf="@+id/reset_question"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/reset_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/purple_200"
-        android:text="Confirm"
+        android:text="settings"
         android:textSize="10dp"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reset_question" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

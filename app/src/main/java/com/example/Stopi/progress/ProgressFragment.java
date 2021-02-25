@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.Stopi.R;
 import com.example.Stopi.tools.App;
-import com.example.Stopi.tools.DialogView;
+import com.example.Stopi.tools.GenericDialog;
 import com.example.Stopi.tools.Dialogs;
 import com.example.Stopi.tools.OnFragmentTransaction;
 import com.example.Stopi.profile.User;
@@ -36,17 +36,17 @@ public class ProgressFragment extends Fragment {
     private DBreader                dbReader;
     private List                    tips;
 
-    private DialogView dialogView;
+    private GenericDialog genericDialog;
     private View.OnClickListener dialogListener = v -> {
         try {
-            User user = DBreader.getInstance().getUser();
-            int cigsSmoked = Integer.parseInt(dialogView.getETtext(R.id.reset_amount));
+            User user = DBreader.get().getUser();
+            int cigsSmoked = Integer.parseInt(genericDialog.getETtext(R.id.reset_amount));
             if (user.updateTotalCigs(cigsSmoked))
-                DBupdater.getInstance().updateUser(user);
+                DBupdater.get().updateUser(user);
             pastData.updateViewData();
-            dialogView.dismiss();
+            genericDialog.dismiss();
         } catch (NumberFormatException e){
-            dialogView.setETerror(R.id.reset_amount, "Please enter a number");
+            genericDialog.setETerror(R.id.reset_amount, "Please enter a number");
         }
     };
 
@@ -66,11 +66,15 @@ public class ProgressFragment extends Fragment {
         pastData        = SmokerDataFragment.newInstance(Section.Before);
         futureData      = SmokerDataFragment.newInstance(Section.After);
 
+        dbReader        = DBreader.get();
+        tips            = dbReader.getTips();
+
         findViews();
         setListeners();
 
-        dbReader        = DBreader.getInstance();
-        tips            = dbReader.getTips();
+        if(!App.isNetworkAvailable()) return view;
+
+        loadRandomTip();
 
         user_main_goal  .setText(dbReader.getUser().getGoal());
 
@@ -95,18 +99,19 @@ public class ProgressFragment extends Fragment {
         random_lbl_tip.setOnClickListener(v -> loadRandomTip());
 
         user_main_goal.setOnClickListener(v ->
-                Dialogs.getInstance().createGoalDialog(user_main_goal).show()
+                Dialogs.get().goalDialog(user_main_goal).show()
         );
 
         reset_progress.setOnClickListener(v -> {
-            dialogView = Dialogs.getInstance().createResetDialog(dialogListener);
-            dialogView.show();
+            genericDialog = Dialogs.get().resetDialog(dialogListener);
+            genericDialog.show();
         });
     }
 
     //====================================================
 
     private void loadRandomTip(){
+        if(tips.size() < 1) return;
         int rand        = new Random().nextInt(tips.size());
         String tip      = (String) tips.get(rand);
         random_lbl_tip  .setText(tip);
@@ -117,7 +122,7 @@ public class ProgressFragment extends Fragment {
     private void updateProgressClock(){ time_lbl_passed.setText(formatDuration()); }
 
     private String formatDuration() {
-        long duration   = DBreader.getInstance().getUser().getRehabDuration();
+        long duration   = DBreader.get().getUser().getRehabDuration();
         long years      = TimeUnit.MILLISECONDS.toDays(duration) / 365;
         long months     = (TimeUnit.MILLISECONDS.toDays(duration) % 365) / 30;
         long days       = TimeUnit.MILLISECONDS.toDays(duration) % 30;

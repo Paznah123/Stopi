@@ -59,16 +59,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
         holder.user_goal                .setText("\""+ user.getGoal() +"\"");
         holder.user_score               .setText("High Score: "+ user.getHighScore());
 
-        DBreader.getInstance()          .readPic(KEYS.PROFILE, holder.user_IMG, user.getUid());
+        DBreader.get()          .readPic(KEYS.PROFILE, holder.user_IMG, user.getUid());
 
         setViewHolderListeners(holder, user);
     }
 
     private void setViewHolderListeners(MyViewHolder holder, User user) {
-        holder.user_send_msg .setOnClickListener(v -> Dialogs.getInstance()     .createEmailDialog(user.getUid()).show());
-        holder.user_history  .setOnClickListener(v -> Dialogs.getInstance()     .createFeedDialog(user).show());
-        holder.user_gift     .setOnClickListener(v -> Store.getInstance()       .chooseGift(user));
-        holder.svc           .setOnClickListener(v -> Utils.getInstance()       .onCardClick(holder.svc));
+        holder.user_send_msg .setOnClickListener(v -> Dialogs   .get()     .emailDialog(user).show());
+        holder.user_history  .setOnClickListener(v -> Dialogs   .get()     .feedDialog(user).show());
+        holder.user_gift     .setOnClickListener(v -> Store     .get()     .chooseGift(user));
+        holder.svc           .setOnClickListener(v -> Utils     .get()     .onCardClick(holder.svc));
     }
     
     //====================================================

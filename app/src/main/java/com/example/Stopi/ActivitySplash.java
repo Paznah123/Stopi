@@ -1,12 +1,18 @@
 package com.example.Stopi;
 
 import android.animation.Animator;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
+import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.Utils;
 import com.example.Stopi.profile.LoginActivity;
 
@@ -14,6 +20,8 @@ public class ActivitySplash extends AppCompatActivity {
 
     private final int ANIMATION_DURATION = 5000;
     private ImageView splash_IMG_logo;
+
+    private ProgressBar progressBar;
 
     //====================================================
 
@@ -23,6 +31,10 @@ public class ActivitySplash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         splash_IMG_logo = findViewById(R.id.splash_IMG_logo);
+        progressBar = findViewById(R.id.loading_bar);
+        progressBar.getIndeterminateDrawable()
+                .setColorFilter(Color.parseColor("#FFBB86FC"),
+                                android.graphics.PorterDuff.Mode.SRC_ATOP);
 
         showView(splash_IMG_logo);
     }
@@ -48,7 +60,8 @@ public class ActivitySplash extends AppCompatActivity {
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
-                        Utils.getInstance().myStartActivity(ActivitySplash.this, LoginActivity.class);
+                        Utils.get().myStartActivity(ActivitySplash.this, LoginActivity.class);
+                        overridePendingTransition(0, 0);
                     }
 
                     @Override
@@ -58,5 +71,6 @@ public class ActivitySplash extends AppCompatActivity {
                     public void onAnimationRepeat(Animator animator) { }
                 });
     }
+
 
 }

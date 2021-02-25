@@ -12,6 +12,7 @@ import com.example.Stopi.R;
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.profile.User;
 import com.example.Stopi.dataBase.Refs;
+import com.example.Stopi.tools.App;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -51,7 +52,7 @@ public class FeedFragment extends Fragment {
                 HashMap<String,User> usersMap = new HashMap<>();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
-                    if(!user.getName().equals(DBreader.getInstance().getUser().getName()))
+                    if(!user.getName().equals(DBreader.get().getUser().getName()))
                         usersMap.put(user.getUid(),user);
                 }
                 onFeedRefresh.updateFeed(usersMap);

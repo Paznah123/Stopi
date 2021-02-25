@@ -9,7 +9,7 @@
         android:id="@+id/chats_item"
         android:name="com.example.Stopi.social.ChatsFragment"
         android:label="Inbox"
-        tools:layout="@layout/fragment_chats" />
+        tools:layout="@layout/fragment_users" />
 
     <fragment
         android:id="@+id/progress_item"

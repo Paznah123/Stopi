@@ -45,11 +45,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final User user = mUsers.get(keys.get(position));
 
-        String lastSeen = Utils.getInstance().formatToDate(user.getLastSeen());
+        String lastSeen = Utils.get().formatToDate(user.getLastSeen());
         Status status = user.getStatus();
 
-        DBreader.getInstance()  .readPic(KEYS.PROFILE, holder.profile_image, user.getUid());
-        holder.status_dot       .setImageResource(Utils.getInstance().getDotByStatus(user.getStatus()));
+        DBreader.get()  .readPic(KEYS.PROFILE, holder.profile_image, user.getUid());
+        holder.status_dot       .setImageResource(Utils.get().getDotByStatus(user.getStatus()));
         holder.username         .setText(user.getName());
         holder.last_seen        .setText("Last seen: " + lastSeen);
         holder.status           .setText(status.name());

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.example.Stopi.R;
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.tools.KEYS;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class RewardsFragment extends Fragment {
     //====================================================
 
     void createRewards(List<Reward> rewards){
-        int time = (int) TimeUnit.MILLISECONDS.toDays(DBreader.getInstance().getUser().getRehabDuration());
+        int time = (int) TimeUnit.MILLISECONDS.toDays(DBreader.get().getUser().getRehabDuration());
         for (int i = 0; i < KEYS.REWARDS_AMOUNT; i++) {
             int max = (int)(Math.pow(i,3)+1);
             LocalDate newDate = LocalDate.now().plusDays(max);

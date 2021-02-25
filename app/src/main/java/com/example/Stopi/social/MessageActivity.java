@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.Stopi.dataBase.DBupdater;
 import com.example.Stopi.R;
+import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.Utils;
 import com.example.Stopi.profile.User;
 import com.example.Stopi.dataBase.DBreader;
@@ -40,7 +41,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private RecyclerView            recyclerView;
     private LinearLayoutManager     linearLayoutManager;
-    private MessageAdapter          messageAdapter;
     private List<Message>           mChat;
 
     private String                  chatId = "";
@@ -48,16 +48,17 @@ public class MessageActivity extends AppCompatActivity {
     //=============================
 
     private Handler handler = new Handler();
-    private Runnable runnable = () -> DBupdater.getInstance().updateStatus(Status.Online);
+    private Runnable runnable = () -> DBupdater.get().updateStatus(Status.Online);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-        handler.postDelayed(runnable,350);
+
         final String userId     = getIntent().getStringExtra("userid");
-        chatId                  = Utils.getInstance().chatIdHash(userId);
         mChat                   = new ArrayList<>();
+        chatId                  = Utils.get().chatIdHash(userId);
+        handler                 .postDelayed(runnable,350);
 
         findViews();
         initRecyclerView();
@@ -68,7 +69,7 @@ public class MessageActivity extends AppCompatActivity {
     //=============================
 
     private void findViews() {
-        recyclerView        = findViewById(R.id.recycler_view);
+        recyclerView        = findViewById(R.id.messages_recycler_view);
         profile_image       = findViewById(R.id.profile_image);
         username            = findViewById(R.id.username);
         last_seen           = findViewById(R.id.user_last_seen);
@@ -89,7 +90,7 @@ public class MessageActivity extends AppCompatActivity {
         btn_send.setOnClickListener(view -> {
             String msg = text_send.getText().toString();
             if(!msg.equals(""))
-                sendMessage(DBreader.getInstance().getUser().getUid(),userId,msg);
+                sendMessage(App.getLoggedUser().getUid(), userId, msg);
             else
                 text_send.setError("Enter a message");
             text_send.setText("");
@@ -104,14 +105,14 @@ public class MessageActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         User user               = dataSnapshot.getValue(User.class);
-                        String lastSeen         = Utils.getInstance().formatToDate(user.getLastSeen());
+                        String lastSeen         = Utils.get().formatToDate(user.getLastSeen());
                         Status status           = user.getStatus();
 
                         username                .setText(user.getName());
-                        userStatus              .setImageResource(Utils.getInstance().getDotByStatus(status));
+                        userStatus              .setImageResource(Utils.get().getDotByStatus(status));
                         last_seen               .setText("Last seen: " + lastSeen);
 
-                        DBreader.getInstance()  .readPic(PROFILE,profile_image, user.getUid());
+                        DBreader.get()  .readPic(PROFILE,profile_image, user.getUid());
 
                         if (status.equals(Status.Online))
                             last_seen.setVisibility(View.INVISIBLE);
@@ -142,8 +143,7 @@ public class MessageActivity extends AppCompatActivity {
                 mChat.clear();
                 for(DataSnapshot snapshot:dataSnapshot.getChildren())
                     mChat.add(snapshot.getValue(Message.class));
-                messageAdapter = new MessageAdapter(mChat);
-                recyclerView.setAdapter(messageAdapter);
+                recyclerView.setAdapter(new MessageAdapter(mChat));
             }
 
             @Override

@@ -1,10 +1,9 @@
 package com.example.Stopi.tools;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,12 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import java.util.HashMap;
 
-public class DialogView {
+public class GenDialogFragment extends BaseDialogFragment<GenDialogFragment.OnDialogFragmentClickListener> {
 
     private View view;
-
-    private AlertDialog                     dialog;
-    private AlertDialog.Builder             builder;
 
     private MaterialButton                  confirm;
     private MaterialButton                  cancel;
@@ -29,19 +25,31 @@ public class DialogView {
 
     private RecyclerView                    itemsList;
 
-    //======================================
-
-    public DialogView(View view) {
-        this.view       = view;
-        this.builder    = new AlertDialog.Builder(view.getContext());
-        this.dialog     = builder.create();
-        this.dialog     .setView(view);
-        this.dialog     .getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    public interface OnDialogFragmentClickListener {
+        void onOkClicked(GenDialogFragment dialog);
+        void onCancelClicked(GenDialogFragment dialog);
     }
 
-    public void show(){ if(!((Activity) view.getContext()).isFinishing()) dialog.show(); }
+    //======================================
 
-    public void dismiss(){ dialog.dismiss(); }
+    public static GenDialogFragment newInstance(int layoutId) {
+        GenDialogFragment frag = new GenDialogFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("layoutId", layoutId);
+        frag.setArguments(args);
+
+        return frag;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        int layoutId = getArguments().getInt("layoutId");
+        view = inflater.inflate(layoutId, container, false);
+
+        return view;
+    }
 
     //======================================
 
@@ -51,7 +59,7 @@ public class DialogView {
 
     public TextView getTextView(int textView_layout_id){ return this.textViewsMap.get(textView_layout_id); }
 
-    public DialogView addTextViews(int[] layout_id_arr) {
+    public GenDialogFragment addTextViews(int[] layout_id_arr) {
         if (textViewsMap == null)
             this.textViewsMap = new HashMap<>();
         for (int layout_id : layout_id_arr)
@@ -70,7 +78,7 @@ public class DialogView {
 
     public void setETerror(int editText_layoutId, String error){ editTextsMap.get(editText_layoutId).setError(error); }
 
-    public DialogView addEditTexts(int[] layout_id_arr) {
+    public GenDialogFragment addEditTexts(int[] layout_id_arr) {
         if (editTextsMap == null)
             this.editTextsMap = new HashMap<>();
         for (int layout_id : layout_id_arr)
@@ -83,7 +91,7 @@ public class DialogView {
 
     public ImageView getImageView(int imageView_layout_id){ return this.imageViewsMap.get(imageView_layout_id); }
 
-    public DialogView addImageViews(int[] layout_id_arr) {
+    public GenDialogFragment addImageViews(int[] layout_id_arr) {
         if (textViewsMap == null)
             this.textViewsMap = new HashMap<>();
         for (int layout_id : layout_id_arr)
@@ -98,7 +106,7 @@ public class DialogView {
      * @param listAdapter adapter for list items
      * @throws NullPointerException if items list not set by id
      */
-    public DialogView setRecyclerViewAdapter(RecyclerView.Adapter listAdapter) throws NullPointerException {
+    public GenDialogFragment setRecyclerViewAdapter(RecyclerView.Adapter listAdapter) throws NullPointerException {
         if (itemsList != null) {
             itemsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
             itemsList.setAdapter(listAdapter);
@@ -113,7 +121,7 @@ public class DialogView {
      * @param listener button click listener
      * @throws NullPointerException if confirm button not set by id
      */
-    public DialogView setConfirmListener(View.OnClickListener listener) throws NullPointerException {
+    public GenDialogFragment setConfirmListener(View.OnClickListener listener) throws NullPointerException {
         if (confirm != null) {
             confirm.setOnClickListener(listener);
             return this;
@@ -125,7 +133,7 @@ public class DialogView {
      * @param listener button click listener
      * @throws NullPointerException if cancel button not set by id
      */
-    public DialogView setCancelListener(View.OnClickListener listener) throws NullPointerException {
+    public GenDialogFragment setCancelListener(View.OnClickListener listener) throws NullPointerException {
         if(cancel != null) {
             cancel.setOnClickListener(listener);
             return this;
@@ -135,11 +143,11 @@ public class DialogView {
 
     //======================================
 
-    public DialogView findRecyclerViewById(int list_view_layout_id) { itemsList = view.findViewById(list_view_layout_id); return this; }
+    public GenDialogFragment findRecyclerViewById(int list_view_layout_id) { itemsList = view.findViewById(list_view_layout_id); return this; }
 
-    public DialogView findConfirmButtonById(int btn_layout_id) { confirm = view.findViewById(btn_layout_id); return this; }
+    public GenDialogFragment findConfirmButtonById(int btn_layout_id) { confirm = view.findViewById(btn_layout_id); return this; }
 
-    public DialogView findCancelButtonById(int btn_layout_id) { cancel = view.findViewById(btn_layout_id); return this; }
+    public GenDialogFragment findCancelButtonById(int btn_layout_id) { cancel = view.findViewById(btn_layout_id); return this; }
 
     //======================================
 
@@ -147,7 +155,4 @@ public class DialogView {
 
     public MaterialButton getCancelButton() { return cancel; }
 
-    public AlertDialog getAlertDialog() { return dialog; }
-
 }
-

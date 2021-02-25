@@ -15,7 +15,7 @@ public class  TestDB {
         for (int i = 0; i < users.size(); i++) {
             String uId = Refs.getUsersRef().push().getKey();
             users.get(i).setUid(uId);
-            DBupdater.getInstance().updateUser(users.get(i));
+            DBupdater.get().updateUser(users.get(i));
         }
     }
 
@@ -280,7 +280,7 @@ public class  TestDB {
         lenPhotos.put("","");
         lenPhotos.put("","");
         lenPhotos.put("","");
-        
+
         return lenPhotos;
     }
 

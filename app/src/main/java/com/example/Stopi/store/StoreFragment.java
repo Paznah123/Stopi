@@ -49,7 +49,7 @@ public class StoreFragment extends Fragment {
     }
 
     private void initViews() {
-        store_items = Store.getInstance().getItems();
+        store_items = Store.get().getItems();
         store_list.setLayoutManager(new GridLayoutManager(getContext(),2));
         storeAdapter = new ItemsAdapter(store_items);
         storeAdapter.setClickListener(onCoinsChanged);

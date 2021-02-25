@@ -47,22 +47,22 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.StoreViewHol
         holder.store_item_title     .setText(storeItem.getTitle());
         holder.store_item_price     .setText(""+ storeItem.getPrice());
 
-        DBreader.getInstance()      .readPic(KEYS.STORE,holder.store_item_photo, storeItem.getTitle());
+        DBreader.get()      .readPic(KEYS.STORE,holder.store_item_photo, storeItem.getTitle());
 
         if(onCoinsChanged != null)  // store fragment
             holder.svc              .setOnClickListener(v -> beginPurchase(storeItem));
         else                        // bought_items fragment
-            holder.svc              .setOnClickListener(v -> Utils.getInstance().onCardClick(holder.svc));
+            holder.svc              .setOnClickListener(v -> Utils.get().onCardClick(holder.svc));
     }
 
     private void beginPurchase(StoreItem storeItem){
-        User user = DBreader.getInstance().getUser();
+        User user = DBreader.get().getUser();
         if(storeItem.getPrice() > user.getCoins()){
             App.toast("Not Enough Coins!");
             return;
         }
-        Store.getInstance().buyItem(user, storeItem);
-        DBupdater.getInstance().updateGiftBag(user);
+        Store.get().buyItem(user, storeItem);
+        DBupdater.get().updateGiftBag(user);
         onCoinsChanged.updateWallet();
     }
 

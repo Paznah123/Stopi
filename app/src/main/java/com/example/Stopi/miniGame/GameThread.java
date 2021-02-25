@@ -3,11 +3,9 @@ package com.example.Stopi.miniGame;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import android.widget.TextView;
-
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.dataBase.DBupdater;
 import com.example.Stopi.tools.Dialogs;
-
 import java.util.concurrent.TimeUnit;
 
 public class GameThread extends Thread {
@@ -60,9 +58,9 @@ public class GameThread extends Thread {
 
     public void safeStop() {
         running = false;
-        if(DBreader.getInstance().getUser().setHighScore(holesScored)) {
-            Dialogs.getInstance().createHighScoreDialog().show();
-            DBupdater.getInstance().saveLoggedUser();
+        if(DBreader.get().getUser().setHighScore(holesScored)) {
+            Dialogs.get().highScoreDialog().show();
+            DBupdater.get().saveLoggedUser();
         }
         interrupt();
     }

@@ -13,6 +13,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+
 public class Utils {
 
     private static  Utils           instance;
@@ -21,7 +24,10 @@ public class Utils {
 
     //=============================
 
-    public static Utils getInstance() { return instance; }
+    /**
+     * gets the singleton
+     */
+    public static Utils get() { return instance; }
 
     /**
      * must call addContext for using this object methods!
@@ -38,7 +44,7 @@ public class Utils {
      * @param userId second userId for the chat (not logged firebase user)
      */
     public String chatIdHash(String userId){
-        String chatKey = userId + DBreader.getInstance().getUser().getUid();
+        String chatKey = userId + DBreader.get().getUser().getUid();
         int chatId = 0;
         for (int i = 0; i < chatKey.length(); i++)
             chatId += chatKey.charAt(i)*31 % 2349;
@@ -82,7 +88,7 @@ public class Utils {
 
     /**
      * plays sound
-     * @param rawSound
+     * @param rawSound sound id
      */
     public void playSound(Context context, int rawSound) {
         if(mp != null) mp.reset();

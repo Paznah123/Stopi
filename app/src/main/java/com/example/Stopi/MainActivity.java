@@ -12,6 +12,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.example.Stopi.store.OnCoinsChanged;
+import com.example.Stopi.tools.App;
+import com.example.Stopi.tools.GenericDialog;
 import com.example.Stopi.tools.OnFragmentTransaction;
 import com.example.Stopi.profile.OnProfileUpdate;
 import com.example.Stopi.dataBase.DBreader;
@@ -21,6 +23,7 @@ import com.example.Stopi.tools.KEYS.Status;
 import com.example.Stopi.profile.CreateProfileActivity;
 import com.example.Stopi.profile.User;
 import com.example.Stopi.tools.Dialogs;
+import com.example.Stopi.tools.SharedPrefs;
 import com.example.Stopi.tools.Utils;
 import com.google.android.material.navigation.NavigationView;
 import java.util.Calendar;
@@ -49,13 +52,14 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        DBupdater.getInstance().updateStatus(Status.Offline);
+        DBupdater.get().updateStatus(Status.Offline);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        DBupdater.getInstance().updateStatus(Status.Online);
+        Dialogs.get().addContext(this);
+        DBupdater.get().updateStatus(Status.Online);
     }
 
     //===========================================
@@ -65,16 +69,17 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Dialogs.getInstance().addContext(this);
-        dbReader = dbReader.getInstance();
+        dbReader = DBreader.get();
         user = dbReader.getUser();
+        DBupdater.get().updateStatus(Status.Online);
+        Dialogs.get().addContext(this);
 
-        if(user == null) {
-            Utils.getInstance().myStartActivity(this, CreateProfileActivity.class);
+        if(SharedPrefs.get().isFirstLogin()) {
+            Utils.get().myStartActivity(this, CreateProfileActivity.class);
             return;
         }
 
-        DBupdater.getInstance().updateStatus(Status.Online);
+        if(!initServerConnection()) return;
 
         findViews();
         initDrawer();
@@ -98,9 +103,9 @@ public class MainActivity extends AppCompatActivity implements
     //===========================================
 
     private void initViews() {
-        drawer_lbl_userName     .setText(user.getName());
-        user_coins              .setText("Coins - "+ user.getCoins());
-        dbReader.getInstance()  .readPic(KEYS.PROFILE, drawer_user_pic, user.getUid());
+        drawer_lbl_userName .setText(user.getName());
+        user_coins          .setText("Coins - "+ user.getCoins());
+        dbReader.get()      .readPicNoCache(KEYS.PROFILE, drawer_user_pic, user.getUid());
     }
 
     private void initDrawer() {
@@ -127,8 +132,23 @@ public class MainActivity extends AppCompatActivity implements
         user.setLoggedToday(Calendar.getInstance().getTimeInMillis());
         user.incrementCoins(1500);
         updateWallet();
-        Dialogs.getInstance().createRewardDialog().show();
-        DBupdater.getInstance().updateUser(user);
+        Dialogs.get().rewardDialog().show();
+        DBupdater.get().updateUser(user);
+    }
+
+    //===========================================
+
+    private boolean initServerConnection() {
+        DBreader dbReader = DBreader.get();
+        if(!App.isNetworkAvailable()){
+            Dialogs.get().noInternetDialog().show();
+            return false;
+        } else if (dbReader.getUser() == null) { // if data hasnt arrived from db yet
+            dbReader.readUserData();
+            Utils.get().myStartActivity(this, ActivitySplash.class);
+            return false;
+        }
+        return true;
     }
 
     //=========================================== call backs
@@ -140,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void updateProfile(User user) {
-        dbReader.getInstance().readPic(KEYS.PROFILE, drawer_user_pic,user.getUid());
+        dbReader.get().readPicNoCache(KEYS.PROFILE, drawer_user_pic,user.getUid());
         drawer_lbl_userName.setText(user.getName());
     }
 

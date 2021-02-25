@@ -14,6 +14,8 @@ public interface KEYS {
     String  STORE_PICS_REF          = "gs://fumi-app.appspot.com/store_pics/";
     String  FULL_PROFILE_PIC_URL    = "gs://fumi-app.appspot.com/profile_pics/";
 
+    int     GOOGLE_SIGN_IN_CODE     = 123;
+
     int     STORE                   = 1;
     int     PROFILE                 = 2;
     int     REWARDS_AMOUNT          = 13;

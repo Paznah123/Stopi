@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.example.Stopi.R;
 import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.Dialogs;
+import com.example.Stopi.tools.SharedPrefs;
 import com.example.Stopi.tools.Utils;
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.dataBase.DBupdater;
@@ -63,8 +64,7 @@ public class SettingsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             filePathUri = data.getData();
-            DBupdater.getInstance().uploadImage(filePathUri, user -> {
-                App.toast("Image Uploaded");
+            DBupdater.get().uploadImage(filePathUri, user -> {
                 user_profile_pic.setImageURI(filePathUri);
                 onProfileUpdate.updateProfile(user);
             });
@@ -79,7 +79,7 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        user = DBreader.getInstance().getUser();
+        user = DBreader.get().getUser();
 
         findViews();
         setCurrentValues();
@@ -104,22 +104,23 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setListeners() {
-        user_profile_pic    .setOnClickListener(v -> Utils.getInstance().getImage(this));
+        user_profile_pic    .setOnClickListener(v -> Utils.get().getImage(this));
 
         update_btn          .setOnClickListener(v -> updateUserData() );
 
         logout              .setOnClickListener(v -> {
-            FirebaseAuth    .getInstance()      .signOut();
-            Utils           .getInstance()      .myStartActivity(getActivity(), LoginActivity.class);
+            Utils           .get()     .myStartActivity(getActivity(), LoginActivity.class);
+            FirebaseAuth    .getInstance()     .signOut();
         });
 
         delete_account      .setOnClickListener(v -> {
-            DBupdater       .getInstance()      .deleteUserData(user.getUid());
+            DBupdater       .get()      .deleteUserData(user.getUid());
+            SharedPrefs     .get()      .deleteFirstLogin();
+            Utils           .get()      .myStartActivity(getActivity(), LoginActivity.class);
             FirebaseAuth    .getInstance()      .signOut();
-            Utils           .getInstance()      .myStartActivity(getActivity(), LoginActivity.class);
         });
 
-        currency.setOnClickListener(v -> Dialogs.getInstance()
+        currency.setOnClickListener(v -> Dialogs.get()
                 .createCurrencyDialog(getParentFragmentManager(), new CountryCurrencyPickerListener() {
                     @Override
                     public void onSelectCountry(Country country) {
@@ -135,7 +136,7 @@ public class SettingsFragment extends Fragment {
     //============================================
 
     private void setCurrentValues(){
-        DBreader.getInstance()          .readPic(KEYS.PROFILE, user_profile_pic, user.getUid());
+        DBreader.get()          .readPicNoCache(KEYS.PROFILE, user_profile_pic, user.getUid());
 
         user_name       .getEditText()  .setText(""+ user.getName());
         years_smoked    .getEditText()  .setText(""+ user.getYearsSmoked());
@@ -151,11 +152,11 @@ public class SettingsFragment extends Fragment {
 
     private void updateUserData() {
         try {
-            String name = getInputLayoutText(user_name);
-            double yearsSmoked = Double.parseDouble(getInputLayoutText(years_smoked));
+            String name         = getInputLayoutText(user_name);
+            int cigsPerDay      = Integer.parseInt(getInputLayoutText(cigs_per_day));
+            int cigsPerPack     = Integer.parseInt(getInputLayoutText(cigs_per_pack));
+            double yearsSmoked  = Double.parseDouble(getInputLayoutText(years_smoked));
             double pricePerPack = Double.parseDouble(getInputLayoutText(price_per_pack));
-            int cigsPerDay = Integer.parseInt(getInputLayoutText(cigs_per_day));
-            int cigsPerPack = Integer.parseInt(getInputLayoutText(cigs_per_pack));
 
             user                        .setName(name)
                                         .setYearsSmoked(yearsSmoked)
@@ -165,10 +166,12 @@ public class SettingsFragment extends Fragment {
                                         .setCurrencySymbol(currencySymbol == null ?
                                                  user.getCurrencySymbol() : currencySymbol);
 
-            DBupdater.getInstance()     .updateUser(user);
+            DBupdater.get()     .updateUser(user);
             onProfileUpdate             .updateProfile(user.setName(name));
 
-            App.toast("Data Updated!");
+            if(App.isNetworkAvailable()) App.toast("Data Updated!");
+            else                         App.toast("Data Not Updated!");
+
         } catch (NumberFormatException e) { App.toast("Error in input!"); }
     }
 

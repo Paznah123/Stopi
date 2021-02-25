@@ -2,6 +2,7 @@
 <resources>
 
     <style name="AlertDialogCustom">
+        <item name="android:splitMotionEvents">false</item>
         <item name="android:headerBackground">@drawable/background</item>
         <item name="android:textColor">@color/purple_200</item>
         <item name="android:typeface">normal</item>

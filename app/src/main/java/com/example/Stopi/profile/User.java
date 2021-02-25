@@ -80,7 +80,7 @@ public class User implements Comparable, Serializable {
      */
     public boolean updateTotalCigs(double cigsSmoked) {
         if(cigsSmoked > 0){
-            Utils.getInstance().playSound(App.getAppContext(), R.raw.smoke_inhale);
+            Utils.get().playSound(App.getAppContext(), R.raw.smoke_inhale);
             cigsSinceQuit += cigsSmoked;
             this.setDateStoppedSmoking(Calendar.getInstance().getTimeInMillis());
             return true;

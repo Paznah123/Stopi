@@ -21,20 +21,23 @@ public class Store {
     public static void initStore(){
         if(instance == null) {
             instance = new Store();
-            DBreader.getInstance().readListData(KEYS.STORE_REF, instance.itemsList, StoreItem.class);
+            DBreader.get().readListData(KEYS.STORE_REF, instance.itemsList, StoreItem.class);
         }
     }
 
-    public static Store getInstance() { return instance; }
+    /**
+     * gets the singleton
+     */
+    public static Store get() { return instance; }
 
     public List<StoreItem> getItems() { return itemsList; }
 
     //=============================
 
     private OnGiftSent onGiftSent = user -> {
-        HashMap<String, StoreItem> boughtItems = DBreader.getInstance().getUser().getBoughtItems();
-        if(boughtItems.size() > 0) {
-            Dialogs.getInstance().createGiftDialog(boughtItems, user).show();
+        User loggedUser = DBreader.get().getUser();
+        if(loggedUser.getBoughtItems().size() > 0) {
+            Dialogs.get().giftDialog(loggedUser, user).show();
         } else
             App.toast("You have no items to send!");
     };
@@ -44,9 +47,9 @@ public class Store {
     public void chooseGift(User user){ onGiftSent.chooseGift(user); }
 
     public void sendGift(User userToGift, StoreItem itemToGift){
-        User loggedUser = DBreader.getInstance().getUser();
+        User loggedUser = DBreader.get().getUser();
         addStoreItem(userToGift, itemToGift);
-        DBupdater dbUpdate =  DBupdater.getInstance();
+        DBupdater dbUpdate =  DBupdater.get();
         dbUpdate.updateGiftBag(userToGift);
 
         if(itemToGift.getPrice() > 1)

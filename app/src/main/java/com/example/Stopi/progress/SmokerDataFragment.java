@@ -47,7 +47,7 @@ public class SmokerDataFragment extends Fragment {
                              Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_smoker_data, container, false);
 
-        utils = Utils.getInstance();
+        utils = Utils.get();
 
         findViews();
         if(getArguments() == null) mSection = Section.After;
@@ -82,7 +82,7 @@ public class SmokerDataFragment extends Fragment {
     //====================================================
 
     private void calculateStoppedSmokingData() {
-        User user = DBreader.getInstance().getUser();
+        User user = DBreader.get().getUser();
 
         progress_cigs.setText("Cigarettes not smoked: " + utils.formatNumber(user.cigsNotSmoked(), "##.#"));
         progress_money.setText("Money saved: " + utils.formatNumber(user.moneySaved(), "##.#") + " "+ user.getCurrencySymbol());
@@ -90,7 +90,7 @@ public class SmokerDataFragment extends Fragment {
     }
 
     private void calculateSmokerData(){
-        User user = DBreader.getInstance().getUser();
+        User user = DBreader.get().getUser();
 
         progress_cigs.setText("Cigarettes smoked: " + utils.formatNumber(user.totalCigsSmoked(), "##.#"));
         progress_money.setText("Money wasted: " + utils.formatNumber(user.moneyWasted(), "##.#") + " "+ user.getCurrencySymbol());

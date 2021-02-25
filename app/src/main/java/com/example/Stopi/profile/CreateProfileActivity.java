@@ -10,6 +10,7 @@ import com.example.Stopi.ActivitySplash;
 import com.example.Stopi.R;
 import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.Dialogs;
+import com.example.Stopi.tools.SharedPrefs;
 import com.example.Stopi.tools.Utils;
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.dataBase.DBupdater;
@@ -46,14 +47,11 @@ public class CreateProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             filePathUri = data.getData();
-            DBupdater.getInstance().uploadImage(filePathUri, user ->
-                    DBreader.getInstance().readPic(KEYS.PROFILE, user_profile_pic, App.getLoggedUser().getUid())
+            DBupdater.get().uploadImage(filePathUri, user ->
+                    DBreader.get().readPicNoCache(KEYS.PROFILE, user_profile_pic, App.getLoggedUser().getUid())
             );
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+        } else if (resultCode == ImagePicker.RESULT_ERROR)
             App.toast(new ImagePicker().Companion.getError(data));
-        } else {
-
-        }
     }
 
     @Override
@@ -79,16 +77,17 @@ public class CreateProfileActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        user_profile_pic.setOnClickListener(v -> Utils.getInstance().getImage(this));
+        user_profile_pic.setOnClickListener(v -> Utils.get().getImage(this));
 
         continue_btn.setOnClickListener(v -> {
             User user = createUserData();
-            DBupdater.getInstance()     .updateUser(user);
-            DBreader.getInstance()      .readUserData();
-            Utils.getInstance()         .myStartActivity(CreateProfileActivity.this, ActivitySplash.class);
+            DBupdater.get()     .updateUser(user);
+            DBreader.get()      .readUserData();
+            Utils.get()         .myStartActivity(CreateProfileActivity.this, ActivitySplash.class);
+            SharedPrefs.get().saveFirstLogin();
         });
 
-        currency_btn.setOnClickListener(v -> Dialogs.getInstance()
+        currency_btn.setOnClickListener(v -> Dialogs.get()
                 .createCurrencyDialog(getSupportFragmentManager(), new CountryCurrencyPickerListener() {
                     @Override
                     public void onSelectCountry(Country country) {

@@ -21,7 +21,6 @@ public class ChatsFragment extends Fragment {
 
     private View                    view;
     private RecyclerView            recyclerView;
-    private UserAdapter             userAdapter;
     private HashMap<String,User>    mUsers;
 
     //=============================
@@ -34,7 +33,7 @@ public class ChatsFragment extends Fragment {
 
         mUsers          = new HashMap<>();
 
-        recyclerView    = view.findViewById(R.id.recycler_view);
+        recyclerView    = view.findViewById(R.id.users_recycler_view);
         recyclerView    .setHasFixedSize(true);
         recyclerView    .setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -50,13 +49,12 @@ public class ChatsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
-                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     User user = snapshot.getValue(User.class);
                     if(!user.getUid().equals(App.getLoggedUser().getUid()))
                         mUsers.put(user.getUid(),user);
                 }
-                userAdapter = new UserAdapter(getContext(), mUsers);
-                recyclerView.setAdapter(userAdapter);
+                recyclerView.setAdapter(new UserAdapter(getContext(), mUsers));
             }
 
             @Override

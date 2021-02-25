@@ -44,10 +44,10 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
     //====================================================
 
     private void setHolderData(RewardsViewHolder holder, int position, Reward reward){
-        int time = (int)TimeUnit.MILLISECONDS.toDays(DBreader.getInstance().getUser().getRehabDuration());
+        int time = (int)TimeUnit.MILLISECONDS.toDays(DBreader.get().getUser().getRehabDuration());
         LocalDate date = reward.getUnlockDate();
         String text;
-
+        String reward_info = (String) DBreader.get().getRewardsInfo().get(position);
         if(reward.isUnlocked())
             text = "Unlocked!";
         else
@@ -56,7 +56,7 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
         holder.progressBar  .setMax(reward.getMax());
         holder.progressBar  .setProgress(time);
         holder.rewardText   .setText(reward.getRewardName());
-        holder.reward_info  .setText((String) DBreader.getInstance().getRewardsInfo().get(position));
+        holder.reward_info  .setText(reward_info != null ? reward_info : "");
         holder.unlock_date  .setText(text);
     }
 

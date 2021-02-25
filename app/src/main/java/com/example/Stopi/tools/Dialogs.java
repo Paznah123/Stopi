@@ -1,6 +1,9 @@
 package com.example.Stopi.tools;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -11,12 +14,10 @@ import com.example.Stopi.dataBase.DBupdater;
 import com.example.Stopi.dataBase.Refs;
 import com.example.Stopi.social.Message;
 import com.example.Stopi.store.GiftListAdapter;
-import com.example.Stopi.store.StoreItem;
 import com.example.Stopi.profile.User;
 import com.scrounger.countrycurrencypicker.library.CountryCurrencyPicker;
 import com.scrounger.countrycurrencypicker.library.Listener.CountryCurrencyPickerListener;
 import com.scrounger.countrycurrencypicker.library.PickerType;
-import java.util.HashMap;
 
 public class Dialogs {
 
@@ -24,30 +25,42 @@ public class Dialogs {
 
     private         LayoutInflater  inflater;
     private         Context         ctx;
+    private         Utils           utils;
 
     //=============================
 
-    public static Dialogs getInstance() { return instance; }
+    /**
+     * gets the singleton
+     */
+    public static Dialogs get() { return instance; }
 
     /**
      * must call addContext for using this object methods!
      */
     public static void initDialogs(){
-        if(instance == null)
+        if(instance == null){
             instance = new Dialogs();
+            instance.utils = Utils.get();
+        }
     }
 
     /**
      * adds context for layout inflater
      * needs activity context not app context
      */
-    public void addContext(Context activityContext){
+/*    public void addContext(Context activityContext){
         if(ctx == null) {
             ctx = activityContext;
-            inflater = LayoutInflater.from(ctx);
+            inflater = LayoutInflater.from(activityContext);
+        }
+    }*/
+
+    public void addContext(Context activityContext){
+        if(ctx == null || ((Activity)ctx).isFinishing()) {
+            ctx = activityContext;
+            inflater = LayoutInflater.from(activityContext);
         }
     }
-
     private View createDialogView(int layoutId){ return inflater.inflate(layoutId, null); }
 
     //====================================================
@@ -61,27 +74,29 @@ public class Dialogs {
 
     /**
      * creates AlertDialog for reset button click
+     * @param listener OnClickListener for button
      */
-    public DialogView createResetDialog(View.OnClickListener listener){
-        DialogView  dialogView  = new DialogView(createDialogView(R.layout.dialog_reset))
+    public GenericDialog resetDialog(View.OnClickListener listener){
+        GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_reset))
                                 .findConfirmButtonById(R.id.reset_confirm)
                                 .addEditTexts(new int[] {R.id.reset_amount})
                                 .setConfirmListener(listener);
-        return dialogView;
+        return genericDialog;
     }
 
     //====================================================
 
     /**
      * creates AlertDialog with user gift bag for sending gift
-     * @param itemsList logged user gift bag items
+     * @param loggedUser logged user
+     * @param userToGift gift receiver
      */
-    public DialogView createGiftDialog(HashMap<String, StoreItem> itemsList, User userToGift){
-        GiftListAdapter giftsAdapter    = new GiftListAdapter(itemsList, userToGift);
-        DialogView      dialogView      = new DialogView(createDialogView(R.layout.dialog_gift))
+    public GenericDialog giftDialog(User loggedUser, User userToGift){
+        GiftListAdapter giftsAdapter    = new GiftListAdapter(loggedUser.getBoughtItems(), userToGift);
+        GenericDialog genericDialog     = new GenericDialog(createDialogView(R.layout.dialog_gift))
                                         .findRecyclerViewById(R.id.gift_recycler_view)
                                         .setRecyclerViewAdapter(giftsAdapter);
-        return dialogView;
+        return genericDialog;
     }
 
     //====================================================
@@ -89,10 +104,10 @@ public class Dialogs {
     /**
      * creates AlertDialog for daily login reward
      */
-    public DialogView createRewardDialog() {
-        DialogView dialogView  = new DialogView(createDialogView(R.layout.dialog_login_reward))
+    public GenericDialog rewardDialog() {
+        GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_login_reward))
                                 .addTextViews(new int[] {R.id.reward_login_text});
-        return dialogView;
+        return genericDialog;
     }
 
     //====================================================
@@ -100,44 +115,44 @@ public class Dialogs {
     /**
      * creates AlertDialog when settings new high score in distraction game
      */
-    public DialogView createHighScoreDialog() {
-        DialogView  dialogView  = new DialogView(createDialogView(R.layout.dialog_high_score))
+    public GenericDialog highScoreDialog() {
+        GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_high_score))
                                 .addTextViews(new int[] {R.id.high_score_text});
-        return dialogView;
+        return genericDialog;
     }
 
     //====================================================
 
     /**
      * creates AlertDialog for attaching message to gift
-     * @param receiverKey email receiving userId
+     * @param receiver email receiving user
      */
-    public DialogView createEmailDialog(String receiverKey){
-        DialogView dialogView   = new DialogView(createDialogView(R.layout.dialog_email))
-                .addEditTexts(new int[] {R.id.email_message})
-                .findConfirmButtonById(R.id.email_attach)
-                .findCancelButtonById(R.id.email_cancel);
+    public GenericDialog emailDialog(User receiver){
+        GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_email))
+                        .addEditTexts(new int[] {R.id.email_message})
+                        .findConfirmButtonById(R.id.email_attach)
+                        .findCancelButtonById(R.id.email_cancel);
 
-        dialogView              .setConfirmListener(
+        genericDialog.setConfirmListener(
                 v -> {
-                    String msg = dialogView.getETtext(R.id.email_message);
+                    String msg = genericDialog.getETtext(R.id.email_message);
                     if(msg.isEmpty()) {
-                        dialogView.setETerror(R.id.email_message,"Enter a Message");
+                        genericDialog.setETerror(R.id.email_message,"Enter a Message");
                         return;
                     }
-                    User sender = DBreader.getInstance().getUser();
+                    User sender = DBreader.get().getUser();
                     Message email = new Message()
                             .setSender(sender.getUid())
-                            .setReceiver(receiverKey)
+                            .setReceiver(receiver.getUid())
                             .setMessage(msg);
-                    String chatId = Utils.getInstance().chatIdHash(receiverKey);
+                    String chatId = utils.chatIdHash(receiver.getUid());
                     Refs.getChatsRef().child(chatId).push().setValue(email);
                     App.toast("Message Sent!");
-                    dialogView.dismiss();
+                    genericDialog.dismiss();
                 })
-                .setCancelListener(v -> dialogView.dismiss());
+                .setCancelListener(v -> genericDialog.dismiss());
 
-        return dialogView;
+        return genericDialog;
     }
 
     //====================================================
@@ -145,22 +160,22 @@ public class Dialogs {
     /**
      *   creates AlertDialog for editing user goal
      */
-    public DialogView createGoalDialog(TextView tvGoal) {
-        DialogView dialogView   = new DialogView(createDialogView(R.layout.dialog_goal))
-                                .addEditTexts(new int[] {R.id.goal_text})
-                                .findConfirmButtonById(R.id.goal_confirm)
-                                .findCancelButtonById(R.id.goal_cancel);
+    public GenericDialog goalDialog(TextView tvGoal) {
+        GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_goal))
+                        .addEditTexts(new int[] {R.id.goal_text})
+                        .findConfirmButtonById(R.id.goal_confirm)
+                        .findCancelButtonById(R.id.goal_cancel);
 
-        dialogView  .setConfirmListener(
+        genericDialog.setConfirmListener(
                         v -> {
-                            String userGoal = dialogView.getETtext(R.id.goal_text);
+                            String userGoal = genericDialog.getETtext(R.id.goal_text);
                             tvGoal.setText(userGoal);
-                            DBupdater.getInstance().updateUserGoal(userGoal);
-                            dialogView.dismiss();
+                            DBupdater.get().updateUserGoal(userGoal);
+                            genericDialog.dismiss();
                         }
-        ).setCancelListener(v -> dialogView.dismiss());
+        ).setCancelListener(v -> genericDialog.dismiss());
 
-        return dialogView;
+        return genericDialog;
     }
 
     //====================================================
@@ -168,15 +183,38 @@ public class Dialogs {
     /**
      *   creates AlertDialog with user smoker history
      */
-    public DialogView createFeedDialog(User user) {
+    public GenericDialog feedDialog(User user) {
         int[] layout_id_arr     = {R.id.feed_cigs_smoked, R.id.feed_money_wasted, R.id.feed_life_lost};
-        DialogView dialogView   = new DialogView(createDialogView(R.layout.dialog_feed)).addTextViews(layout_id_arr);
+        GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_feed))
+                                    .addTextViews(layout_id_arr);
 
-        dialogView.setTVtext(R.id.feed_cigs_smoked,"Cigarettes not smoked: "+ Utils.getInstance().formatNumber(user.cigsNotSmoked(),"##.#"));
-        dialogView.setTVtext(R.id.feed_money_wasted,"Money saved: "+ Utils.getInstance().formatNumber(user.moneySaved(),"##.#") +" "+ user.getCurrencySymbol());
-        dialogView.setTVtext(R.id.feed_life_lost,"life gained: "+ Utils.getInstance().formatNumber(user.lifeGained(),"##.#") + " days");
+        genericDialog.setTVtext(R.id.feed_cigs_smoked,"Cigarettes not smoked: "+
+                                utils.formatNumber(user.cigsNotSmoked(),"##.#"));
 
-        return dialogView;
+        genericDialog.setTVtext(R.id.feed_money_wasted,"Money saved: "+
+                                utils.formatNumber(user.moneySaved(),"##.#") +" "+ user.getCurrencySymbol());
+
+        genericDialog.setTVtext(R.id.feed_life_lost,"life gained: "+
+                                utils.formatNumber(user.lifeGained(),"##.#") + " days");
+        return genericDialog;
+    }
+
+    //====================================================
+
+    /**
+     *   creates AlertDialog with user smoker history
+     */
+    public GenericDialog noInternetDialog() {
+        int[] layout_id_arr     = {R.id.internet_title, R.id.internet_text};
+        GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_no_internet))
+                .findConfirmButtonById(R.id.internet_btn_settings)
+                .addTextViews(layout_id_arr)
+                .setConfirmListener(v -> {
+                    Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                    ctx.startActivity(intent);
+                });
+
+        return genericDialog;
     }
 
     //====================================================
