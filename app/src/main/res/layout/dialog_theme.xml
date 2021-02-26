@@ -4,47 +4,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_dialog">
 
     <TextView
-        android:id="@+id/internet_title"
+        android:id="@+id/theme_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:padding="5dp"
-        android:text="No Internet detected"
+        android:text="Choose Theme"
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/internet_text"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/theme_recycler_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:padding="5dp"
-        android:text="Enable web services and restart"
-        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/internet_title" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/internet_btn_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?colorPrimary"
-        android:text="settings"
-        android:textSize="10dp"
-        app:cornerRadius="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/internet_text" />
+        app:layout_constraintTop_toBottomOf="@+id/theme_title"
+        tools:listitem="@layout/item_theme"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

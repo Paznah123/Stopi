@@ -1,4 +1,4 @@
-package com.example.Stopi.social;
+package com.example.Stopi.social.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,6 +52,7 @@ public class MessageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utils.get().onActivityCreateSetTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
@@ -127,7 +128,7 @@ public class MessageActivity extends AppCompatActivity {
                 });
     }
 
-//=============================
+    //=============================
 
     private void sendMessage(String sender,String receiver,String text){
         Message message = new Message() .setSender(sender)

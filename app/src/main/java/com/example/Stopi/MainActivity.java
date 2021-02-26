@@ -13,7 +13,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.example.Stopi.store.OnCoinsChanged;
 import com.example.Stopi.tools.App;
-import com.example.Stopi.tools.GenericDialog;
 import com.example.Stopi.tools.OnFragmentTransaction;
 import com.example.Stopi.profile.OnProfileUpdate;
 import com.example.Stopi.dataBase.DBreader;
@@ -23,7 +22,7 @@ import com.example.Stopi.tools.KEYS.Status;
 import com.example.Stopi.profile.CreateProfileActivity;
 import com.example.Stopi.profile.User;
 import com.example.Stopi.tools.Dialogs;
-import com.example.Stopi.tools.SharedPrefs;
+import com.example.Stopi.profile.login.SharedPrefs;
 import com.example.Stopi.tools.Utils;
 import com.google.android.material.navigation.NavigationView;
 import java.util.Calendar;
@@ -40,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements
     private ImageView       drawer_user_pic;
 
     private TextView        main_lbl_title;
-
     private TextView        drawer_lbl_userName;
     private TextView        user_coins;
 
@@ -66,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utils.get().onActivityCreateSetTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -144,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements
             Dialogs.get().noInternetDialog().show();
             return false;
         } else if (dbReader.getUser() == null) { // if data hasn't arrived from db yet
-            dbReader.readUserData();
             Utils.get().myStartActivity(this, ActivitySplash.class);
             return false;
         }

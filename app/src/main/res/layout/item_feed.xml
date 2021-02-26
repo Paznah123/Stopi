@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.furkanakdemir.surroundcardview.SurroundCardView
-    android:id="@+id/surround_card_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/surround_card_view"
     style="@style/svc"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -26,10 +26,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_IMG"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
             android:text="Israel Israel"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="12dp"
             android:textStyle="bold" />
 
@@ -38,10 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/user_LBL_name"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
             android:text="High score: 141"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="12dp"
             android:textStyle="bold" />
 
@@ -49,26 +47,22 @@
             android:id="@+id/user_clean_period"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/text"
             android:layout_toEndOf="@id/user_IMG"
             android:layout_marginStart="10dp"
-            android:ellipsize="end"
             android:text="Clean for 4 Years 137 days!"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:textStyle="bold"  />
+            android:textColor="@color/black"
+            android:textSize="15dp"/>
 
         <TextView
             android:id="@+id/user_goal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/text"
             android:layout_below="@id/user_clean_period"
             android:layout_alignStart="@id/user_clean_period"
-            android:layout_marginTop="10dp"
-            android:ellipsize="end"
             android:maxLines="4"
-            android:text="My moto is blah blah blah !"
-            android:textColor="#000000"
-            android:textSize="15dp" />
+            android:text="My moto is blah blah blah !" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -101,6 +95,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
 </com.furkanakdemir.surroundcardview.SurroundCardView>
 

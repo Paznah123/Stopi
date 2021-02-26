@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     android:background="@drawable/background"
-    tools:context=".progress.ProgressFragment"
-    android:padding="5dp">
+    tools:context=".progress.ProgressFragment">
 
     <com.furkanakdemir.surroundcardview.SurroundCardView
         android:id="@+id/progress_timer"
@@ -39,9 +39,9 @@
                 android:id="@+id/time_passed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                style="@style/text"
                 android:layout_below="@+id/time_free_title"
-                android:textSize="25dp" />
+                android:textSize="20dp" />
 
         </RelativeLayout>
 
@@ -49,14 +49,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/reset_progress"
-        android:backgroundTint="@color/colorPrimaryDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        style="@style/ButtonDesign"
+        android:backgroundTint="@color/red"
         android:text="reset progress"
-        android:textStyle="bold"
         android:textSize="20dp"
-        app:cornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progress_timer" />
@@ -65,9 +63,7 @@
         android:id="@+id/user_main_goal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background"
         style="@style/svc"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reset_progress">
@@ -86,11 +82,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/svc"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/background"
+        app:layout_constraintHeight_min="120dp"
         app:layout_constraintBottom_toBottomOf="@+id/dummy_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="120dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_main_goal"
 >

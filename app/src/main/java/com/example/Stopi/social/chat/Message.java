@@ -1,4 +1,4 @@
-package com.example.Stopi.social;
+package com.example.Stopi.social.chat;
 
 public class Message {
 

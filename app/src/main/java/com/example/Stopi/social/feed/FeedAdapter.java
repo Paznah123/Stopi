@@ -1,4 +1,4 @@
-package com.example.Stopi.social;
+package com.example.Stopi.social.feed;
 
 import android.view.LayoutInflater;
 import android.view.View;

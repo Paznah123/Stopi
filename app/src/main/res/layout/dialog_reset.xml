@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_dialog">
@@ -32,10 +31,8 @@
         android:id="@+id/reset_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        style="@style/text"
         android:text="how many cigarettes you smoked?"
-        android:textSize="15dp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/goal_text"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,12 +54,11 @@
         android:id="@+id/reset_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_200"
-        android:text="settings"
-        android:textSize="10dp"
-        app:cornerRadius="15dp"
+        style="@style/ButtonDesign"
+        android:text="confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reset_question" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

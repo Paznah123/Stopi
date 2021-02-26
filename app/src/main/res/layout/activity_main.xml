@@ -16,7 +16,7 @@
             android:id="@+id/main_tool_bar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:background="@color/colorAccent"
+            android:background="?colorPrimaryVariant"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="15dp"
@@ -36,21 +36,22 @@
                 android:id="@+id/main_lbl_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/title"
+                android:textSize="20dp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/main_drawer_btn"
                 android:layout_marginStart="15dp"
-                android:text="@string/app_name"
-                android:textSize="20dp"
-                style="bold"/>
+                android:text="@string/app_name"/>
 
             <TextView
                 android:id="@+id/user_coins"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/title"
+                android:textSize="20dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:text="Patches - 1000"
-                android:textSize="20dp"/>
+                android:text="Coins - 1000"/>
 
         </RelativeLayout>
 

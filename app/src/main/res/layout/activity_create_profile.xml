@@ -6,18 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".profile.LoginActivity">
+    tools:context=".profile.login.LoginActivity">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        style="@style/text"
         android:text="Welcome!"
-        android:textAlignment="center"
         android:textSize="60dp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,11 +23,9 @@
         android:id="@+id/fill_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        style="@style/text"
         android:text="Fill in below fields"
-        android:textAlignment="center"
         android:textSize="30dp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -51,8 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/TextInputLayout"
-        android:textColorHint="@color/white"
-        app:placeholderTextColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/years_smoked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -60,8 +53,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?colorOnSecondary"
             android:ems="10"
-            android:textColor="@color/white"
             android:hint="Full Name"
             android:inputType="text" />
 
@@ -80,8 +73,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?colorOnSecondary"
             android:ems="10"
-            android:textColor="@color/white"
             android:hint="Years Smoked"
             android:inputType="numberDecimal" />
 
@@ -89,28 +82,28 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cigs_per_day"
-        style="@style/TextInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/TextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/years_smoked" >
+        app:layout_constraintTop_toBottomOf="@+id/years_smoked">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?colorOnSecondary"
             android:ems="10"
-            android:textColor="@color/white"
             android:hint="Cigarettes Per Day"
-            android:inputType="number" />
+            android:inputType="number"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cigs_per_pack"
-        style="@style/TextInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/TextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cigs_per_day">
@@ -118,8 +111,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?colorOnSecondary"
             android:ems="10"
-            android:textColor="@color/white"
             android:hint="Cigarettes Per Pack"
             android:inputType="number" />
 
@@ -127,9 +120,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/price_per_pack"
-        style="@style/TextInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/TextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cigs_per_pack">
@@ -137,8 +130,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?colorOnSecondary"
             android:ems="10"
-            android:textColor="@color/white"
             android:hint="Price Per Pack"
             android:inputType="numberDecimal" />
 
@@ -148,10 +141,8 @@
         android:id="@+id/first_btn_currency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_200"
+        style="@style/ButtonDesign"
         android:text="Currency"
-        android:textSize="20dp"
-        app:cornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/price_per_pack" />
@@ -160,10 +151,9 @@
         android:id="@+id/first_time_continue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:backgroundTint="@color/purple_200"
+        style="@style/ButtonDesign"
+        android:layout_marginTop="35dp"
         android:text="continue"
-        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

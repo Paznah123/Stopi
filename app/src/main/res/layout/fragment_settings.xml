@@ -12,11 +12,9 @@
         android:id="@+id/profile_pic_lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/title"
         android:paddingTop="20dp"
         android:text="Profile Picture"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,8 +49,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?colorOnSecondary"
                 android:ems="10"
-                android:textColor="@color/white"
                 android:hint="User Name"
                 android:inputType="text" />
 
@@ -67,8 +65,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?colorOnSecondary"
                 android:ems="10"
-                android:textColor="@color/white"
                 android:hint="Cigarettes Per Day"
                 android:inputType="number" />
 
@@ -76,15 +74,15 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/settings_years_smoked"
-            style="@style/TextInputLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            style="@style/TextInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?colorOnSecondary"
                 android:ems="10"
-                android:textColor="@color/white"
                 android:hint="Years of Smoking"
                 android:inputType="numberDecimal" />
 
@@ -102,8 +100,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?colorOnSecondary"
                 android:ems="10"
-                android:textColor="@color/white"
                 android:hint="Cigarettes Per Pack"
                 android:inputType="number" />
 
@@ -120,8 +118,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:textColor="?colorOnSecondary"
                     android:ems="10"
-                    android:textColor="@color/white"
                     android:hint="Price Per Pack"
                     android:inputType="numberDecimal" />
 
@@ -131,12 +129,32 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/settings_btn_currency"
+        style="@style/ButtonDesign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_200"
-        android:text="Currency"
+        android:text="currency"
         android:textSize="20dp"
-        app:cornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textsLinear" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/settings_btn_theme"
+        style="@style/ButtonDesign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="theme"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_btn_currency" />
+
+
+    <FrameLayout
+        android:id="@+id/dummy_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textsLinear" />
@@ -146,34 +164,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textsLinear">
+        app:layout_constraintTop_toBottomOf="@+id/dummy_layout">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settings_update"
+            style="@style/ButtonDesign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:backgroundTint="@color/purple_200"
             android:text="Update"
             android:textSize="20dp"
-            app:cornerRadius="15dp"
             app:layout_constraintBottom_toTopOf="@+id/settings_logout"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textsLinear" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settings_logout"
+            style="@style/ButtonDesign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:backgroundTint="@color/purple_200"
             android:text="logout"
             android:textSize="20dp"
-            app:cornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -186,10 +200,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:backgroundTint="@color/purple_200"
+        style="@style/ButtonDesign"
         android:text="delete account"
         android:textSize="20dp"
-        app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

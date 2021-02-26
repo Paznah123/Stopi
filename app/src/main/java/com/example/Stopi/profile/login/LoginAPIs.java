@@ -1,10 +1,13 @@
-package com.example.Stopi.tools;
+package com.example.Stopi.profile.login;
 
 import android.app.Activity;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import com.example.Stopi.MainActivity;
 import com.example.Stopi.R;
+import com.example.Stopi.tools.App;
+import com.example.Stopi.tools.KEYS;
+import com.example.Stopi.tools.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -17,7 +20,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-
 import java.util.concurrent.TimeUnit;
 
 public class LoginAPIs {
@@ -35,14 +37,25 @@ public class LoginAPIs {
 
     private String              mVerificationId;
 
-    private OnLoginProgress     onLoginProgress;
+    private LoginListener loginListener;
 
     public LoginAPIs(Activity activity){
         this.activity           = activity;
-        this.onLoginProgress    = (OnLoginProgress) activity;
+        this.loginListener = (LoginListener) activity;
         this.firebaseAuth       = FirebaseAuth.getInstance();
 
         createRequest();
+    }
+
+    private void linkWithCredential(AuthCredential credential){
+        firebaseAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnCompleteListener(activity, task -> {
+                    if (task.isSuccessful()) {
+                        Utils.get().myStartActivity(activity,MainActivity.class);
+                        App.toast("Login Successful!");
+                    } else
+                        App.toast("Login Failed!");
+                });
     }
 
     // ============================================================= google sign in
@@ -56,7 +69,7 @@ public class LoginAPIs {
 
     public void googleSignIn(){
         Intent signInIntent = signInClient.getSignInIntent();
-        activity.startActivityForResult(signInIntent,KEYS.GOOGLE_SIGN_IN_CODE);
+        activity.startActivityForResult(signInIntent, KEYS.GOOGLE_SIGN_IN_CODE);
     }
 
     public void signInWithGoogleAccount(GoogleSignInAccount account) {
@@ -73,11 +86,11 @@ public class LoginAPIs {
 
     // ============================================================= phone sign in
 
-    public void phoneSignIn(String countryCode, String editText) {
+    public void phoneSignIn(String countryCode, String input) {
         if(login_state == LOGIN_STATE.ENTERING_NUMBER)
-            startLoginProcess(countryCode + editText);
+            startLoginProcess(countryCode + input);
         else if(login_state == LOGIN_STATE.ENTERING_CODE)
-            codeEntered(editText);
+            codeEntered(input);
     }
 
     private void startLoginProcess(String phoneNumber) {
@@ -96,11 +109,11 @@ public class LoginAPIs {
     private void codeEntered(String verificationCode) {
         if(!validateLoginInput(verificationCode)) return;
 
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
+        AuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
         signInWithPhoneAuthCredential(credential);
     }
 
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+    private void signInWithPhoneAuthCredential(AuthCredential credential) {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(activity, task -> {
             if (task.isSuccessful()) {
                 Utils.get().myStartActivity(activity, MainActivity.class);
@@ -121,7 +134,7 @@ public class LoginAPIs {
             App.toast("Code Sent!");
             mVerificationId = verificationId;
             login_state = LOGIN_STATE.ENTERING_CODE;
-            onLoginProgress.updateUI(login_state);
+            loginListener.onLoginStatusChange(login_state);
         }
 
         @Override
@@ -135,7 +148,7 @@ public class LoginAPIs {
             App.toast("Verification Failed");
             e.printStackTrace();
             login_state = LOGIN_STATE.ENTERING_NUMBER;
-            onLoginProgress.updateUI(login_state);
+            loginListener.onLoginStatusChange(login_state);
         }
     };
 
@@ -143,13 +156,13 @@ public class LoginAPIs {
 
     private boolean validateLoginInput(String input){
         if(input.isEmpty()) {
-            onLoginProgress.updateError("Phone Number is Required");
+            loginListener.onInputError("Phone Number is Required");
             return false;
         }
 
         if((input.length() < 10 && login_state.equals(LOGIN_STATE.ENTERING_NUMBER))
                 || (input.length() < 6 && login_state.equals(LOGIN_STATE.ENTERING_CODE))){
-            onLoginProgress.updateError("Enter a Valid Number");
+            loginListener.onInputError("Enter a Valid Number");
             return false;
         }
 

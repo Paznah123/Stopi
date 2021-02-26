@@ -12,11 +12,10 @@
             android:id="@+id/show_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_marginEnd="5dp"
+            android:padding="10dp"
             android:text="hello"
-            android:textSize="20sp"
-            android:textColor="#020202"/>
+            android:textSize="20sp"/>
 
 </RelativeLayout>

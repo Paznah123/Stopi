@@ -10,7 +10,7 @@ import com.example.Stopi.ActivitySplash;
 import com.example.Stopi.R;
 import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.Dialogs;
-import com.example.Stopi.tools.SharedPrefs;
+import com.example.Stopi.profile.login.SharedPrefs;
 import com.example.Stopi.tools.Utils;
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.dataBase.DBupdater;
@@ -57,7 +57,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_time);
+        setContentView(R.layout.activity_create_profile);
 
         findViews();
         setListeners();

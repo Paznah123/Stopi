@@ -1,4 +1,4 @@
-package com.example.Stopi.profile;
+package com.example.Stopi.profile.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -7,9 +7,7 @@ import com.example.Stopi.MainActivity;
 import com.example.Stopi.R;
 import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.KEYS;
-import com.example.Stopi.tools.LoginAPIs;
-import com.example.Stopi.tools.LoginAPIs.LOGIN_STATE;
-import com.example.Stopi.tools.OnLoginProgress;
+import com.example.Stopi.profile.login.LoginAPIs.LOGIN_STATE;
 import com.example.Stopi.tools.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -19,15 +17,15 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.hbb20.CountryCodePicker;
 
-public class LoginActivity extends AppCompatActivity implements OnLoginProgress {
+public class LoginActivity extends AppCompatActivity implements LoginListener {
 
-    private CountryCodePicker country_code_picker;
+    private CountryCodePicker   country_code_picker;
 
-    private TextInputLayout login_EDT_phone;
-    private MaterialButton login_btn_phone;
-    private MaterialButton login_btn_google;
+    private TextInputLayout     login_EDT_phone;
+    private MaterialButton      login_btn_phone;
+    private MaterialButton      login_btn_google;
 
-    private LoginAPIs loginAPIs;
+    private LoginAPIs           loginAPIs;
 
     // =============================================================
 
@@ -80,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginProgress 
     // ============================================================= call backs
 
     @Override
-    public void updateUI(LOGIN_STATE loginState) {
+    public void onLoginStatusChange(LOGIN_STATE loginState) {
         if (loginState == LOGIN_STATE.ENTERING_NUMBER) {
             login_EDT_phone.setHint(getString(R.string.phone_number));
             login_btn_phone.setText("Send Code");
@@ -92,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements OnLoginProgress 
     }
 
     @Override
-    public void updateError(String error) {
+    public void onInputError(String error) {
         login_EDT_phone.setError(error);
         login_EDT_phone.requestFocus();
     }

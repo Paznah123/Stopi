@@ -41,7 +41,8 @@ public class DBreader {
 
     private void readData() {
         if (App.getLoggedUser() != null)
-            get().readUserData();
+            get().
+                    readUserData();
         get().readListData(KEYS.TIPS_REF, tips, String.class);
         get().readListData(KEYS.REWARDS_INFO_REF, rewards_info, String.class);
     }

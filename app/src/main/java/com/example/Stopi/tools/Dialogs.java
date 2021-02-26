@@ -12,7 +12,7 @@ import com.example.Stopi.R;
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.dataBase.DBupdater;
 import com.example.Stopi.dataBase.Refs;
-import com.example.Stopi.social.Message;
+import com.example.Stopi.social.chat.Message;
 import com.example.Stopi.store.GiftListAdapter;
 import com.example.Stopi.profile.User;
 import com.scrounger.countrycurrencypicker.library.CountryCurrencyPicker;
@@ -48,19 +48,13 @@ public class Dialogs {
      * adds context for layout inflater
      * needs activity context not app context
      */
-/*    public void addContext(Context activityContext){
-        if(ctx == null) {
-            ctx = activityContext;
-            inflater = LayoutInflater.from(activityContext);
-        }
-    }*/
-
     public void addContext(Context activityContext){
         if(ctx == null || ((Activity)ctx).isFinishing()) {
             ctx = activityContext;
             inflater = LayoutInflater.from(activityContext);
         }
     }
+
     private View createDialogView(int layoutId){ return inflater.inflate(layoutId, null); }
 
     //====================================================
@@ -184,9 +178,9 @@ public class Dialogs {
      *   creates AlertDialog with user smoker history
      */
     public GenericDialog feedDialog(User user) {
-        int[] layout_id_arr     = {R.id.feed_cigs_smoked, R.id.feed_money_wasted, R.id.feed_life_lost};
+        int[] text_views_layout_arr     = {R.id.feed_cigs_smoked, R.id.feed_money_wasted, R.id.feed_life_lost};
         GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_feed))
-                                    .addTextViews(layout_id_arr);
+                                    .addTextViews(text_views_layout_arr);
 
         genericDialog.setTVtext(R.id.feed_cigs_smoked,"Cigarettes not smoked: "+
                                 utils.formatNumber(user.cigsNotSmoked(),"##.#"));
@@ -205,10 +199,10 @@ public class Dialogs {
      *   creates AlertDialog with user smoker history
      */
     public GenericDialog noInternetDialog() {
-        int[] layout_id_arr     = {R.id.internet_title, R.id.internet_text};
+        int[] text_views_layout_arr     = {R.id.internet_title, R.id.internet_text};
         GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_no_internet))
                 .findConfirmButtonById(R.id.internet_btn_settings)
-                .addTextViews(layout_id_arr)
+                .addTextViews(text_views_layout_arr)
                 .setConfirmListener(v -> {
                     Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
                     ctx.startActivity(intent);
@@ -219,4 +213,13 @@ public class Dialogs {
 
     //====================================================
 
+
+    public GenericDialog themeDialog() {
+        ThemesAdapter themesAdapter = new ThemesAdapter(ctx);
+        GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_theme))
+                                .findRecyclerViewById(R.id.theme_recycler_view)
+                                .setRecyclerViewAdapter(themesAdapter);
+
+        return genericDialog;
+    }
 }

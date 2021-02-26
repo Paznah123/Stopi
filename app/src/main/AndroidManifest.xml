@@ -14,25 +14,25 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        android:theme="@style/Theme.FuMi_App">
+        android:theme="@style/Theme.Stopi_App">
 
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.FuMi_App.NoActionBar" />
+            android:theme="@style/Theme.Stopi_App.NoActionBar" />
 
         <activity
-            android:name=".social.MessageActivity"
+            android:name=".social.chat.MessageActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.FuMi_App.NoActionBar" />
+            android:theme="@style/Theme.Stopi_App.NoActionBar" />
 
         <activity
             android:name=".ActivitySplash"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.FuMi_App.NoActionBar">
+            android:theme="@style/Theme.Stopi_App.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,9 +44,9 @@
             android:name=".profile.CreateProfileActivity"
             android:label="@string/title_activity_create_profile"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.FuMi_App.NoActionBar" />
+            android:theme="@style/Theme.Stopi_App.NoActionBar" />
 
-        <activity android:name=".profile.LoginActivity">
+        <activity android:name=".profile.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

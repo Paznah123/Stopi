@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.example.Stopi.R;
+import com.example.Stopi.profile.login.LoginActivity;
 import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.Dialogs;
-import com.example.Stopi.tools.SharedPrefs;
+import com.example.Stopi.profile.login.SharedPrefs;
 import com.example.Stopi.tools.Utils;
 import com.example.Stopi.dataBase.DBreader;
 import com.example.Stopi.dataBase.DBupdater;
@@ -46,6 +48,7 @@ public class SettingsFragment extends Fragment {
     private MaterialButton  logout;
     private MaterialButton  delete_account;
     private MaterialButton  currency;
+    private MaterialButton  theme_btn;
 
     private OnProfileUpdate onProfileUpdate;
 
@@ -101,6 +104,7 @@ public class SettingsFragment extends Fragment {
         logout              = view.findViewById(R.id.settings_logout);
         delete_account      = view.findViewById(R.id.settings_delete);
         currency            = view.findViewById(R.id.settings_btn_currency);
+        theme_btn           = view.findViewById(R.id.settings_btn_theme);
     }
 
     private void setListeners() {
@@ -116,6 +120,7 @@ public class SettingsFragment extends Fragment {
         delete_account      .setOnClickListener(v -> {
             DBupdater       .get()      .deleteUserData(user.getUid());
             SharedPrefs     .get()      .deleteFirstLogin();
+            SharedPrefs     .get()      .deleteSelectedTheme();
             Utils           .get()      .myStartActivity(getActivity(), LoginActivity.class);
             FirebaseAuth    .getInstance()      .signOut();
         });
@@ -131,6 +136,8 @@ public class SettingsFragment extends Fragment {
                     @Override
                     public void onSelectCurrency(Currency currency) { }
                 }));
+
+        theme_btn.setOnClickListener(v -> Dialogs.get().themeDialog().show());
     }
 
     //============================================

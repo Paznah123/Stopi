@@ -7,24 +7,18 @@
 
     <com.wajahatkarim3.easyflipview.EasyFlipView
         android:id="@+id/flip_view"
-        app:flipEnabled="true"
-        app:flipOnTouch="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:flipEnabled="true"
+        app:flipOnTouch="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.card.MaterialCardView
+        <com.furkanakdemir.surroundcardview.SurroundCardView
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_margin="10dp"
-            android:elevation="5dp"
-            app:strokeColor="#B388FF"
-            app:strokeWidth="5dp"
-            android:orientation="vertical"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="5dp">
+            style="@style/svc">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -34,10 +28,8 @@
                     android:id="@+id/reward_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingTop="15dp"
+                    style="@style/text"
                     android:textSize="20dp"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -45,12 +37,12 @@
 
                 <ProgressBar
                     android:id="@+id/reward_progressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="?android:attr/progressBarStyleHorizontal"
                     android:indeterminate="false"
                     android:padding="20dp"
-                    android:progressTint="@color/purple_200"
+                    android:progressTint="?colorPrimary"
                     android:scaleY="2.5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -61,28 +53,22 @@
                     android:id="@+id/unlock_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
+                    style="@style/text"
+                    android:paddingBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/reward_progressBar" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.furkanakdemir.surroundcardview.SurroundCardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <com.furkanakdemir.surroundcardview.SurroundCardView
             android:id="@+id/reward_card_viewBack"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_margin="10dp"
-            android:elevation="5dp"
-            app:strokeColor="#B388FF"
-            app:strokeWidth="5dp"
+            style="@style/svc"
             android:alpha="0"
-            android:orientation="vertical"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -92,11 +78,10 @@
 
                 <TextView
                     android:id="@+id/reward_info"
+                    style="@style/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="20dp"
-                    android:textSize="20dp"
-                    android:text="After 20 Minutes: Your Blood Pressure and heart rate decrease"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -104,8 +89,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </com.furkanakdemir.surroundcardview.SurroundCardView>
 
     </com.wajahatkarim3.easyflipview.EasyFlipView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

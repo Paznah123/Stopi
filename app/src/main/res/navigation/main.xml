@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/chats_item"
-        android:name="com.example.Stopi.social.ChatsFragment"
+        android:name="com.example.Stopi.social.chat.ChatsFragment"
         android:label="Inbox"
         tools:layout="@layout/fragment_users" />
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/feed_item"
-        android:name="com.example.Stopi.social.FeedFragment"
+        android:name="com.example.Stopi.social.feed.FeedFragment"
         android:label="Feed"
         tools:layout="@layout/fragment_feed" />
 

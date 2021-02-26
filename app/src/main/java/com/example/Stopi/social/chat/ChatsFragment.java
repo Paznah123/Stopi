@@ -1,4 +1,4 @@
-package com.example.Stopi.social;
+package com.example.Stopi.social.chat;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;

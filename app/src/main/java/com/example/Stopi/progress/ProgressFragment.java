@@ -13,6 +13,7 @@ import com.example.Stopi.R;
 import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.GenericDialog;
 import com.example.Stopi.tools.Dialogs;
+import com.example.Stopi.tools.KEYS;
 import com.example.Stopi.tools.OnFragmentTransaction;
 import com.example.Stopi.profile.User;
 import com.example.Stopi.dataBase.DBreader;
@@ -111,7 +112,10 @@ public class ProgressFragment extends Fragment {
     //====================================================
 
     private void loadRandomTip(){
-        if(tips.size() < 1) return;
+        if(tips.size() < 1) {
+            dbReader.readListData(KEYS.TIPS_REF, tips, String.class);
+            return;
+        }
         int rand        = new Random().nextInt(tips.size());
         String tip      = (String) tips.get(rand);
         random_lbl_tip  .setText(tip);

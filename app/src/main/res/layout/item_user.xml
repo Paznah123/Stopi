@@ -5,8 +5,7 @@
     android:id="@+id/surround_card_view"
     style="@style/svc"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,7 +16,6 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:padding="10dp"
-            android:src="@mipmap/ic_launcher"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,12 +24,9 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            style="@style/text"
             android:layout_toEndOf="@+id/profile_image"
-            android:paddingTop="10dp"
             android:text="user name"
-            android:textSize="20sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +34,7 @@
             android:id="@+id/user_last_seen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
+            style="@style/text"
             android:text="Last seen: "
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,11 +45,8 @@
             android:id="@+id/user_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:paddingEnd="5dp"
+            style="@style/text"
             android:text="Online"
-            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@id/status_dot"
@@ -64,8 +56,8 @@
             android:id="@+id/status_dot"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_margin="15dp"
             android:padding="5dp"
-            android:layout_marginEnd="15dp"
             android:src="@drawable/ic_online_dot"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

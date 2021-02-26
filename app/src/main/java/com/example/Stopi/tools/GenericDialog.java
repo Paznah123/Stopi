@@ -2,11 +2,9 @@ package com.example.Stopi.tools;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,11 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.Stopi.R;
 import com.google.android.material.button.MaterialButton;
 import java.util.HashMap;
 
-public class GenericDialog extends Activity {
+public class GenericDialog {
 
     private View                                view;
 
@@ -37,13 +34,6 @@ public class GenericDialog extends Activity {
     private RecyclerView                        itemsList;
 
     //======================================
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(getIntent().getIntExtra("LAYOUT_ID",-1));
-
-    }
 
     public GenericDialog(View inflatedView) {
         this.view       = inflatedView;

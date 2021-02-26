@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-public class User implements Comparable, Serializable {
+public class User {
 
     private String  uid = "";
     private String  name = "";
@@ -22,6 +22,7 @@ public class User implements Comparable, Serializable {
     private int     cigsPerPack = 1;
     private int     coins = 0;
     private int     highScore = 0;
+    private int     theme = 0;
 
     private double  cigsSinceQuit = 0;
     private double  yearsSmoked = 0;
@@ -33,39 +34,31 @@ public class User implements Comparable, Serializable {
 
     private Status status = Status.Offline;
 
-
     private HashMap<String, StoreItem> boughtItems = new HashMap<>();
 
     //=========================================
 
     public User(){ }
 
-    @Override
-    public int compareTo(Object o) {
-        User u = (User) o;
-        if(u.getName().equals(this.getName())
-                && u.getUid().equals(this.getUid()))
-            return 0;
-        return 1;
-    }
-
-    //=========================================
+    //========================================= before stopi
 
     public double totalCigsSmoked(){ return (yearsSmoked * KEYS.DAYS_IN_YEAR * cigsPerDay) + cigsSinceQuit; }
 
-    public double moneyWasted(){ return totalCigsSmoked()/cigsPerPack * pricePerPack; }
+    public double moneyWasted(){ return totalCigsSmoked()*cigCost(); }
 
-    public double lifeLost(){ return KEYS.MINUTES_LOST_PER_CIG * totalCigsSmoked() / 60 / 24; }
+    public double lifeLost(){ return timeByCig(totalCigsSmoked()); }
 
-    //=========================================
-
-    public double moneySaved(){ return cigsNotSmoked()/cigsPerPack * pricePerPack;}
+    //========================================= after stopi
 
     public double cigsNotSmoked(){ return (TimeUnit.MILLISECONDS.toHours(getRehabDuration())/24) * cigsPerDay; }
 
-    public double lifeGained(){ return (KEYS.MINUTES_LOST_PER_CIG * cigsNotSmoked()) / 60 / 24; }
+    public double moneySaved(){ return cigsNotSmoked()*cigCost();}
+
+    public double lifeGained(){ return timeByCig(cigsNotSmoked()); }
 
     //=========================================
+
+    private double timeByCig(double cigs){ return (KEYS.MINUTES_LOST_PER_CIG * cigs) / 60 / 24; }
 
     public double cigCost(){ return pricePerPack/cigsPerPack; }
 
@@ -104,6 +97,8 @@ public class User implements Comparable, Serializable {
 
     public User setCoins(int coins) { this.coins = coins; return this; }
 
+    public User setTheme(int theme) { this.theme = theme; return this; }
+
     public User setDateStoppedSmoking(long dateStoppedSmoking) { this.dateStoppedSmoking = dateStoppedSmoking; return this; }
 
     public User setLoggedToday(long loggedToday) { this.loggedToday = loggedToday; return this;}
@@ -135,6 +130,8 @@ public class User implements Comparable, Serializable {
     public int getCigsPerPack() { return cigsPerPack; }
 
     public int getCoins() { return coins; }
+
+    public int getTheme() { return theme; }
 
     public int getHighScore() { return highScore; }
 

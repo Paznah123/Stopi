@@ -1,20 +1,15 @@
 package com.example.Stopi;
 
 import android.animation.Animator;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
-
-import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.Utils;
-import com.example.Stopi.profile.LoginActivity;
+import com.example.Stopi.profile.login.LoginActivity;
 
 public class ActivitySplash extends AppCompatActivity {
 
@@ -27,13 +22,14 @@ public class ActivitySplash extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utils.get().onActivityCreateSetTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         splash_IMG_logo = findViewById(R.id.splash_IMG_logo);
         progressBar = findViewById(R.id.loading_bar);
         progressBar.getIndeterminateDrawable()
-                .setColorFilter(Color.parseColor("#FFBB86FC"),
+                .setColorFilter(Color.parseColor("#FFFFFFFF"),
                                 android.graphics.PorterDuff.Mode.SRC_ATOP);
 
         showView(splash_IMG_logo);
