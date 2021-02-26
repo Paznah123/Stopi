@@ -5,6 +5,8 @@ Social network for those who wish to quit smoking
 Features:
 
 - Firebase connection
+- Google profile verification
+- SMS verification
 - First time page for profile creation
 - Progress page
 - Users feed
