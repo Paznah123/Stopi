@@ -59,6 +59,9 @@ public class Dialogs {
 
     //====================================================
 
+    /**
+     *   creates AlertDialog to pick a currency
+     */
     public void createCurrencyDialog(FragmentManager fragmentManager, CountryCurrencyPickerListener listener){
         CountryCurrencyPicker pickerDialog = CountryCurrencyPicker.newInstance(PickerType.COUNTRYandCURRENCY,listener);
         pickerDialog.show(fragmentManager, CountryCurrencyPicker.DIALOG_NAME);
@@ -163,9 +166,12 @@ public class Dialogs {
         genericDialog.setConfirmListener(
                         v -> {
                             String userGoal = genericDialog.getETtext(R.id.goal_text);
-                            tvGoal.setText(userGoal);
-                            DBupdater.get().updateUserGoal(userGoal);
-                            genericDialog.dismiss();
+                            if(!userGoal.isEmpty()) {
+                                tvGoal.setText(userGoal);
+                                DBupdater.get().updateUserGoal(userGoal);
+                                genericDialog.dismiss();
+                            } else
+                                genericDialog.setETerror(R.id.goal_text, "Enter a goal");
                         }
         ).setCancelListener(v -> genericDialog.dismiss());
 
@@ -213,13 +219,14 @@ public class Dialogs {
 
     //====================================================
 
-
+    /**
+     *   creates AlertDialog for app theme choose
+     */
     public GenericDialog themeDialog() {
         ThemesAdapter themesAdapter = new ThemesAdapter(ctx);
         GenericDialog genericDialog = new GenericDialog(createDialogView(R.layout.dialog_theme))
                                 .findRecyclerViewById(R.id.theme_recycler_view)
                                 .setRecyclerViewAdapter(themesAdapter);
-
         return genericDialog;
     }
 }

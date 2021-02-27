@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,8 +24,8 @@ public class GenericDialog {
     private AlertDialog                         dialog;
     private AlertDialog.Builder                 builder;
 
-    private MaterialButton                      confirm;
-    private MaterialButton                      cancel;
+    private MaterialButton                      confirm_btn;
+    private MaterialButton                      cancel_btn;
 
     private HashMap<Integer, EditText>          editTextsMap;
     private HashMap<Integer, TextView>          textViewsMap;
@@ -59,29 +61,29 @@ public class GenericDialog {
      * sets text view text
      * @param textView_layout_id text view layout id
      */
-    public void setTVtext(int textView_layout_id, String text){ this.textViewsMap.get(textView_layout_id).setText(text); }
+    public void setTVtext(int textView_layout_id, String text){ textViewsMap.get(textView_layout_id).setText(text); }
 
     /**
      * @param textView_layout_id text view layout id
      * @return text view text
      */
-    public String getTVtext(int textView_layout_id){ return this.textViewsMap.get(textView_layout_id).getText().toString(); }
+    public String getTVtext(int textView_layout_id){ return textViewsMap.get(textView_layout_id).getText().toString(); }
 
     /**
      * @param textView_layout_id text view layout id
      * @return text view object
      */
-    public TextView getTextView(int textView_layout_id){ return this.textViewsMap.get(textView_layout_id); }
+    public TextView getTextView(int textView_layout_id){ return textViewsMap.get(textView_layout_id); }
 
     /**
      * adds text views
      * @param layout_id_arr text views layout id array
      */
     public GenericDialog addTextViews(int[] layout_id_arr) {
-        if (this.textViewsMap == null)
-            this.textViewsMap = new HashMap<>();
+        if (textViewsMap == null)
+            textViewsMap = new HashMap<>();
         for (int layout_id : layout_id_arr)
-            this.textViewsMap.put(layout_id, // key
+            textViewsMap.put(layout_id, // key
                     view.findViewById(layout_id)); // textview
         return this;
     }
@@ -159,10 +161,10 @@ public class GenericDialog {
      * @param layout_id_arr image views layout id array
      */
     public GenericDialog addCheckBoxes(int[] layout_id_arr) {
-        if (this.checkBoxesMap == null)
-            this.checkBoxesMap = new HashMap<>();
+        if (checkBoxesMap == null)
+            checkBoxesMap = new HashMap<>();
         for (int layout_id : layout_id_arr)
-            this.checkBoxesMap.put(layout_id, // key
+            checkBoxesMap.put(layout_id, // key
                     view.findViewById(layout_id)); // imageView
         return this;
     }
@@ -180,10 +182,10 @@ public class GenericDialog {
      * @param layout_id_arr button layout id array
      */
     public GenericDialog addButtons(int[] layout_id_arr) {
-        if (this.buttonsMap == null)
-            this.buttonsMap = new HashMap<>();
+        if (buttonsMap == null)
+            buttonsMap = new HashMap<>();
         for (int layout_id : layout_id_arr)
-            this.buttonsMap.put(layout_id, // key
+            buttonsMap.put(layout_id, // key
                     view.findViewById(layout_id)); // button
         return this;
     }
@@ -194,8 +196,8 @@ public class GenericDialog {
      * @param listener OnClickListener listener
      */
     public void setButtonClickListener(int btn_layout_id, View.OnClickListener listener){
-        if(this.buttonsMap != null && this.buttonsMap.get(btn_layout_id) != null)
-            this.buttonsMap.get(btn_layout_id).setOnClickListener(listener);
+        if(buttonsMap != null && buttonsMap.get(btn_layout_id) != null)
+            buttonsMap.get(btn_layout_id).setOnClickListener(listener);
     }
 
     //======================================
@@ -204,9 +206,9 @@ public class GenericDialog {
      * @throws NullPointerException if items list not set by id
      */
     public GenericDialog setRecyclerViewAdapter(RecyclerView.Adapter listAdapter) throws NullPointerException {
-        if (this.itemsList != null) {
-            this.itemsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
-            this.itemsList.setAdapter(listAdapter);
+        if (itemsList != null) {
+            itemsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
+            itemsList.setAdapter(listAdapter);
             return this;
         }
         throw new NullPointerException("Items list is null");
@@ -219,8 +221,8 @@ public class GenericDialog {
      * @throws NullPointerException if confirm button not set by id
      */
     public GenericDialog setConfirmListener(View.OnClickListener listener) throws NullPointerException {
-        if (confirm != null) {
-            confirm.setOnClickListener(listener);
+        if (confirm_btn != null) {
+            confirm_btn.setOnClickListener(listener);
             return this;
         }
         throw new NullPointerException("Confirm button is null");
@@ -231,8 +233,8 @@ public class GenericDialog {
      * @throws NullPointerException if cancel button not set by id
      */
     public GenericDialog setCancelListener(View.OnClickListener listener) throws NullPointerException {
-        if(this.cancel != null) {
-            this.cancel.setOnClickListener(listener);
+        if(cancel_btn != null) {
+            cancel_btn.setOnClickListener(listener);
             return this;
         }
         throw new NullPointerException("Cancel button is null");
@@ -242,13 +244,9 @@ public class GenericDialog {
 
     public GenericDialog findRecyclerViewById(int list_view_layout_id) { itemsList = view.findViewById(list_view_layout_id); return this; }
 
-    public GenericDialog findConfirmButtonById(int btn_layout_id) { confirm = view.findViewById(btn_layout_id); return this; }
+    public GenericDialog findConfirmButtonById(int btn_layout_id) { confirm_btn = view.findViewById(btn_layout_id); return this; }
 
-    public GenericDialog findCancelButtonById(int btn_layout_id) { cancel = view.findViewById(btn_layout_id); return this; }
-
-    //======================================
-
-    public AlertDialog getAlertDialog() { return dialog; }
+    public GenericDialog findCancelButtonById(int btn_layout_id) { cancel_btn = view.findViewById(btn_layout_id); return this; }
 
 }
 

@@ -31,16 +31,23 @@ public class ProgressFragment extends Fragment {
     private TextView                random_lbl_tip;
     private TextView                user_main_goal;
     private MaterialButton          reset_progress;
+
     private SmokerDataFragment      pastData;
     private SmokerDataFragment      futureData;
     private OnFragmentTransaction   onFragmentTransaction;
+
     private DBreader                dbReader;
     private List                    tips;
+    private User                    user;
 
     private GenericDialog genericDialog;
     private View.OnClickListener dialogListener = v -> {
         try {
             User user = DBreader.get().getUser();
+            if(user == null){
+                genericDialog.dismiss();
+                return;
+            }
             int cigsSmoked = Integer.parseInt(genericDialog.getETtext(R.id.reset_amount));
             if (user.updateTotalCigs(cigsSmoked))
                 DBupdater.get().updateUser(user);
@@ -69,17 +76,18 @@ public class ProgressFragment extends Fragment {
 
         dbReader        = DBreader.get();
         tips            = dbReader.getTips();
+        user            = dbReader.getUser();
 
         findViews();
         setListeners();
 
-        if(!App.isNetworkAvailable()) return view;
+        internetChecker.postDelayed(runnable, 200);
+
+        if(!App.isNetworkAvailable() || user == null) return view;
 
         loadRandomTip();
 
-        user_main_goal  .setText(dbReader.getUser().getGoal());
-
-        handler         .postDelayed(runnable, 200);
+        user_main_goal  .setText(user.getGoal());
 
         return          view;
     }
@@ -126,7 +134,7 @@ public class ProgressFragment extends Fragment {
     private void updateProgressClock(){ time_lbl_passed.setText(formatDuration()); }
 
     private String formatDuration() {
-        long duration   = DBreader.get().getUser().getRehabDuration();
+        long duration   = user.getRehabDuration();
         long years      = TimeUnit.MILLISECONDS.toDays(duration) / 365;
         long months     = (TimeUnit.MILLISECONDS.toDays(duration) % 365) / 30;
         long days       = TimeUnit.MILLISECONDS.toDays(duration) % 30;
@@ -139,13 +147,15 @@ public class ProgressFragment extends Fragment {
 
     //====================================================
 
-    private Handler handler = new Handler();
+    private Handler internetChecker = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if(App.getLoggedUser() == null) return;
-            handler     .postDelayed(runnable, 1000);
-            futureData  .updateViewData();
+            internetChecker.postDelayed(runnable, 1000);
+            user = DBreader.get().getUser();
+            if(user == null) return;
+            if(!pastData.isDataSet()) pastData.updateViewData();
+            futureData.updateViewData();
             updateProgressClock();
         }
     };

@@ -23,9 +23,14 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemesView
     public ThemesAdapter(Context context){
         this.context = context;
         this.themes = new ArrayList<>();
-        this.themes.add(new Theme("Warm",getColorResource(R.color.purple_200),getColorResource(R.color.purple_500)));
-        this.themes.add(new Theme("Cold",getColorResource(R.color.teal_200),getColorResource(R.color.teal_700)));
-        this.themes.add(new Theme("Cool",getColorResource(R.color.blue_200),getColorResource(R.color.blue_500)));
+        createThemes();
+    }
+
+    private void createThemes(){
+        themes.add(new Theme("Purple",getColorResource(R.color.purple_200),getColorResource(R.color.purple_500)));
+        themes.add(new Theme("Teal",getColorResource(R.color.teal_200),getColorResource(R.color.teal_500)));
+        themes.add(new Theme("Blue",getColorResource(R.color.blue_200),getColorResource(R.color.blue_500)));
+        themes.add(new Theme("Orange",getColorResource(R.color.orange_200),getColorResource(R.color.orange_500)));
     }
 
     private int getColorResource(int colorId) {
@@ -64,18 +69,8 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemesView
         holder.color_primary_variant    .setBackgroundColor(theme.variant);
 
         holder.itemView                 .setOnClickListener(v -> {
-                    switch (position){
-                        case KEYS.THEME_WARM:
-                            Utils.get().changeToTheme(((Activity)context),KEYS.THEME_WARM);
-                            break;
-                        case KEYS.THEME_COLD:
-                            Utils.get().changeToTheme(((Activity)context),KEYS.THEME_COLD);
-                            break;
-                        case KEYS.THEME_COOL:
-                            Utils.get().changeToTheme(((Activity)context),KEYS.THEME_COOL);
-                            break;
-                    }
-                });
+            Utils.get().changeToTheme(((Activity)context),position);
+        });
     }
 
     //====================================================

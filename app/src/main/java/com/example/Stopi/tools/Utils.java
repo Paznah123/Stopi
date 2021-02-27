@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.example.Stopi.R;
 import com.example.Stopi.dataBase.DBreader;
-import com.example.Stopi.dataBase.DBupdater;
 import com.example.Stopi.profile.login.SharedPrefs;
 import com.furkanakdemir.surroundcardview.SurroundCardView;
 import com.github.drjacky.imagepicker.ImagePicker;
@@ -22,8 +20,6 @@ public class Utils {
     private static  Utils           instance;
 
     private         MediaPlayer     mp;
-
-    private         int             sTheme = 1;
 
     //=============================
 
@@ -143,27 +139,27 @@ public class Utils {
     //====================================================
 
     public void changeToTheme(Activity activity, int theme) {
-        sTheme = theme;
         activity.finish();
         activity.startActivity(new Intent(activity, activity.getClass()));
         activity.overridePendingTransition(android.R.anim.fade_in,
                 android.R.anim.fade_out);
         SharedPrefs.get().saveTheme(theme);
-       /* DBreader.get().getUser().setTheme(theme);
-        DBupdater.get().saveLoggedUser();*/
     }
 
     public void onActivityCreateSetTheme(Activity activity) {
         switch (SharedPrefs.get().getTheme()) {
             default:
-            case KEYS.THEME_WARM:
+            case KEYS.THEME_PURPLE:
                 activity.setTheme(R.style.Theme_Stopi_App);
                 break;
-            case KEYS.THEME_COLD:
+            case KEYS.THEME_TEAL:
                 activity.setTheme(R.style.Theme_Stopi_App_Second);
                 break;
-            case KEYS.THEME_COOL:
+            case KEYS.THEME_BLUE:
                 activity.setTheme(R.style.Theme_Stopi_App_Third);
+                break;
+            case KEYS.THEME_ORANGE:
+                activity.setTheme(R.style.Theme_Stopi_App_Fourth);
                 break;
         }
         ((AppCompatActivity)activity).getSupportActionBar().hide();

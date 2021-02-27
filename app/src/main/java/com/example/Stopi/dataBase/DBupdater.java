@@ -68,6 +68,8 @@ public class DBupdater {
      * and saves user object
      */
     public void updateUserGoal(String goal){
+        User user = DBreader.get().getUser();
+        if(user == null) return;
         DBreader.get().getUser().setGoal(goal);
         saveLoggedUser();
     }

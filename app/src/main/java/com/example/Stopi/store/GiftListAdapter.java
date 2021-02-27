@@ -46,7 +46,7 @@ public class GiftListAdapter extends RecyclerView.Adapter<GiftListAdapter.GiftLi
     public void onBindViewHolder(@NonNull GiftListAdapter.GiftListViewHolder holder, int position) {
         StoreItem storeItem     = items.get(keys.get(position));
 
-        DBreader.get()  .readPic(KEYS.STORE,holder.itemPhoto, storeItem.getTitle());
+        DBreader.get()          .readPic(KEYS.STORE,holder.itemPhoto, storeItem.getTitle());
         holder.itemTitle        .setText(storeItem.getTitle());
         holder.itemAmount       .setText(storeItem.getPrice() +"");
         holder.gift_layout      .setOnClickListener(

@@ -9,7 +9,6 @@
         android:useLevel="true" >
         <gradient
             android:angle="0"
-            android:endColor="@color/purple_200"
             android:type="sweep"
             android:useLevel="false" />
     </shape>

@@ -19,6 +19,7 @@ public class App extends Application {
 
     private static Toast myToast;
 
+    private static ConnectivityManager connectivityManager;
 
     //====================================================
 
@@ -28,8 +29,9 @@ public class App extends Application {
 
         context         = getApplicationContext();
         myToast         = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        SharedPrefs.initPrefs();
+        SharedPrefs     .initPrefs();
         DBupdater       .initUpdater();
         DBreader        .initReader();
         Utils           .initUtils();
@@ -40,8 +42,6 @@ public class App extends Application {
     //====================================================
 
     public static boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }

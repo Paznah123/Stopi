@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.Stopi.R;
 import com.example.Stopi.dataBase.DBreader;
+import com.example.Stopi.profile.User;
+import com.example.Stopi.tools.App;
 import com.example.Stopi.tools.KEYS;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,11 +37,12 @@ public class RewardsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_rewards, container, false);
 
         init_views();
-        createRewards(rewards);
 
         rewardsAdapter  = new RewardsAdapter(rewards);
         rewards_list    .setLayoutManager(new LinearLayoutManager(getContext()));
         rewards_list    .setAdapter(rewardsAdapter);
+
+        if(App.isNetworkAvailable()) createRewards(rewards);
 
         return view;
     }
@@ -54,7 +57,9 @@ public class RewardsFragment extends Fragment {
     //====================================================
 
     void createRewards(List<Reward> rewards){
-        int time = (int) TimeUnit.MILLISECONDS.toDays(DBreader.get().getUser().getRehabDuration());
+        User user = DBreader.get().getUser();
+        if(user == null) return;
+        int time = (int) TimeUnit.MILLISECONDS.toDays(user.getRehabDuration());
         for (int i = 0; i < KEYS.REWARDS_AMOUNT; i++) {
             int max = (int)(Math.pow(i,3)+1);
             LocalDate newDate = LocalDate.now().plusDays(max);

@@ -22,7 +22,6 @@ public class User {
     private int     cigsPerPack = 1;
     private int     coins = 0;
     private int     highScore = 0;
-    private int     theme = 0;
 
     private double  cigsSinceQuit = 0;
     private double  yearsSmoked = 0;
@@ -97,8 +96,6 @@ public class User {
 
     public User setCoins(int coins) { this.coins = coins; return this; }
 
-    public User setTheme(int theme) { this.theme = theme; return this; }
-
     public User setDateStoppedSmoking(long dateStoppedSmoking) { this.dateStoppedSmoking = dateStoppedSmoking; return this; }
 
     public User setLoggedToday(long loggedToday) { this.loggedToday = loggedToday; return this;}
@@ -130,8 +127,6 @@ public class User {
     public int getCigsPerPack() { return cigsPerPack; }
 
     public int getCoins() { return coins; }
-
-    public int getTheme() { return theme; }
 
     public int getHighScore() { return highScore; }
 

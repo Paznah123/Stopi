@@ -70,6 +70,21 @@ public class SmokerDataFragment extends Fragment {
 
     //====================================================
 
+    public boolean isDataSet() {
+        if(isTvEmpty(progress_cigs)
+            || isTvEmpty(progress_money)
+                || isTvEmpty(progress_life))
+            return false;
+        else
+            return true;
+    }
+
+    private boolean isTvEmpty(TextView tv){
+        return tv.getText().toString().isEmpty();
+    }
+
+    //====================================================
+
     public void updateViewData(){
         try {
             if (mSection.equals(Section.After))

@@ -73,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:text="What is your Goal?"
             android:textSize="20dp" />
 
     </com.furkanakdemir.surroundcardview.SurroundCardView>
@@ -93,6 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp"
+            android:text="Read everything you can on the effects of smoking and how other people have quit"
             android:textSize="20dp" />
 
     </com.furkanakdemir.surroundcardview.SurroundCardView>

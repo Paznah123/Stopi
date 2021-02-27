@@ -16,9 +16,10 @@ public interface KEYS {
 
     int     GOOGLE_SIGN_IN_CODE     = 123;
 
-    int     THEME_WARM              = 0;
-    int     THEME_COLD              = 1;
-    int     THEME_COOL              = 2;
+    int     THEME_PURPLE            = 0;
+    int     THEME_TEAL              = 1;
+    int     THEME_BLUE              = 2;
+    int     THEME_ORANGE            = 3;
 
     int     STORE                   = 1;
     int     PROFILE                 = 2;

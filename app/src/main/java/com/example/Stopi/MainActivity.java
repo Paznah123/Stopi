@@ -78,12 +78,12 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
-        if(!initServerConnection()) return;
-
         findViews();
         initDrawer();
-        initViews();
 
+        if(!initServerConnection()) return;
+
+        setUserData();
         checkFirstLogin();
     }
 
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements
 
     //===========================================
 
-    private void initViews() {
+    private void setUserData() {
         drawer_lbl_userName .setText(user.getName());
         user_coins          .setText("Coins - "+ user.getCoins());
         dbReader.get()      .readPicNoCache(KEYS.PROFILE, drawer_user_pic, user.getUid());
@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navHost_fragment);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(nav_view, navController);
-
         main_drawer_btn.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> main_lbl_title.setText(destination.getLabel()));
     }
@@ -143,9 +142,12 @@ public class MainActivity extends AppCompatActivity implements
             Dialogs.get().noInternetDialog().show();
             return false;
         } else if (dbReader.getUser() == null) { // if data hasn't arrived from db yet
+            App.log("initServerConnection() - trying to fetch user");
+            DBreader.get().readUserData();
             Utils.get().myStartActivity(this, ActivitySplash.class);
             return false;
         }
+        App.log("initServerConnection() - fetched user");
         return true;
     }
 

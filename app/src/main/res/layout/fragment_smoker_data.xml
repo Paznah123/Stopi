@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/progress_title"
             android:paddingBottom="5dp"
-            android:text="Cigarettes not smoked: "
             android:textSize="20dp" />
 
         <TextView
@@ -41,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/progress_cigs"
             android:paddingBottom="5dp"
-            android:text="Money saved: "
             android:textSize="20dp" />
 
         <TextView
@@ -50,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/progress_money"
             android:paddingBottom="5dp"
-            android:text="Life gained: "
             android:textSize="20dp" />
 
     </RelativeLayout>

@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,9 +84,11 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        findViews();
         user = DBreader.get().getUser();
 
-        findViews();
+        if(!App.isNetworkAvailable() || user == null) return view;
+
         setCurrentValues();
         setListeners();
 
@@ -144,6 +148,7 @@ public class SettingsFragment extends Fragment {
 
     private void setCurrentValues(){
         DBreader.get()          .readPicNoCache(KEYS.PROFILE, user_profile_pic, user.getUid());
+        onProfileUpdate         .updateProfile(user);
 
         user_name       .getEditText()  .setText(""+ user.getName());
         years_smoked    .getEditText()  .setText(""+ user.getYearsSmoked());

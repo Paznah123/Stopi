@@ -59,7 +59,8 @@ public class MessageActivity extends AppCompatActivity {
         final String userId     = getIntent().getStringExtra("userid");
         mChat                   = new ArrayList<>();
         chatId                  = Utils.get().chatIdHash(userId);
-        handler                 .postDelayed(runnable,350);
+
+        handler                 .postDelayed(runnable,500);
 
         findViews();
         initRecyclerView();
