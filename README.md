@@ -16,3 +16,4 @@ Features:
 - Simple chat between users
 - Distraction game (basic 2d game)
 - Settings page for profile changes + data delete from database
+- Color themes
