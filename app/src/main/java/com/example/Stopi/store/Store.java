@@ -14,7 +14,7 @@ public class Store {
 
     private static Store instance;
 
-    private  List<StoreItem> itemsList = new ArrayList<>();
+    private List<StoreItem> itemsList = new ArrayList<>();
 
     //=============================
 

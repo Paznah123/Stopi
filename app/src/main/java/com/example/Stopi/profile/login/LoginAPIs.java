@@ -47,17 +47,6 @@ public class LoginAPIs {
         createRequest();
     }
 
-    private void linkWithCredential(AuthCredential credential){
-        firebaseAuth.getCurrentUser().linkWithCredential(credential)
-                .addOnCompleteListener(activity, task -> {
-                    if (task.isSuccessful()) {
-                        Utils.get().myStartActivity(activity,MainActivity.class);
-                        App.toast("Login Successful!");
-                    } else
-                        App.toast("Login Failed!");
-                });
-    }
-
     // ============================================================= google sign in
 
     private void createRequest() {

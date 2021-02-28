@@ -53,7 +53,6 @@ public class DBreader {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren())
                     list.add(snapshot.getValue(ObjectClass));
                 App.log("readListData() - read list");
-
             }
 
             @Override
@@ -66,8 +65,8 @@ public class DBreader {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        App.log("readUserData() - read user");
                         user = dataSnapshot.getValue(User.class);
+                        App.log("readUserData() - read user");
                     }
 
                     @Override

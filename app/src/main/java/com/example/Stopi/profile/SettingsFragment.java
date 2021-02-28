@@ -7,13 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.example.Stopi.R;
 import com.example.Stopi.profile.login.LoginActivity;
 import com.example.Stopi.tools.App;

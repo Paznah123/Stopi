@@ -68,9 +68,8 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemesView
         holder.color_primary            .setBackgroundColor(theme.primary);
         holder.color_primary_variant    .setBackgroundColor(theme.variant);
 
-        holder.itemView                 .setOnClickListener(v -> {
-            Utils.get().changeToTheme(((Activity)context),position);
-        });
+        holder.itemView                 .setOnClickListener
+                (v -> Utils.get().changeToTheme(((Activity)context),position));
     }
 
     //====================================================

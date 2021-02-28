@@ -12,10 +12,10 @@ public class  TestDB {
 
     public static void addFakeUsers(){
         ArrayList<User> users = generateUsers();
-        for (int i = 0; i < users.size(); i++) {
+        for (User user : users) {
             String uId = Refs.getUsersRef().push().getKey();
-            users.get(i).setUid(uId);
-            DBupdater.get().updateUser(users.get(i));
+            user.setUid(uId);
+            DBupdater.get().updateUser(user);
         }
     }
 
@@ -28,8 +28,8 @@ public class  TestDB {
     }
 
     private static void pushValues(List list, String ref){
-        for (int i = 0; i < list.size(); i++)
-            Refs.getDBref(ref).push().setValue(list.get(i));
+        for (Object element : list)
+            Refs.getDBref(ref).push().setValue(element);
     }
 
     //============================================
